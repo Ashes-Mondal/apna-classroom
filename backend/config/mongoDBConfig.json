@@ -1,0 +1,3 @@
+{
+    "mongoURL":"mongodb+srv://ashes:<password>@cluster0.hrsqj.mongodb.net/aapnaClassroom?retryWrites=true&w=majority"
+}

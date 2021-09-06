@@ -1,0 +1,15 @@
+{
+    "publicRoutes":[
+        "/register",
+        "/login"
+    ],
+    "studentRoutes":[
+        "/logout"
+    ],
+    "teacherRoutes":[
+
+    ],
+    "adminRoutes":[
+        
+    ]
+}
