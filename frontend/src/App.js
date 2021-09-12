@@ -5,16 +5,17 @@ import Footer from './components/common/footer/Footer';
 import Error from './components/pages/error/Error'
 import protectedRoutes from './routes/protected';
 import publicRoutes from './routes/public';
-import { useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 
 function App() {
   const userAuthentication = useSelector(state => state.userAuthentication);
   return (
-    <>
-      <header className='l-header'>
-        <Navbar />
-      </header>
-      <main className='l-main'>
+    <div className='app' style={!userAuthentication?{margin:"0px"}:{}}>
+      {userAuthentication ?
+        <header className='l-header'>
+          <Navbar />
+        </header> : null}
+      <main className='l-main' style={!userAuthentication?{height:"calc(100vh)"}:{}}>
         <Switch>
           {
             publicRoutes.map((route, index) => {
@@ -47,10 +48,13 @@ function App() {
           />
         </Switch>
       </main>
-      <footer className='l-footer'>
-        <Footer />
-      </footer>
-    </>
+      {
+        userAuthentication ? <footer className='l-footer'>
+          <Footer />
+        </footer> : null
+      }
+
+    </div>
   );
 }
 
