@@ -1,6 +1,9 @@
 import React, { useState, createContext } from 'react'
 import { ThemeProvider, withStyles } from 'react-jss'
-import {  FaPlusCircle, FaArrowLeft } from "react-icons/fa";
+import { FaPlusCircle, FaArrowLeft } from "react-icons/fa";
+import { useDispatch } from 'react-redux';
+import { setUserAuth } from '../../../redux/actions/userAuthentication';
+import { handleLogin, handleRegister } from '../../../axios/handleSession';
 
 const mainTheme = {
     sizes: {
@@ -47,7 +50,7 @@ const lightTheme = {
         background: '#323232',
         text: '#fff'
     },
-    blob: 'C7D2FE'
+    blob: 'EAE8F9'
 }
 
 const darkTheme = {
@@ -89,7 +92,7 @@ const loginLayoutStyles = theme => ({
     loginLayout: {
         maxWidth: '100%',
         minHeight: '100%',
-        margin:"1% 0",
+        margin: "1% 0",
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -119,7 +122,7 @@ const loginPageStyles = theme => ({
         background: theme.background.paper,
         color: theme.text.primary,
         width: '100%',
-        margin:"4%",
+        margin: "4%",
         padding: '2rem',
         position: 'relative'
     },
@@ -135,7 +138,7 @@ const loginPageStyles = theme => ({
         color: theme.text.activeLink,
         fontWeight: 600,
         fontSize: '1.6em',
-        marginBottom:"2rem"
+        marginBottom: "2rem"
     }
 });
 
@@ -249,7 +252,7 @@ const registrationPageStyles = theme => ({
         background: theme.background.paper,
         color: theme.text.primary,
         width: '100%',
-        margin:"2%",
+        margin: "2%",
         padding: '2rem',
         position: 'relative'
     },
@@ -257,7 +260,7 @@ const registrationPageStyles = theme => ({
         color: theme.text.activeLink,
         fontWeight: 600,
         fontSize: '1.6em',
-        marginBottom:"1rem"
+        marginBottom: "1rem"
     }
 });
 
@@ -463,7 +466,14 @@ function RegistrationPage(props) {
 
         setFormErrors(errors);
         if (!errors.length) {
-            setResponse('Successfully registered!');
+            try {
+                //handle sever logic
+                await handleRegister({email:email,password:password});
+                setResponse('Successfully registered!');
+            } catch (error) {
+                console.error(error);
+                alert(error.error);
+            }
         }
     }
 
@@ -501,7 +511,7 @@ function RegistrationPage(props) {
                 </div>
 
                 <div style={{ marginTop: '10px' }}>
-                    <Button type='submit' onClick={registrationSubmitHandler}fullWidth>Create account</Button>
+                    <Button type='submit' onClick={registrationSubmitHandler} fullWidth>Create account</Button>
                     <Divider />
                 </div>
 
@@ -518,6 +528,7 @@ RegistrationPage = withStyles(registrationPageStyles)(RegistrationPage);
 
 
 function LoginPage(props) {
+    const dispatch = useDispatch();
     const classes = props.classes;
 
     const [email, setEmail] = useState('');
@@ -552,7 +563,17 @@ function LoginPage(props) {
         let passwordCheck = passwordValidate(password);
         if (passwordCheck) errors.push(passwordCheck);
         setFormErrors(errors);
-        if (!errors.length) setSuccess(true);
+        if (!errors.length) {
+            try {
+                //handle sever logic
+                await handleLogin({email:email,password:password});
+                setSuccess(true)
+                dispatch(setUserAuth());
+            } catch (error) {
+                console.error(error);
+                alert(error.error);
+            }
+        };
     }
 
     return <div className={classes.loginCard}>

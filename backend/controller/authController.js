@@ -73,7 +73,7 @@ exports.loginController = async (req, res, next) => {
         //Creating JWT token
         const accessToken = await jwt.createAccessToken({
             sessionID: sessionID,
-            uuid: userInfo._id,
+            uuid: userInfo.uuid,
             jwtUid: jwtUid,
             role: userInfo.role,
         });
@@ -93,7 +93,7 @@ exports.loginController = async (req, res, next) => {
             (
                 "login",
                 JSON.stringify({ accessToken: accessToken,sessionID:sessionID}),
-                { signed: true, secure: true, httpOnly: true }
+                {httpOnly: true,secure:process.env.NODE_ENV === "production"}
             );
         res.status(200).json({
             data: {accessToken: accessToken},
@@ -151,3 +151,15 @@ exports.logoutController = async (req, res, next) => {
         res.status(400).json({ data: null, error: e.message });
     }
 };
+
+exports.getUserInfo = async(req,res)=>{
+    try {
+        const result = await userModel.find({uuid:req.body.uuid},{password:false});
+        result.length?
+            res.status(200).json({ data: result, error: null }):
+            res.status(404).json({data:null,error:'No record found'})
+
+    } catch (error) {
+        res.status(400).json({ data: null, error: e.message });
+    }
+}

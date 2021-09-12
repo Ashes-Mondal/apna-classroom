@@ -51,13 +51,9 @@ const UsersSchema = new mongoose.Schema(
         },
         signedUpMethod: {
             type: String,
-            default: ""
+            default: "Apna classroom"
         },
         emailVerificationCode: {
-            type: String,
-            default: ""
-        },
-        gender: {
             type: String,
             default: ""
         },

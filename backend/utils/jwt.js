@@ -1,6 +1,5 @@
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
-const createUniqueID = require('./uid')
 const accessTokenConfig = require("../config/accessTokenConfig.json");
 const refreshTokenConfig = require("../config/refreshTokenConfig.json"),
     jwtUidLength = 20;
@@ -56,7 +55,6 @@ module.exports.renewAccessToken = async (accessToken) => {
     try {
         //1.Get payload from expired access token
         const decoded = await jwt.verify(accessToken, global.AccessTokenSecret, { ignoreExpiration: true });
-
         //2.verify refresh Token
         let result = await Sessions.findOne
             (
@@ -65,11 +63,13 @@ module.exports.renewAccessToken = async (accessToken) => {
             )
             .exec();
         if (!result) {
-            throw 'Unauthorized';
+            throw 'Session expired';
         }
+
         try {
             //==>Verification successfull
             await jwt.verify(result.refreshToken, global.RefreshTokenSecret);
+
         } catch (error) {
             //==>Verification failed
             if (error.name === 'TokenExpiredError') {
@@ -85,7 +85,7 @@ module.exports.renewAccessToken = async (accessToken) => {
         }
 
         //3.Create new access token
-        const UID = await createJWTUniqueID();
+        const UID = await module.exports.createJWTUniqueID();
         const newAccessToken = await jwt
             .sign
             (
@@ -95,8 +95,8 @@ module.exports.renewAccessToken = async (accessToken) => {
                     role: decoded.role,
                     jwtUid: UID
                 },
-                global.RefreshTokenSecret,
-                refreshTokenConfig
+                global.AccessTokenSecret,
+                accessTokenConfig
             );
 
         //4.update the database
@@ -111,7 +111,7 @@ module.exports.renewAccessToken = async (accessToken) => {
                 }
             )
             .exec();
-        return { ...decoded, jwtUid: UID,newAccessToken:newAccessToken };
+        return { ...decoded, jwtUid: UID, newAccessToken: newAccessToken };
     } catch (error) {
         throw error;
     }
@@ -122,7 +122,7 @@ module.exports.accessTokenVerification = async (accessToken) => {
     try {
         //1.Verify incoming access token
         const decoded = await jwt.verify(accessToken, global.AccessTokenSecret);
-
+        
         //2.Verify with database
         let result = await Sessions.find
             (
@@ -136,7 +136,7 @@ module.exports.accessTokenVerification = async (accessToken) => {
         return decoded;
     } catch (error) {
         if (error.name === 'TokenExpiredError') {
-            return await renewAccessToken(accessToken, res);
+            return await module.exports.renewAccessToken(accessToken);
         }
         else throw error;
     }

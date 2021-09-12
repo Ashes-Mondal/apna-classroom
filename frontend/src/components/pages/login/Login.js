@@ -16,7 +16,7 @@ const Login = () => {
                     <div className="login-right">
                         <div className="login-right-head">
                             {loginOpen?<h2>Welcome back to</h2>:<h2>Welcome to</h2>}
-                            <h2>&lt; Project name &gt;</h2>
+                            <h2>Apna Classroom</h2>
                             <hr />
                             {loginOpen?<h4>Sign in to continue to your account</h4>:<h4>Join with us for better Classroom Experience</h4>}
                         </div>

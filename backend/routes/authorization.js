@@ -13,7 +13,7 @@ async function checkauthorization(req, res, next) {
             next();
         }
         else {
-            const accessToken = req.cookies.session ? req.cookies.session.accessToken : undefined;
+            const accessToken = req.cookies.login ? JSON.parse(req.cookies.login).accessToken : undefined;
             if (!accessToken) {
                 res.status(401).json({ data: null, error: "Unauthorized" });
                 return;
@@ -26,8 +26,8 @@ async function checkauthorization(req, res, next) {
                 res.cookie
                     (
                         "login",
-                        JSON.stringify({ accessToken: accessToken, sessionID: sessionID }),
-                        { signed: true, secure: true, httpOnly: true }
+                        JSON.stringify({ accessToken: jwtdata.newAccessToken, sessionID: jwtdata.newAccessToken.sessionID }),
+                        { httpOnly: true,secure:process.env.NODE_ENV === "production" }
                     );
             }
 
@@ -43,7 +43,7 @@ async function checkauthorization(req, res, next) {
                 next();
             }
             else {
-                res.status(400).json({ data: null, error: "Invalid request" });
+                res.status(400).json({ data: null, error: "Invalid request URL" });
                 return;
             }
         }
