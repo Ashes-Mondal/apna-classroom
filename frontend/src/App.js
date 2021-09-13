@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import { fetchUserDetails } from './axios/user';
 import { setUserAuth } from './redux/actions/userAuthentication';
 
+
 function App() {
   const userAuthentication = useSelector(state => state.userAuthentication);
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ function App() {
       .catch((err) => {
         console.error(err);
       })
-  }, [userAuthentication,dispatch])
+  }, [userAuthentication, dispatch])
   return (
     <div className='app' style={!userAuthentication ? { margin: "0px" } : {}}>
       {userAuthentication ?
@@ -34,7 +35,18 @@ function App() {
         </header> : null}
       <main className='l-main' style={!userAuthentication ? { height: "calc(100vh)" } : {}}>
         {
-          !userAuthentication ? <Login /> :
+          !userAuthentication ?
+            <Switch>
+              <Route
+                exact path='/'
+                component={Login}
+              />
+              <Route
+                exact path='*'
+                component={Error}
+              />
+            </Switch>
+            :
             <Switch>
               {
                 publicRoutes.map((route, index) => {
@@ -70,11 +82,13 @@ function App() {
 
       </main>
       {
-        userAuthentication ? <footer className='l-footer'>
-          <Footer />
-        </footer> : null
+        userAuthentication ?
+          <footer className='l-footer'>
+            <Footer />
+          </footer>
+          :
+          null
       }
-
     </div>
   );
 }

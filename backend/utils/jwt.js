@@ -74,8 +74,7 @@ module.exports.renewAccessToken = async (accessToken) => {
             //==>Verification failed
             if (error.name === 'TokenExpiredError') {
                 //delete session from database
-                await usersSessionModal.deleteOne({ sessionID: decoded.sessionID });
-
+                await Sessions.deleteOne({ sessionID: decoded.sessionID });
                 //throw 'Session Expired' error
                 const err = 'Session expired'
                 throw err;

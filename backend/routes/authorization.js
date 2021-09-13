@@ -27,7 +27,7 @@ async function checkauthorization(req, res, next) {
                     (
                         "login",
                         JSON.stringify({ accessToken: jwtdata.newAccessToken, sessionID: jwtdata.newAccessToken.sessionID }),
-                        { httpOnly: true,secure:process.env.NODE_ENV === "production" }
+                        { httpOnly: true, secure: process.env.NODE_ENV === "production" }
                     );
             }
 
@@ -49,6 +49,9 @@ async function checkauthorization(req, res, next) {
         }
     } catch (e) {
         if (typeof e.message === 'undefined') {
+            if (e === 'Session expired') {
+                res.clearCookie("login");
+            }
             res.status(401).json({ data: null, error: e });
         } else {
             res.status(400).json({ data: null, error: e.message });

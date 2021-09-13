@@ -89,10 +89,11 @@ img {
     display: block;
 }
 
-.app{
+.app {
     margin: var(--header-height) 0 0 0;
     overflow: hidden;
 }
+
 .l-header {
     position: fixed;
     width: 100%;
@@ -101,9 +102,16 @@ img {
     background-color: var(--body-color);
     overflow: hidden;
     z-index: var(--z-fixed);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
 .l-main {
     position: relative;
     min-height: calc(100vh - var(--header-height));
+}
+
+.l-footer {
+    padding: var(--mb-1);
+    background-color: white;
+    box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
 }
