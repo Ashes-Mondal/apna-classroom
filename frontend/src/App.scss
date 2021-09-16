@@ -16,6 +16,14 @@
     --body-color: #f7f7f7;
     --container-color: #ffffff;
 
+    /*========== ThemeColors ==========*/
+    --red:#FF6969;
+    --purple:#B68CEB;
+    --blue:#4FCAFF;
+    --yellow:rgb(241, 241, 4);
+    --green:#60cf2c;
+    --orange:orange;
+
     /*========== Font and typography ==========*/
     --body-font: "Roboto", serif;
     --small-font-size: 0.813rem;
@@ -115,3 +123,49 @@ img {
     background-color: white;
     box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
 }
+
+//theme background and font
+//red
+.bg-red{
+    background-color: var(--red)!important;
+}
+.font-red{
+    color:var(--red)!important;
+}
+//blue
+.bg-blue{
+    background-color: var(--blue)!important;
+}
+.font-blue{
+    color:var(--blue)!important;
+}
+//purple
+.bg-purple{
+    background-color: var(--purple)!important;
+}
+.font-purple{
+    color:var(--purple)!important;
+}
+//yellow
+.bg-yellow{
+    background-color: var(--yellow)!important;
+}
+.font-yellow{
+    color:var(--yellow)!important;
+}
+//green
+.bg-green{
+    background-color: var(--green)!important;
+}
+.font-green{
+    color:var(--green)!important;
+}
+//orange
+.bg-orange{
+    background-color: var(--orange)!important;
+}
+.font-orange{
+    color:var(--orange)!important;
+}
+
+
