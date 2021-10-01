@@ -6,6 +6,7 @@ require('./global');
 const express = require("express");
 const cookieParser = require('cookie-parser')
 const cors = require("cors");
+const methodOverride = require('method-override');
 const mongoConnection = require('./mongoDBConnection')
 
 try {
@@ -14,6 +15,7 @@ try {
 
     //Middlewares
     app.use(cookieParser(global.cookieSecret));
+    app.use(methodOverride('_method'));
     app.use(cors({ origin: ['http://localhost:3000', 'https://localhost:3000'], credentials: true }));
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
@@ -21,7 +23,7 @@ try {
     //mongoDB connection
     mongoConnection()
         .then(() => {
-            console.log(global.color.green, 'Successfully connected to mongoDB server', global.color.reset)
+            console.log(global.color.green, 'Successfully connected to mongoDB server', global.color.reset);
         })
         .catch(() => {
             console.error(global.color.red, "Failed to connect mongoDB server", global.color.reset);

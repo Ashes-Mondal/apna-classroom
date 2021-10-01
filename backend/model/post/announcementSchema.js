@@ -5,6 +5,7 @@ const AnnouncementSchema = new mongoose.Schema
     (
         {
             ClassroomID: { type: Schema.Types.ObjectId, ref: 'Classrooms' },
+            userID:{ type: Schema.Types.ObjectId, ref: 'Users' },
             title: {
                 type: String,
                 required: true
@@ -21,7 +22,3 @@ const AnnouncementSchema = new mongoose.Schema
         }
     )
 module.exports = mongoose.model('Announcements', AnnouncementSchema);
-/*
-    3.Attach files
-    4.userID:ref->userSchema
-*/

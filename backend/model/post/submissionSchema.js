@@ -6,21 +6,9 @@ const SubmissionSchema = new mongoose.Schema
         {
             AssignmentID: { type: Schema.Types.ObjectId, ref: 'Assignments' },
             studentID: { type: Schema.Types.ObjectId, ref: 'Users' },
-            title: {
-                type: String,
-                required: true
-            },
-            body: {
-                type: String,
-                required: true
-            },
-            dueDate: {
-                type: Date,
-                required: true,
-            },
             marks: {
                 type: Number,
-                required: true,
+                default:-1
             },
             fileIDs: [{ type: Schema.Types.ObjectId, ref: 'Uploads' }],
         },

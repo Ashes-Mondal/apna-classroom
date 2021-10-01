@@ -35,8 +35,3 @@ const ClassRoomSchema = new mongoose.Schema
         }
     )
 module.exports = mongoose.model('Classrooms', ClassRoomSchema);
-
-
-/*
-        6.feedIDs->ref:postSchema
-*/

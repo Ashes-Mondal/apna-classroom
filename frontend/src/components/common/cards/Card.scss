@@ -1,7 +1,8 @@
+$card-height : 13rem;
 .subject-card {
     margin: var(--mb-3) auto;
     width: 17rem;
-    min-height: 16rem;
+    min-height: $card-height;
     background-color: rgb(221, 221, 221);
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 
@@ -28,6 +29,7 @@
 #subject-faculty {
     color: gray;
     font-size: 14px;
+    margin-bottom: var(--mb-2);
 }
 
 .subject-body {
@@ -35,7 +37,7 @@
     padding: var(--mb-1);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     background-color: rgba(255, 255, 255, 0.822);
-    min-height: 16rem;
+    min-height: $card-height;
 
     &:hover {
         cursor: pointer;

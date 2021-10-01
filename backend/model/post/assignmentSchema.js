@@ -5,6 +5,7 @@ const AssignmentSchema = new mongoose.Schema
     (
         {
             ClassroomID: { type: Schema.Types.ObjectId, ref: 'Classrooms' },
+            facultyID:{ type: Schema.Types.ObjectId, ref: 'Users' },
             title: {
                 type: String,
                 required: true
@@ -22,7 +23,6 @@ const AssignmentSchema = new mongoose.Schema
                 required: true,
             },
             commentIDs: [{ type: Schema.Types.ObjectId, ref: 'Comments' }],
-            submissionIDs: [{ type: Schema.Types.ObjectId, ref: 'Submissions' }],
             fileIDs: [{ type: Schema.Types.ObjectId, ref: 'Uploads' }],
         },
         {

@@ -1,9 +1,11 @@
 import React, { useState, createContext } from 'react'
+import './Login.scss'
 import { ThemeProvider, withStyles } from 'react-jss'
 import { FaPlusCircle, FaArrowLeft } from "react-icons/fa";
 import { useDispatch } from 'react-redux';
 import { setUserAuth } from '../../../redux/actions/userAuthentication';
 import { handleLogin, handleRegister } from '../../../axios/handleSession';
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const mainTheme = {
     sizes: {
@@ -235,34 +237,34 @@ const inputStyles = theme => ({
     }
 });
 
-const registrationPageStyles = theme => ({
-    '@keyframes slideRight': {
-        from: {
-            opacity: 0,
-            transform: 'translateX(-30px) scale(0.98)'
-        },
-        to: {
-            opacity: 1,
-            transform: 'translateX(0px) scale(1)'
-        }
-    },
-    loginCard: {
-        animation: '$slideRight ease-in 0.3s',
-        boxShadow: '0 2px 20px 3px rgb(0 0 0 / 6%)',
-        background: theme.background.paper,
-        color: theme.text.primary,
-        width: '100%',
-        margin: "2%",
-        padding: '2rem',
-        position: 'relative'
-    },
-    cardHeader: {
-        color: theme.text.activeLink,
-        fontWeight: 600,
-        fontSize: '1.6em',
-        marginBottom: "1rem"
-    }
-});
+// const registrationPageStyles = theme => ({
+//     '@keyframes slideRight': {
+//         from: {
+//             opacity: 0,
+//             transform: 'translateX(-30px) scale(0.98)'
+//         },
+//         to: {
+//             opacity: 1,
+//             transform: 'translateX(0px) scale(1)'
+//         }
+//     },
+//     loginCard: {
+//         animation: '$slideRight ease-in 0.3s',
+//         boxShadow: '0 2px 20px 3px rgb(0 0 0 / 6%)',
+//         background: theme.background.paper,
+//         color: theme.text.primary,
+//         width: '100%',
+//         margin: "2%",
+//         padding: '2rem',
+//         position: 'relative'
+//     },
+//     cardHeader: {
+//         color: theme.text.activeLink,
+//         fontWeight: 600,
+//         fontSize: '1.6em',
+//         marginBottom: "1rem"
+//     }
+// });
 
 const labelStyles = theme => ({
     label: {
@@ -364,13 +366,13 @@ function LoginLayout(props) {
 }
 LoginLayout = withStyles(loginLayoutStyles)(LoginLayout);
 
-function Divider(props) {
-    return <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div style={{ height: '1px', width: '100%', background: '#d1d5db' }}></div>
-        <p style={{ margin: '10px', fontWeight: 100, color: '#94979c' }}>OR</p>
-        <div style={{ height: '1px', width: '100%', background: '#d1d5db' }}></div>
-    </div>
-}
+// function Divider(props) {
+//     return <div style={{ display: 'flex', alignItems: 'center' }}>
+//         <div style={{ height: '1px', width: '100%', background: '#d1d5db' }}></div>
+//         <p style={{ margin: '10px', fontWeight: 100, color: '#94979c' }}>OR</p>
+//         <div style={{ height: '1px', width: '100%', background: '#d1d5db' }}></div>
+//     </div>
+// }
 
 function Alert(props) {
     const classes = props.classes;
@@ -417,114 +419,114 @@ function Input(props) {
             checked={props.value}
             type={props.type}
             style={{ ...props.style }}
+        /
         >
-        </input>
-    </div>
+    </div >
 }
 Input = withStyles(inputStyles)(Input);
 
 
-function RegistrationPage(props) {
-    const classes = props.classes;
-    const [response, setResponse] = useState('');
+// function RegistrationPage(props) {
+//     const classes = props.classes;
+//     const [response, setResponse] = useState('');
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [repeatPassword, setRepeatPassword] = useState('');
-    const [formErrors, setFormErrors] = useState([]);
+//     const [email, setEmail] = useState('');
+//     const [password, setPassword] = useState('');
+//     const [repeatPassword, setRepeatPassword] = useState('');
+//     const [formErrors, setFormErrors] = useState([]);
 
-    const backToLogin = () => {
-        props.openLogin(true);
-    }
+//     const backToLogin = () => {
+//         props.openLogin(true);
+//     }
 
-    const emailValidate = (value) => {
-        const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
-        if (!emailRegex.test(value)) return 'Wrong email';
-        return undefined;
-    }
+//     const emailValidate = (value) => {
+//         const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+//         if (!emailRegex.test(value)) return 'Wrong email';
+//         return undefined;
+//     }
 
-    const passwordValidate = (value) => {
-        if (!value || value.length < 6) return 'Passwords: atleast 6 characters required';
-        return undefined;
-    }
+//     const passwordValidate = (value) => {
+//         if (!value || value.length < 6) return 'Passwords: atleast 6 characters required';
+//         return undefined;
+//     }
 
-    const repeatValidate = (val1, val2) => !val1 || val2 !== val1 ? 'Password mismatch' : undefined;
+//     const repeatValidate = (val1, val2) => !val1 || val2 !== val1 ? 'Password mismatch' : undefined;
 
-    const registrationSubmitHandler = async (e) => {
-        e.preventDefault();
-        console.log('registration sumbmit handler');
+//     const registrationSubmitHandler = async (e) => {
+//         e.preventDefault();
+//         console.log('registration sumbmit handler');
 
-        let errors = [];
-        let emailCheck = emailValidate(email);
-        if (emailCheck) errors.push(emailCheck);
+//         let errors = [];
+//         let emailCheck = emailValidate(email);
+//         if (emailCheck) errors.push(emailCheck);
 
-        let passwordCheck = passwordValidate(password);
-        if (passwordCheck) errors.push(passwordCheck);
+//         let passwordCheck = passwordValidate(password);
+//         if (passwordCheck) errors.push(passwordCheck);
 
-        let repeatCheck = repeatValidate(password, repeatPassword);
-        if (repeatCheck) errors.push(repeatCheck);
+//         let repeatCheck = repeatValidate(password, repeatPassword);
+//         if (repeatCheck) errors.push(repeatCheck);
 
-        setFormErrors(errors);
-        if (!errors.length) {
-            try {
-                //handle sever logic
-                await handleRegister({email:email,password:password});
-                setResponse('Successfully registered!');
-            } catch (error) {
-                console.error(error);
-                alert(error.error);
-            }
-        }
-    }
+//         setFormErrors(errors);
+//         if (!errors.length) {
+//             try {
+//                 //handle sever logic
+//                 await handleRegister({ email: email, password: password });
+//                 setResponse('Successfully registered!');
+//             } catch (error) {
+//                 console.error(error);
+//                 alert(error.error);
+//             }
+//         }
+//     }
 
-    return <div className={classes.loginCard}>
+//     return <div className={classes.loginCard}>
 
-        <h1 className={classes.cardHeader}>Sign Up</h1>
+//         <h1 className={classes.cardHeader}>Sign Up</h1>
 
-        {!response ? <div className="form">
+//         {!response ? <div className="form">
 
-            <form onSubmit={registrationSubmitHandler}>
+//             <form onSubmit={registrationSubmitHandler}>
 
-                {formErrors.length ? <Alert title="Registration failed">
-                    {formErrors.map(err => <div>{err}</div>)}
-                </Alert> : ''}
+//                 {formErrors.length ? <Alert title="Registration failed">
+//                     {formErrors.map(err => <div>{err}</div>)}
+//                 </Alert> : ''}
 
-                <div>
-                    <Label>
-                        <span>Email</span>
-                        <Input value={email} onChange={(e) => setEmail(e.target.value)} />
-                    </Label>
-                </div>
+//                 <div>
+//                     <Label>
+//                         <span>Email</span>
+//                         <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+//                     </Label>
+//                 </div>
 
-                <div>
-                    <Label>
-                        <span>Password</span>
-                        <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                    </Label>
-                </div>
+//                 <div>
+//                     <Label>
+//                         <span>Password</span>
+//                         <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+//                     </Label>
+//                 </div>
 
-                <div>
-                    <Label>
-                        <span>Repeat password</span>
-                        <Input type="password" value={repeatPassword} onChange={(e) => setRepeatPassword(e.target.value)} />
-                    </Label>
-                </div>
+//                 <div>
+//                     <Label>
+//                         <span>Repeat password</span>
+//                         <Input type="password" value={repeatPassword} onChange={(e) => setRepeatPassword(e.target.value)} />
+//                     </Label>
+//                 </div>
 
-                <div style={{ marginTop: '10px' }}>
-                    <Button type='submit' onClick={registrationSubmitHandler} fullWidth>Create account</Button>
-                    <Divider />
-                </div>
+//                 <div style={{ marginTop: '10px' }}>
+//                     <Button type='submit' onClick={registrationSubmitHandler} fullWidth>Create account</Button>
+//                     <Divider />
+//                 </div>
 
-            </form>
+//             </form>
 
-        </div> : <Alert type="success" title="Successfully registered!"></Alert>
-        }
+//         </div> : <Alert type="success" title="Successfully registered!"></Alert>
+//         }
 
-        <Button fullWidth onClick={backToLogin} color="green" iconLeft={<FaArrowLeft />}>Back to log in</Button>
+//         <Button fullWidth onClick={backToLogin} color="green" iconLeft={<FaArrowLeft />}>Back to log in</Button>
 
-    </div>
-}
-RegistrationPage = withStyles(registrationPageStyles)(RegistrationPage);
+//     </div>
+// }
+// RegistrationPage = withStyles(registrationPageStyles)(RegistrationPage);
 
 
 function LoginPage(props) {
@@ -536,9 +538,9 @@ function LoginPage(props) {
     const [formErrors, setFormErrors] = useState([]);
     const [isSuccessed, setSuccess] = useState(false);
 
-    const redirectToRegistration = () => {
-        props.openLogin(false);
-    }
+    // const redirectToRegistration = () => {
+    //     props.openLogin(false);
+    // }
 
     const emailValidate = (value) => {
         const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
@@ -566,7 +568,7 @@ function LoginPage(props) {
         if (!errors.length) {
             try {
                 //handle sever logic
-                await handleLogin({email:email,password:password});
+                await handleLogin({ email: email, password: password });
                 setSuccess(true)
                 dispatch(setUserAuth());
             } catch (error) {
@@ -603,7 +605,6 @@ function LoginPage(props) {
                         <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                     </Label>
                 </div>
-
                 <div style={{ marginTop: '10px' }}>
                     <Button type='submit' onClick={loginSubmitHandler} fullWidth>Log in</Button>
                 </div>
@@ -612,20 +613,19 @@ function LoginPage(props) {
 
         </div>
 
-        <Divider />
-        <Button fullWidth onClick={redirectToRegistration} color="green" iconLeft={<FaPlusCircle />}>Create account</Button>
+        {/* <Divider /> */}
+        {/* <Button fullWidth onClick={redirectToRegistration} color="green" iconLeft={<FaPlusCircle />}>Create account</Button> */}
 
     </div>
 }
 LoginPage = withStyles(loginPageStyles)(LoginPage);
 
+
 const Form = (props) => {
     return (
         <CustomThemeProvider>
             <LoginLayout>
-                {
-                    props.loginOpen ? <LoginPage openLogin={props.setLoginOpen} /> : <RegistrationPage openLogin={props.setLoginOpen} />
-                }
+                <LoginPage />
             </LoginLayout>
         </CustomThemeProvider>
     )

@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'),
+    Schema = mongoose.Schema;
 
 const UsersSchema = new mongoose.Schema(
     {
@@ -10,13 +11,6 @@ const UsersSchema = new mongoose.Schema(
         name: {
             type: String,
         },
-        mobile: {
-            type: String,
-            validate: {
-                validator: (v)=>/\d{10}/.test(v) ,
-                message: props => `${props.value} is not a valid phone number!`
-            },
-        },
         email: {
             type: String,
             required: true,
@@ -25,35 +19,20 @@ const UsersSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        registered_using: {
+        classroomIDs: [{ type: Schema.Types.ObjectId, ref: 'Classrooms' }],
+        role: {
             type: String,
-            default: "Aapna classroom"
-        },
-        failedLoginAttempts: {
-            type: Number,
-            default: 0
-        },
-        emailVerified: {
-            type: Boolean,
-            default: false
+            default: "student"
         },
         status: {
             type: String,
             default: "Active"
         },
+        failedLoginAttempts: {
+            type: Number,
+            default: 0
+        },
         disableReason: {
-            type: String,
-            default: ""
-        },
-        role: {
-            type: String,
-            default: "student"
-        },
-        signedUpMethod: {
-            type: String,
-            default: "Apna classroom"
-        },
-        emailVerificationCode: {
             type: String,
             default: ""
         },
