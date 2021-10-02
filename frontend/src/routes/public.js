@@ -1,10 +1,15 @@
 //imports
-import Home from "../components/pages/home/Home"
+import Home from '../components/pages/home/Home'
+import Classroom from '../components/pages/classroom/Classroom'
 
-const publicRoutes =  [
+const publicRoutes = [
     {
-        component:Home,
-        path:'/'
+        component: Home,
+        path: '/',
     },
-];
-export default publicRoutes;
+    {
+        component: Classroom,
+        path: '/testcls',
+    },
+]
+export default publicRoutes
