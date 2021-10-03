@@ -1,6 +1,7 @@
 //imports
 import Home from "../components/pages/home/Home";
 import Assignment from "../components/pages/Assignment/Assignment";
+import Results from "../components/pages/results/Results";
 
 const publicRoutes = [
   {
@@ -10,6 +11,10 @@ const publicRoutes = [
   {
     component: Assignment,
     path: "/Assignment",
+  },
+  {
+    component: Results,
+    path: '/results/:subject',
   },
 ];
 export default publicRoutes;
