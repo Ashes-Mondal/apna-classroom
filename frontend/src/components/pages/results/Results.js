@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import './result.scss'
 import Activity from './Activity'
 import Head from './Head'
 import { useParams } from "react-router-dom";
 import AverageSection from './AverageSection';
+import Error from '../error/Error';
+import { useSelector } from 'react-redux';
+import { all_activities } from '../../../Dummy-data/activities';
+import NoData from './NoData';
 
 /* DUMMY DATA STARTS HERE*/
 const marks = {
@@ -12,102 +16,68 @@ const marks = {
     yourAverage: 70,
     classAverage: 50
 }
-const theme = ['purple','orange','red','yellow','green'][Math.floor(Math.random()*5)%5];
-const list = [
-    {
-        name: 'Software Engineering',
-        href: '/results/Software Engineering'
-    },
-    {
-        name: 'Computer Graphics',
-        href: '/results/Computer Graphics'
-    },
-    {
-        name: 'System and Signals',
-        href: '/results/System and Signals'
-    },
-    {
-        name: 'Cyber Security and Laws',
-        href: '/results/Cyber Security and Laws'
-    },
-]
-const randomDate = new Date()
-randomDate.setDate(new Date().getDate() + Math.floor((Math.random() * 4) - 2))
-const activities = [
-    {
-        AssignmentID: {
-            title: 'Minor I Exam',
-            dueDate: randomDate,
-            totalMarks: 20,
-        },
-        marks: Math.floor((Math.random() * 20) - 2),
-        createdAt: new Date()
-    },
-    {
-        AssignmentID: {
-            title: 'Minor I Exam',
-            dueDate: randomDate,
-            totalMarks: 20,
-        },
-        marks: Math.floor((Math.random() * 20) - 2),
-        createdAt: new Date()
-    },
-    {
-        AssignmentID: {
-            title: 'Minor I Exam',
-            dueDate: randomDate,
-            totalMarks: 20,
-        },
-        marks: Math.floor((Math.random() * 20) - 2),
-        createdAt: new Date()
-    },
-    {
-        AssignmentID: {
-            title: 'Minor I Exam',
-            dueDate: randomDate,
-            totalMarks: 20,
-        },
-        marks: Math.floor((Math.random() * 20) - 2),
-        createdAt: new Date()
-    },
-    {
-        AssignmentID: {
-            title: 'Minor I Exam',
-            dueDate: randomDate,
-            totalMarks: 20,
-        },
-        marks: Math.floor((Math.random() * 20) - 2),
-        createdAt: new Date()
-    },
-    {
-        AssignmentID: {
-            title: 'Minor I Exam',
-            dueDate: randomDate,
-            totalMarks: 20,
-        },
-        marks: Math.floor((Math.random() * 20) - 2),
-        createdAt: new Date()
-    },
-]
+
 /* DUMMY DATA ENDS HERE*/
 
 const Results = () => {
     const { subject } = useParams();
+    const theme = useSelector(state => state.theme);
+    const enrolledClassrooms = useSelector(state => state.enrolledClassrooms);
+    const [activities, setActivities] = useState([]);
+
+    const dropdownList = useMemo(() => {
+        let result = [];
+        for (let i = 0; i < enrolledClassrooms.length; i++) {
+            result.push({
+                name: enrolledClassrooms[i].subjectName,
+                href: `/results/${enrolledClassrooms[i].subjectName}`,
+            })
+        }
+        return result;
+    }, [enrolledClassrooms])
+
+    /******************   useEffect()   **************/
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [subject])
+
+    //fetch all subject activities
+    useEffect(() => {
+        //fetch from backend logic
+
+        if (subject === 'Computer Graphics') {
+            setActivities([]);
+        } else
+            setActivities(all_activities || []);
+    }, [subject])
+    /******************   useEffect()   **************/
+
+    if (!theme[subject]) {
+        return <Error />
+    }
     return (
         <div className='result-page'>
-            <Head theme={theme} active={subject} list={list} />
+            <Head theme={theme[subject]} active={subject} list={dropdownList} />
             <div className='result-page-main'>
-                <AverageSection marks={marks} theme={theme} />
                 {
-                    activities.map((activity, idx) => <Activity key={idx} activity={activity} theme={theme} />)
+                    !activities.length ?
+                        <>
+                            <NoData />
+                        </>
+                        :
+                        <>
+                            <AverageSection marks={marks} theme={theme[subject]} />
+                            {
+                                activities.map((activity, idx) => <Activity
+                                    key={idx}
+                                    activity={activity}
+                                    theme={theme[subject]}
+                                    link={`/${subject}/${activity.AssignmentID._id}`}
+                                />)
+                            }
+                        </>
                 }
-                {/* <Activity activity={activities[0]} />
-                <Activity activity={activities[0]} theme='red' />
-                <Activity activity={activities[0]} theme='green' />
-                <Activity activity={activities[0]} theme='blue' />
-                <Activity activity={activities[0]} theme='purple' />
-                <Activity activity={activities[0]} theme='yellow' />
-                <Activity activity={activities[0]} theme='orange' /> */}
+
 
             </div>
 
