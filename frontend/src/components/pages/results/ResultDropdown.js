@@ -13,7 +13,7 @@ const ResultDropdown = ({list=[],active,...props}) => {
 
                 <Dropdown.Menu className='drop-menu'>
                     {
-                        list.map((item,idx)=><Dropdown.Item key={idx} onClick={()=>history.push(item.href)}>{item.name}</Dropdown.Item>)
+                        list.map((item,idx)=><Dropdown.Item className='drop-item' key={idx} onClick={()=>history.push(item.href)}>{item.name}</Dropdown.Item>)
                     }
                 </Dropdown.Menu>
             </Dropdown>
