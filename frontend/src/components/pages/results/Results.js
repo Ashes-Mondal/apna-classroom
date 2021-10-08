@@ -7,7 +7,7 @@ import AverageSection from './AverageSection';
 import Error from '../error/Error';
 import { useSelector } from 'react-redux';
 import { all_activities } from '../../../Dummy-data/activities';
-import NoData from './NoData';
+import NoData from '../../common/no-data/NoData';
 
 /* DUMMY DATA STARTS HERE*/
 const marks = {
@@ -18,6 +18,29 @@ const marks = {
 }
 
 /* DUMMY DATA ENDS HERE*/
+const calcMarks = (activities) => {
+    let totalMarks = 0, yourMarks = 0, ct = 0;
+    for (let i = 0; i < activities.length; i++) {
+        if (activities[i].marks > -1) {
+            ct++;
+            totalMarks += activities[i].AssignmentID.totalMarks;
+            yourMarks += activities[i].marks;
+        } else {
+            const submissionDate = activities[i].createdAt;
+            if (submissionDate > activities[i].AssignmentID.dueDate) {
+                ct++;
+                totalMarks += activities[i].AssignmentID.totalMarks;
+            }
+        }
+    }
+    const marks = {
+        yourMarks,
+        totalMarks,
+        yourAverage:Math.ceil(yourMarks/totalMarks * 100),
+        classAverage:50,
+    };
+    return marks
+}
 
 const Results = () => {
     const { subject } = useParams();
@@ -34,7 +57,8 @@ const Results = () => {
             })
         }
         return result;
-    }, [enrolledClassrooms])
+    }, [enrolledClassrooms]);
+
 
     /******************   useEffect()   **************/
     useEffect(() => {
@@ -51,7 +75,9 @@ const Results = () => {
             setActivities(all_activities || []);
     }, [subject])
     /******************   useEffect()   **************/
-
+    if (subject === 'no-data') {
+        return <NoData />
+    }
     if (!theme[subject]) {
         return <Error />
     }
@@ -61,12 +87,10 @@ const Results = () => {
             <div className='result-page-main'>
                 {
                     !activities.length ?
-                        <>
-                            <NoData />
-                        </>
+                        <NoData />
                         :
                         <>
-                            <AverageSection marks={marks} theme={theme[subject]} />
+                            <AverageSection marks={calcMarks(activities)} theme={theme[subject]} />
                             {
                                 activities.map((activity, idx) => <Activity
                                     key={idx}

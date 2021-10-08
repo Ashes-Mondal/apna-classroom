@@ -4,12 +4,14 @@ import { combineReducers } from "redux";
 import userAuthentication from './userAuthentication'
 import enrolledClassrooms from './enrolledClassrooms'
 import theme from './theme'
+import user from './user'
 
 /************************ REDUCERS ENDS HERE**************************/
 const rootReducer = combineReducers({
     userAuthentication,
     enrolledClassrooms,
-    theme
+    theme,
+    user
 });
 
 export default rootReducer;

@@ -1,4 +1,5 @@
 import React from 'react'
+import './NoData.scss'
 import img from '../../../images/no-data/no-data.jpg'
 
 const NoData = () => {

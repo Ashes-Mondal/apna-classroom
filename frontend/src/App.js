@@ -12,7 +12,9 @@ import { fetchUserDetails, fetchUserEnrolledClassrooms } from './axios/user';
 import { setUserAuth } from './redux/actions/userAuthentication';
 import { updateClassrooms } from './redux/actions/enrolledClassrooms';
 import enrolledClassrooms from './Dummy-data/enrolledClassrooms';
+import userDetails from './Dummy-data/userDetails';
 import { updateThemes } from './redux/actions/theme';
+import { updateUser } from './redux/actions/user';
 
 
 function App() {
@@ -25,9 +27,12 @@ function App() {
     fetchUserDetails()
       .then((resp) => {
         // console.log(resp);
+        dispatch(updateUser(resp.data))
         dispatch(setUserAuth())
       })
       .catch((err) => {
+        dispatch(updateUser(userDetails))
+        dispatch(setUserAuth())
         console.error(err);
       })
   }, [userAuthentication, dispatch])
@@ -47,11 +52,11 @@ function App() {
         .then((resp) => {
           // console.log(resp);
           dispatch(updateThemes(computeThemeList(resp.data || [])))
-          dispatch(updateClassrooms(resp.data || []));
+          dispatch(updateClassrooms(resp.data?resp.data.reverse():[]));
         })
         .catch((err) => {
           dispatch(updateThemes(computeThemeList(enrolledClassrooms)));
-          dispatch(updateClassrooms(enrolledClassrooms));
+          dispatch(updateClassrooms(enrolledClassrooms.reverse()));
           console.error(err);
         })
     }

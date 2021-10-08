@@ -4,21 +4,22 @@ import { NavLink } from 'react-router-dom'
 import { useHistory } from 'react-router'
 import logo from '../../../images/logo/logo.png'
 import { handleLogout } from '../../../axios/handleSession'
+import { useSelector } from 'react-redux'
 
 const Navbar = () => {
     const history = useHistory();
-    const result = 'Software Engineering'
+    const enrolledClassrooms = useSelector(state => state.enrolledClassrooms);
     const links = useMemo(() => [
         {
             title: 'Results',
-            link: `/results/${result}`
+            link: `/results/${enrolledClassrooms.length ? enrolledClassrooms[0].subjectName : 'no-data'}`
         },
         {
             title: 'ToDos',
             link: '/toDos'
         },
 
-    ], [])
+    ], [enrolledClassrooms])
     const checkResultActive = (match, location) => {
         // //some additional logic to verify you are in the home URI
         if (!location) return false;
@@ -52,7 +53,6 @@ const Navbar = () => {
                                     isActive={checkResultActive}
                                     to={navLink.link}
                                 >
-
                                     {navLink.title}
                                 </NavLink>)
                         } else {
@@ -62,10 +62,8 @@ const Navbar = () => {
                                     activeClassName="active-navlink"
                                     to={navLink.link}
                                 >
-
                                     {navLink.title}
                                 </NavLink>)
-
                         }
                     })
                 }

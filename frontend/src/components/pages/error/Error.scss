@@ -4,22 +4,27 @@
 
 
 .page_404 {
+    position: relative;
     display: flex;
     align-items: center;
-    height: 100vh;
-    padding: 40px 0;
+    justify-content: center;
+    max-width: 100vw;
+    height: 95vh;
     background-color: #fff;
     font-family: 'Arvo', serif;
 }
-
-.page_404 img {
-    width: 100%;
+.error-row{
+    max-height: 100%;
+    overflow: hidden;
+    overflow-y: auto;
 }
 
 .four_zero_four_bg {
     background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
     height: 400px;
+    width: 100vw;
     background-position: center;
+    background-repeat: no-repeat;
 }
 
 
