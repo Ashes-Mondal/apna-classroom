@@ -7,7 +7,7 @@ const express = require("express");
 const cookieParser = require('cookie-parser')
 const cors = require("cors");
 const methodOverride = require('method-override');
-const mongoConnection = require('./mongoDBConnection')
+const {mongoConnection} = require('./mongoDBConnection')
 
 try {
     const port = process.env.PORT || 8000;

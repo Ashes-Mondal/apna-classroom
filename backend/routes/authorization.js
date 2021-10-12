@@ -1,4 +1,3 @@
-const jwt = require('../utils/jwt');
 const validRoutes = require("../config/validRoutes.json");
 let publicRoutes = validRoutes.publicRoutes;
 let studentRoutes = validRoutes.studentRoutes;

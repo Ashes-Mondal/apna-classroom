@@ -15,7 +15,7 @@ const mongoConnection = async () => {
                 }
             )
         conn.once('open', () => {
-            global.gfs = Grid(conn.db, mongoose.mongo);
+            global.gfs = Grid(conn.db, mongoose.mongo),
             global.gfs.collection('Uploads')
         });
     } catch (error) {
@@ -24,4 +24,4 @@ const mongoConnection = async () => {
 
 }
 
-module.exports = mongoConnection;
+module.exports = {mongoConnection};
