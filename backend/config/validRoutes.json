@@ -2,7 +2,8 @@
     "publicRoutes":[
         "/register",
         "/login",
-        "/upload"
+        "/singleUpload",
+        "/multipleUpload"
     ],
     "studentRoutes":[
         "/logout",

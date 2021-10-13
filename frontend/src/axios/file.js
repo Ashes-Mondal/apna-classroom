@@ -1,7 +1,7 @@
 import axios from './config';
 
 export const uploadFile = async (data) => {
-    const url = '/upload'
+    const url = '/multipleUpload'
     try {
         const res = await axios.post(url,data,{
             headers:{
