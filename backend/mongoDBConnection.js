@@ -21,7 +21,5 @@ const mongoConnection = async () => {
     } catch (error) {
         throw error;
     }
-
 }
-
-module.exports = {mongoConnection};
+module.exports = mongoConnection;

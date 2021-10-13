@@ -14,20 +14,26 @@ const Upload = () => {
 
         //Step2:make form data
         const data = new FormData();
-        data.append('file', selectedFile);
+        data.append('file', selectedFile)
+        data.append('name', 'Ashes')
+        // for (let i = 0; i < selectedFile.length; i++) {
+        //     data.append(`files[${i}]`, selectedFile[i])
+        // }
+        console.log("selectedFile:",selectedFile);
 
         //Step3:Send to backend server
         try {
             const res = await uploadFile(data);
-            console.log("Files Details:",res.data)
+            console.log("Files Details:", res)
         } catch (error) {
+            alert('Failed');
             console.error(error);
         }
     }
     return (
         <form onSubmit={handleSubmit}>
             <input type="file" id="file" onChange={e => setselectedFile(e.target.files[0])} />
-            <button onSubmit={handleSubmit}>Submit</button>
+            <button type='submit' onSubmit={handleSubmit}>Submit</button>
         </form>
     )
 }
