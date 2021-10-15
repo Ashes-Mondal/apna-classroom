@@ -1,7 +1,10 @@
 {
     "publicRoutes":[
         "/register",
-        "/login"
+        "/login",
+        "/singleUpload",
+        "/multipleUpload",
+        "/file/:fileID"
     ],
     "studentRoutes":[
         "/logout",

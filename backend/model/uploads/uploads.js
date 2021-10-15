@@ -1,10 +1,10 @@
 const crypto = require('crypto');
 const path = require('path');
 const { GridFsStorage } = require('multer-gridfs-storage');
-const config = require('../../config/mongoDBConfig.json'); 
+const multer = require('multer');
 
 const storage = new GridFsStorage({
-    url: config.mongoURL.replace('<password>', global.mongoDbPassword),
+    url: global.mongoURI,
     file: (req, file) => {
         return new Promise((resolve, reject) => {
             crypto.randomBytes(16, (err, buf) => {
@@ -14,8 +14,9 @@ const storage = new GridFsStorage({
                 const filename = buf.toString('hex') + path.extname(file.originalname);
                 const fileInfo = {
                     filename: filename,
-                    originalname:file.originalname,
-                    bucketName: 'Uploads'
+                    metadata:{originalname:file.originalname,},
+                    bucketName: 'Uploads',
+                    uploadDate:Date.now()
                 };
                 resolve(fileInfo);
             });
