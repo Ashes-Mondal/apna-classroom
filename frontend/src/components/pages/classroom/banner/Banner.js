@@ -1,4 +1,5 @@
 import React from 'react'
+import { FaVideo, FaClipboard } from 'react-icons/fa'
 import './Banner.scss'
 
 function Banner() {
@@ -10,10 +11,10 @@ function Banner() {
             </div>
             <div className="actions">
                 <button>
-                    <div className="act-icon" /> Meeting
+                    <FaVideo /> Meeting
                 </button>
                 <button>
-                    <div className="act-icon" /> Results
+                    <FaClipboard /> Results
                 </button>
             </div>
         </div>

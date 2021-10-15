@@ -1,5 +1,8 @@
 import React from 'react'
 import Banner from './banner/Banner'
+import PostCard from './postCard/PostCard'
+import './Classroom.scss'
+import MiniToDo from './miniToDo/MiniToDo'
 
 function Classroom() {
     return (
@@ -8,12 +11,14 @@ function Classroom() {
             <div className="feed">
                 <div className="left-column">
                     <div className="post-cta"></div>
-                    <div className="post-card"></div>
-                    <div className="post-card"></div>
-                    <div className="post-card"></div>
-                    <div className="post-card"></div>
+                    <PostCard />
+                    <PostCard postType="asg" />
+                    <PostCard postType="asg" />
+                    <PostCard />
                 </div>
-                <div className="right-column"></div>
+                <div className="right-column">
+                    <MiniToDo />
+                </div>
             </div>
         </div>
     )
