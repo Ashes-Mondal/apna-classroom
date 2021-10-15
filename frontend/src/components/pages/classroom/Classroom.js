@@ -3,8 +3,10 @@ import Banner from './banner/Banner'
 import PostCard from './postCard/PostCard'
 import './Classroom.scss'
 import MiniToDo from './miniToDo/MiniToDo'
+import { useParams } from 'react-router'
 
 function Classroom() {
+    const {classroomID} = useParams();
     return (
         <div>
             <Banner />

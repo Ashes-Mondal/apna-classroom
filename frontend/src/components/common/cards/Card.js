@@ -3,6 +3,7 @@ import './Card.scss'
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { SiGooglehangoutsmeet } from "react-icons/si";
 import { HiOutlineClipboardList } from "react-icons/hi";
+import { useHistory } from 'react-router';
 
 const Dropdown = (props) => {
     const [open, setOpen] = useState(false)
@@ -32,6 +33,8 @@ const details = {
 }
 
 const Card = ({ theme }) => {
+    const history = useHistory();
+    const [classroom, setclassroom] = useState({classroomID:"123"})
     const list = useMemo(() => [
         {
             title: 'Unroll',
@@ -41,7 +44,7 @@ const Card = ({ theme }) => {
     
     return (
         <div className={`card subject-card bg-${theme}`}>
-            <div className="card-body">
+            <div className="card-body" onClick={()=>history.push(`/class/${classroom.classroomID}`)}>
                 <div className="subject-body">
                     <h5 className={`card-title subject-name font-${theme}`}>{details.subjectName}</h5>
                     <h6 id='subject-description'>{`${details.batchCode} | Semester ${details.semester} `}</h6>

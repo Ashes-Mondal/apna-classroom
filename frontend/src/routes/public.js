@@ -24,7 +24,7 @@ const publicRoutes = [
     },
     {
         component: Classroom,
-        path: '/testcls',
+        path: '/class/:classroomID',
     },
 ]
 export default publicRoutes
