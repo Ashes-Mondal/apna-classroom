@@ -1,0 +1,11 @@
+.feed {
+    display: flex;
+    margin: 0 2%;
+    gap: 20px;
+    .left-column {
+        flex: 3;
+    }
+    .right-column {
+        flex: 1;
+    }
+}

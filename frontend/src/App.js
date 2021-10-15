@@ -1,7 +1,7 @@
-import './App.scss';
-import { Route, Switch } from "react-router-dom";
-import Navbar from './components/common/navbar/Navbar';
-import Footer from './components/common/footer/Footer';
+import './App.scss'
+import { Route, Switch } from 'react-router-dom'
+import Navbar from './components/common/navbar/Navbar'
+import Footer from './components/common/footer/Footer'
 import Error from './components/pages/error/Error'
 import protectedRoutes from './routes/protected';
 import publicRoutes from './routes/public';
@@ -115,17 +115,15 @@ function App() {
             </Switch>
         }
 
-      </main>
-      {
-        userAuthentication ?
-          <footer className='l-footer'>
-            <Footer />
-          </footer>
-          :
-          null
-      }
-    </div>
-  );
+    
+            </main>
+            {userAuthentication ? (
+                <footer className="l-footer">
+                    <Footer />
+                </footer>
+            ) : null}
+        </div>
+    )
 }
 
-export default App;
+export default App
