@@ -4,7 +4,7 @@
         "/login",
         "/singleUpload",
         "/multipleUpload",
-        "/streamFile"
+        "/file/:fileID"
     ],
     "studentRoutes":[
         "/logout",

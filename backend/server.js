@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== "production") {
     require("dotenv").config();
 }
 require('./global');
+const path = require('path');
 const express = require("express");
 const cookieParser = require('cookie-parser')
 const cors = require("cors");
@@ -31,11 +32,19 @@ try {
         })
 
     //checkauthorization middleware
-    app.use(require("./routes/authorization").checkauthorization);
+    app.use(require("./routes/authorization"));
 
     //api endpoints
     require("./routes/index.js")(app);
-    
+
+    //serve static assets when in production
+    if (process.env.NODE_ENV === 'production') {
+        app.use(express.static('frontend/build'));
+        app.get('*', (req, res) => {
+            res.sendFile(path.resolve(__dirname,'frontend', 'build', 'index.html'));
+        });
+    }
+
     app.listen(port, () => {
         console.log(`Server is listening to port: ${port}`);
     });

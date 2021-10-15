@@ -15,7 +15,7 @@ const Upload = () => {
         //Step2:make form data
         const data = new FormData();
         data.append('name', 'Ramesh')
-        data.append('age',45)
+        data.append('age', 45)
         for (let i = 0; i < selectedFiles.length; i++) {
             data.append(`file`, selectedFiles[i])
         }
@@ -30,10 +30,12 @@ const Upload = () => {
         }
     }
     return (
-        <form onSubmit={handleSubmit}>
-            <input multiple type="file" id="files" onChange={e => setselectedFiles(e.target.files)} />
-            <button type='submit' onSubmit={handleSubmit}>Submit</button>
-        </form>
+        <>
+            <form onSubmit={handleSubmit}>
+                <input multiple type="file" id="files" onChange={e => setselectedFiles(e.target.files)} />
+                <button type='submit' onSubmit={handleSubmit}>Submit</button>
+            </form>
+        </>
     )
 }
 

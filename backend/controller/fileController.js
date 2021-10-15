@@ -1,4 +1,5 @@
 //Upload Controllers
+const multer = require('multer');
 const singleUpload = require('../model/uploads/uploads').upload.single('file')
 exports.singleFileUpload = (req, res) => {
     singleUpload(req, res, (err) => {
@@ -33,6 +34,7 @@ exports.multipleFileUpload = (req, res) => {
 
 //GridFSBucket
 const mongoose = require('mongoose');
+const ObjectID = mongoose.Types.ObjectId;
 let gfs;
 try {
     var conn = mongoose.createConnection(global.mongoURI, {
@@ -49,4 +51,20 @@ try {
 } catch (error) {
     console.error(global.color.red, "Failed to created connection for GridFS ", global.color.reset);
     throw (error);
+}
+
+exports.downloadFile = ({ params: { fileID } }, res) => {
+    if (!fileID || fileID === 'undefined') {
+        res.status(400).json({ data: null, error: 'No file id provided' });
+        return;
+    }
+    gfs.find({ _id: ObjectID(fileID) }).toArray((err, files) => {
+        if (err) {
+            res.status(500).json({ data: null, error: 'Internal server error!' })
+            return;
+        }
+        else if (!files || files.length === 0)
+            return res.status(400).json({ data: null, error: 'No such file exist!' });
+        gfs.openDownloadStream(ObjectID(fileID)).pipe(res);
+    });
 }
