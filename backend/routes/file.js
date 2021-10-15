@@ -1,11 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const upload = require('../model/uploads/uploads');
+const fileController = require('../controller/fileController');
 
-
-router.post('/upload',upload.single('file'),(req,res)=>{
-
-});
+router.post('/singleUpload', fileController.singleFileUpload);
+router.post('/multipleUpload', fileController.multipleFileUpload);
+router.get('/file/:fileID', fileController.downloadFile);
 
 // Exporting routes
 module.exports.router = router;

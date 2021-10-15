@@ -1,6 +1,7 @@
 const { TextEncoder, TextDecoder } = require('util')
 global.TextEncoder = TextEncoder
 global.TextDecoder = TextDecoder
+const config = require('./config/mongoDBConfig.json');
 
 global.color = {
     red: "\x1b[31m",
@@ -13,5 +14,5 @@ global.color = {
 
 global.AccessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 global.RefreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
-global.mongoDbPassword = process.env.MONGO_PASSWORD;
-global.cookieSecret = process.env.COOKIE_SECRET
+global.cookieSecret = process.env.COOKIE_SECRET;
+global.mongoURI = config.mongoURI.replace('<password>', process.env.MONGO_PASSWORD)

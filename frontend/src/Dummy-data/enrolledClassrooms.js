@@ -1,0 +1,57 @@
+const enrolledClassrooms = [
+    {
+        facultyID: '1',
+        subjectName: 'Software Engineering',
+        batchCode: '2019IMT',
+        semester: '5',
+        description: 'description comes here',
+        meetingID: 'meet1',
+        theme: 'red',
+    },
+    {
+        facultyID: '2',
+        subjectName: 'Computer Graphics',
+        batchCode: '2019IMT',
+        semester: '5',
+        description: 'description comes here',
+        meetingID: 'meet1',
+        theme: 'orange',
+    },
+    {
+        facultyID: '3',
+        subjectName: 'System and Signals',
+        batchCode: '2019IMT',
+        semester: '5',
+        description: 'description comes here',
+        meetingID: 'meet1',
+        theme: 'yellow',
+    },
+    {
+        facultyID: '4',
+        subjectName: 'Cyber Security and Laws',
+        batchCode: '2019IMT',
+        semester: '5',
+        description: 'description comes here',
+        meetingID: 'meet1',
+        theme: 'green',
+    },
+    {
+        facultyID: '5',
+        subjectName: 'Embedded System Design',
+        batchCode: '2019IMT',
+        semester: '5',
+        description: 'description comes here',
+        meetingID: 'meet1',
+        theme: 'blue',
+    },
+    {
+        facultyID: '6',
+        subjectName: 'Information Security and Systems',
+        batchCode: '2019IMT',
+        semester: '5',
+        description: 'description comes here',
+        meetingID: 'meet1',
+        theme: 'purple',
+    }
+];
+export default enrolledClassrooms;

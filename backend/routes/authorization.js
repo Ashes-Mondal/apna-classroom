@@ -1,4 +1,3 @@
-const jwt = require('../utils/jwt');
 const validRoutes = require("../config/validRoutes.json");
 let publicRoutes = validRoutes.publicRoutes;
 let studentRoutes = validRoutes.studentRoutes;
@@ -9,7 +8,7 @@ const { accessTokenVerification } = require('../utils/jwt');
 //checkauthorization is a middleware function , checkauthorization is called before every route
 async function checkauthorization(req, res, next) {
     try {
-        if (publicRoutes.includes(req.url)) {
+        if (publicRoutes.includes(req.url) || (req.url.includes('/file/') && req.method === 'GET')) {
             next();
         }
         else {
@@ -60,4 +59,4 @@ async function checkauthorization(req, res, next) {
     }
 }
 
-module.exports.checkauthorization = checkauthorization;
+module.exports = checkauthorization;

@@ -1,25 +1,19 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import './Card.scss'
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { SiGooglehangoutsmeet } from "react-icons/si";
 import { HiOutlineClipboardList } from "react-icons/hi";
 
-const list = [
-    {
-        title: 'Unroll',
-        handler: () => alert('unroll handler called...')
-    }
-]
-const Dropdown = () => {
+const Dropdown = (props) => {
     const [open, setOpen] = useState(false)
     return (
         <div className="dropdown">
             <button className="dropbtn" onClick={() => setOpen(!open)}><BiDotsVerticalRounded size={30} /></button>
             <div className="dropdown-content" style={open ? { display: "block" } : {}}>
                 {
-                    list.map((item, idx) =>
-                        <span key={idx} onClick={() => {
-                            item.handler();
+                    props.list.map((item, idx) =>
+                        <span key={idx} onClick={async() => {
+                            await item.handler();
                             setOpen(false);
                         }}>{item.title}</span>
                     )
@@ -38,6 +32,13 @@ const details = {
 }
 
 const Card = ({ theme }) => {
+    const list = useMemo(() => [
+        {
+            title: 'Unroll',
+            handler: () => alert('unroll handler called...')
+        }
+    ], [])
+    
     return (
         <div className={`card subject-card bg-${theme}`}>
             <div className="card-body">
@@ -46,7 +47,7 @@ const Card = ({ theme }) => {
                     <h6 id='subject-description'>{`${details.batchCode} | Semester ${details.semester} `}</h6>
                     <h6 id='subject-faculty'>{details.facultyName}</h6>
                 </div>
-                <span className="three-dots"><Dropdown /></span>
+                <span className="three-dots"><Dropdown list={list}/></span>
             </div>
             <div className='card-bottom'>
                 <span><HiOutlineClipboardList /> Todo</span>

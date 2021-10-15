@@ -1,8 +1,5 @@
 import axios from 'axios';
-const url = "http://localhost:8000/";
-const instance = axios.create({
-    baseURL: url,
-});
+const instance = axios.create();
 instance.interceptors.request.use(
     function (config) {
         // Do something before request is sent
