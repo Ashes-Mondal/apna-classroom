@@ -3,7 +3,8 @@
         "/register",
         "/login",
         "/singleUpload",
-        "/multipleUpload"
+        "/multipleUpload",
+        "/streamFile"
     ],
     "studentRoutes":[
         "/logout",

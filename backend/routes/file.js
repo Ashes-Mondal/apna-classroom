@@ -1,22 +1,28 @@
+const mongoose = require("mongoose");
 const express = require('express');
 const router = express.Router();
-const { singleFileUpload,multipleFileUpload } = require('../utils/gridfs');
+const { singleFileUpload, multipleFileUpload } = require('../controller/fileController');
+const ObjectID = mongoose.Types.ObjectId;
 
-router.post('/singleUpload',singleFileUpload,(req, res) => {
+router.post('/singleUpload', singleFileUpload);
+router.post('/multipleUpload', multipleFileUpload);
+
+router.post('/streamFile', (req, res) => {
     try {
-        res.status(200).json({data:req.file,error:null})
+        const gfs = Grid(global.mongoConnection.db,mongoose.mongo).collection('Uploads')
+        gfs.findOne({ _id: ObjectID(req.body.fileID)},function(err, found){
+            if (err) console.log(err);
+            else if (found) {
+                console.log('File exists', found)
+                res.status(200).json({ data: found, error: null });
+            } else {
+                console.log('File does not exist',found)
+                res.status(200).json({ data: "File does not exist", error: null });
+            }
+        });
     } catch (error) {
         console.log(error)
-        res.status(400).json({ data: null, error: error.message || error })
-    }
-});
-
-router.post('/multipleUpload',multipleFileUpload,(req, res) => {
-    try {
-        res.status(200).json({data:req.files,error:null})
-    } catch (error) {
-        console.log(error)
-        res.status(400).json({ data: null, error: error.message || error })
+        res.sendStatus(404);
     }
 });
 
