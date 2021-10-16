@@ -2,7 +2,7 @@ const userModel = require("../model/user/userSchema"),
     jwt = require("../utils/jwt"),
     brcypt = require("../utils/userPassword"),
     Session = require("../model/session/sessionSchema"),
-    UID = require('../utils/uid')
+    UID = require("../utils/uid");
 
 exports.loginController = async (req, res, next) => {
     try {
@@ -27,9 +27,10 @@ exports.loginController = async (req, res, next) => {
 
         //3.checking whether User is active
         if (userInfo.status != "Active") {
-            res
-                .status(400)
-                .json({ data: null, error: "Login disabled kindly contact admin" });
+            res.status(400).json({
+                data: null,
+                error: "Login disabled kindly contact admin",
+            });
             return;
         }
 
@@ -62,7 +63,9 @@ exports.loginController = async (req, res, next) => {
         }
 
         //Creating refresh token
-        const refreshToken = await jwt.createRefreshToken({ uuid: userInfo.uuid });
+        const refreshToken = await jwt.createRefreshToken({
+            uuid: userInfo.uuid,
+        });
 
         //Creating unique id for JWT token
         const jwtUid = await jwt.createJWTUniqueID();
@@ -89,14 +92,13 @@ exports.loginController = async (req, res, next) => {
         ]);
 
         res.clearCookie("login");
-        res.cookie
-            (
-                "login",
-                JSON.stringify({ accessToken: accessToken,sessionID:sessionID}),
-                {httpOnly: true,secure:process.env.NODE_ENV === "production"}
-            );
+        res.cookie(
+            "login",
+            JSON.stringify({ accessToken: accessToken, sessionID: sessionID }),
+            { httpOnly: true, secure: process.env.NODE_ENV === "production" }
+        );
         res.status(200).json({
-            data: {accessToken: accessToken},
+            data: { accessToken: accessToken },
             error: null,
         });
     } catch (e) {
@@ -107,10 +109,13 @@ exports.loginController = async (req, res, next) => {
 exports.registerController = async (req, res, next) => {
     try {
         //0.Checking if user exists
-        let userInfo = await userModel.findOne({email: req.body.email});
+        let userInfo = await userModel.findOne({ email: req.body.email });
         //==>User does exists
         if (userInfo) {
-            res.status(400).json({ data: null, error: "User already registered" });
+            res.status(400).json({
+                data: null,
+                error: "User already registered",
+            });
             return;
         }
 
@@ -151,15 +156,3 @@ exports.logoutController = async (req, res, next) => {
         res.status(400).json({ data: null, error: e.message });
     }
 };
-
-exports.getUserInfo = async(req,res)=>{
-    try {
-        const result = await userModel.find({uuid:req.body.uuid},{password:false});
-        result.length?
-            res.status(200).json({ data: result, error: null }):
-            res.status(404).json({data:null,error:'No record found'})
-
-    } catch (error) {
-        res.status(400).json({ data: null, error: e.message });
-    }
-}
