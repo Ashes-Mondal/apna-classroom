@@ -9,13 +9,19 @@ const options = {
 module.exports.registerValidator = (req, res, next) => {
     const registerRequestValidate = Joi.object({
         password: Joi.string().required(),
-        email: Joi.string().email().required()
+        email: Joi.string().email().required(),
     });
     //
-    const { error, value } = registerRequestValidate.validate(req.body, options);
+    const { error, value } = registerRequestValidate.validate(
+        req.body,
+        options
+    );
     //
     if (error) {
-        res.status(400).json({ data: null, error: "Invalid request parameters" });
+        res.status(400).json({
+            data: null,
+            error: "Invalid request parameters",
+        });
         return;
     } else {
         value.email = value.email.toLowerCase();
@@ -32,7 +38,10 @@ module.exports.loginValidator = (req, res, next) => {
     //
     const { error, value } = loginRequestValidate.validate(req.body, options);
     if (error) {
-        res.status(400).json({ data: null, error: "Invalid request parameters" });
+        res.status(400).json({
+            data: null,
+            error: "Invalid request parameters",
+        });
         return;
     } else {
         value.email = value.email.toLowerCase();
@@ -49,7 +58,10 @@ module.exports.logoutValidator = (req, res, next) => {
     //
     const { error, value } = logoutValidate.validate(req.body, options);
     if (error) {
-        res.status(400).json({ data: null, error: "Invalid request parameters" });
+        res.status(400).json({
+            data: null,
+            error: "Invalid request parameters",
+        });
         return;
     } else {
         req.body = value;
