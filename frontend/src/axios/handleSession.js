@@ -1,12 +1,12 @@
 import axios from './config';
 
 export const handleLogin = async (data) => {
-    console.log(data);
+    // console.log(data);
     const url = '/login'
     try {
         const res = await axios.post(url, data);
         console.log('handleLogin_res:',res.data);
-        return res.data;
+        return res.data.accessToken;
     } catch (error) {
         throw error.response ? error.response.data : { data: null, error: 'Not Connected to server' };
     }

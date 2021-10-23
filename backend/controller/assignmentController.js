@@ -15,7 +15,7 @@ exports.getAssignmentDetails = async (req, res) => {
         ) {
             res.status(200).json({ data: result, error: null });
         } else {
-            res.status(403).json({ data: result, error: "Access Denied" });
+            res.status(403).json({ data: null, error: "Access Denied" });
         }
     } catch (error) {
         res.status(500).json({ data: null, error: e.message });
@@ -28,12 +28,14 @@ exports.postAssignment = async (req, res) => {
         const classroomID = req.body.classroomID;
         const uuid = req.body.uuid;
         if (isUserInClass(uuid, classroomID)) {
-            const result = await assignmentModel.create(formData);
-            res.status(200).redirect(
-                `/class/${result.classroomID}/assignment/${result._id}`
-            );
+            await assignmentModel.create(formData);
+
+            //Step1: create empty submissions for batch
+            //Step2: create base results for batch
+            
+            res.status(200).json({data:'Success',error:null});
         } else {
-            res.status(403).json({ data: result, error: "Access Denied" });
+            res.status(403).json({ data: null, error: "Access Denied" });
         }
     } catch (error) {
         res.status(500).json({ data: null, error: error.message });

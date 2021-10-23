@@ -25,11 +25,5 @@ router.post(
     authValidator.logoutValidator,
     userController.getUserInfo
 );
-
-router.get(
-    "/getUserClassrooms",
-    authValidator.logoutValidator,
-    userController.getUserClassrooms
-);
 // Exporting routes
 module.exports.router = router;

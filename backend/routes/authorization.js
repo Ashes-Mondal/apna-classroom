@@ -6,6 +6,7 @@ let adminRoutes = teacherRoutes.concat(validRoutes.adminRoutes);
 const { accessTokenVerification } = require("../utils/jwt");
 
 const isRequestValid = (url, role) => {
+    console.log(url,role)
     return (
         (role === "student" && studentRoutes.includes(url)) ||
         (role === "teacher" && teacherRoutes.includes(url)) ||
@@ -46,7 +47,7 @@ async function checkauthorization(req, res, next) {
             }
 
             //2.Check whether the following request is valid
-            if (isRequestValid(jwtdata.role, url)) {
+            if (isRequestValid(url,jwtdata.role)) {
                 //3.Adding uuid and sessionID to req.body
                 req.body.uuid = jwtdata.uuid;
                 req.body.sessionID = jwtdata.sessionID;
