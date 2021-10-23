@@ -59,6 +59,15 @@ try {
     throw error;
 }
 
+exports.deleteFile = (fileID) => {
+    try {
+        const _id = ObjectID(fileID);
+        gfs.delete(_id);
+    } catch (error) {
+        throw error;
+    }
+};
+
 exports.downloadFile = ({ query: { id } }, res) => {
     if (!id || id === "undefined") {
         res.status(400).json({ data: null, error: "No file id provided" });
