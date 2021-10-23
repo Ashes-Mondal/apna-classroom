@@ -84,7 +84,7 @@ exports.loginController = async (req, res, next) => {
         await Session.insertMany([
             {
                 sessionID: sessionID,
-                uuid: userInfo._id,
+                uuid: userInfo.uuid,
                 refreshToken: refreshToken,
                 jwtUid: jwtUid,
                 clientAgent: req.headers["user-agent"],

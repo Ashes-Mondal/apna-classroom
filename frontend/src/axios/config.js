@@ -1,5 +1,9 @@
-import axios from 'axios';
-const instance = axios.create();
+import axios from "axios";
+const axiosConfig = {
+    baseURL: "http://localhost:8000/api",
+    timeout: 30000,
+};
+const instance = axios.create(axiosConfig);
 instance.interceptors.request.use(
     function (config) {
         // Do something before request is sent

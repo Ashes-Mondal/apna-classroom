@@ -4,7 +4,7 @@ const mongoose = require('mongoose'),
 const SubmissionSchema = new mongoose.Schema
     (
         {
-            AssignmentID: { type: Schema.Types.ObjectId, ref: 'Assignments' },
+            assignmentID: { type: Schema.Types.ObjectId, ref: 'Assignments' },
             studentID: { type: Schema.Types.ObjectId, ref: 'Users' },
             marks: {
                 type: Number,

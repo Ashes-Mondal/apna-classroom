@@ -5,11 +5,31 @@ const authController = require("../controller/authController");
 const authValidator = require("../validator/authValidations");
 const userController = require("../controller/userController");
 
-router.post("/register", authValidator.registerValidator, authController.registerController);
-router.post("/login", authValidator.loginValidator, authController.loginController);
-router.post("/logout", authValidator.logoutValidator, authController.logoutController);
-router.post("/getUserInfo", authValidator.logoutValidator, userController.getUserInfo);
-router.get("/getUserClassrooms", authValidator.logoutValidator, userController.getClassrooms);
+router.post(
+    "/register",
+    authValidator.registerValidator,
+    authController.registerController
+);
+router.post(
+    "/login",
+    authValidator.loginValidator,
+    authController.loginController
+);
+router.post(
+    "/logout",
+    authValidator.logoutValidator,
+    authController.logoutController
+);
+router.post(
+    "/getUserInfo",
+    authValidator.logoutValidator,
+    userController.getUserInfo
+);
 
+router.get(
+    "/getUserClassrooms",
+    authValidator.logoutValidator,
+    userController.getUserClassrooms
+);
 // Exporting routes
 module.exports.router = router;

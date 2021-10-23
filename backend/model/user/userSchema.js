@@ -1,4 +1,4 @@
-const mongoose = require('mongoose'),
+const mongoose = require("mongoose"),
     Schema = mongoose.Schema;
 
 const UsersSchema = new mongoose.Schema(
@@ -6,7 +6,7 @@ const UsersSchema = new mongoose.Schema(
         uuid: {
             type: String,
             require: true,
-            unique: true
+            unique: true,
         },
         name: {
             type: String,
@@ -17,29 +17,29 @@ const UsersSchema = new mongoose.Schema(
         },
         password: {
             type: String,
-            required: true
+            required: true,
         },
-        classroomIDs: [{ type: Schema.Types.ObjectId, ref: 'Classrooms' }],
+        classroomIDs: [{ type: Schema.Types.ObjectId, ref: "Classrooms" }],
         role: {
             type: String,
-            default: "student"
+            default: "student",
         },
         status: {
             type: String,
-            default: "Active"
+            default: "Active",
         },
         failedLoginAttempts: {
             type: Number,
-            default: 0
+            default: 0,
         },
         disableReason: {
             type: String,
-            default: ""
+            default: "",
         },
     },
     {
-        timestamps: true
+        timestamps: true,
     }
 );
 
-module.exports = mongoose.model('Users', UsersSchema);
+module.exports = mongoose.model("Users", UsersSchema);
