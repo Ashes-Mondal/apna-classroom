@@ -18,7 +18,7 @@ const AssignmentSchema = new mongoose.Schema
                 type: Date,
                 required: true,
             },
-            totalMarks: {
+            maxMarks: {
                 type: Number,
                 required: true,
             },

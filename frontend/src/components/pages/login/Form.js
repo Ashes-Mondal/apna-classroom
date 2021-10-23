@@ -548,27 +548,28 @@ function LoginPage(props) {
         return undefined;
     }
 
-    const passwordValidate = (value) => {
-        if (!value || value.length < 6) return 'Password must be more than 6 characters';
-        return undefined;
-    }
+    // const passwordValidate = (value) => {
+    //     if (!value || value.length < 6) return 'Password must be more than 6 characters';
+    //     return undefined;
+    // }
 
 
     const loginSubmitHandler = async (e) => {
-        console.log("login Submit Handler")
+        // console.log("login Submit Handler")
         e.preventDefault();
 
         let errors = [];
         let emailCheck = emailValidate(email);
         if (emailCheck) errors.push(emailCheck);
 
-        let passwordCheck = passwordValidate(password);
-        if (passwordCheck) errors.push(passwordCheck);
+        // let passwordCheck = passwordValidate(password);
+        // if (passwordCheck) errors.push(passwordCheck);
         setFormErrors(errors);
         if (!errors.length) {
             try {
                 //handle sever logic
-                await handleLogin({ email: email, password: password });
+                const accessToken = await handleLogin({ email: email, password: password });
+                localStorage.setItem('accessToken',accessToken);
                 setSuccess(true)
                 dispatch(setUserAuth());
             } catch (error) {
@@ -599,7 +600,7 @@ function LoginPage(props) {
                     </Label>
                 </div>
 
-                <div name="password" validate={passwordValidate}>
+                <div name="password">
                     <Label>
                         <span>Password</span>
                         <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />

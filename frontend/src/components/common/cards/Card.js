@@ -44,8 +44,8 @@ const Card = ({ theme }) => {
     
     return (
         <div className={`card subject-card bg-${theme}`}>
-            <div className="card-body" onClick={()=>history.push(`/class/${classroom.classroomID}`)}>
-                <div className="subject-body">
+            <div className="card-body">
+                <div className="subject-body" onClick={()=>history.push(`/class/${classroom.classroomID}`)}>
                     <h5 className={`card-title subject-name font-${theme}`}>{details.subjectName}</h5>
                     <h6 id='subject-description'>{`${details.batchCode} | Semester ${details.semester} `}</h6>
                     <h6 id='subject-faculty'>{details.facultyName}</h6>

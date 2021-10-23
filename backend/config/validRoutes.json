@@ -6,7 +6,6 @@
     "studentRoutes":[
         "/logout",
         "/getUserInfo",
-        "/getUserClassrooms",
 
         "/getAssignmentDetails",
         "/getUpcomingAssignments",
