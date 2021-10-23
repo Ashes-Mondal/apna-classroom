@@ -4,7 +4,7 @@ const mongoose = require('mongoose'),
 const AnnouncementSchema = new mongoose.Schema
     (
         {
-            ClassroomID: { type: Schema.Types.ObjectId, ref: 'Classrooms' },
+            classroomID: { type: Schema.Types.ObjectId, ref: 'Classrooms' },
             userID:{ type: Schema.Types.ObjectId, ref: 'Users' },
             title: {
                 type: String,

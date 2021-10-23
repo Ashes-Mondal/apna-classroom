@@ -1,4 +1,4 @@
-const intitialState = true;
+const intitialState = false;
 
 const userAuthentication = (state = intitialState,action)=>{
     switch (action.type) {

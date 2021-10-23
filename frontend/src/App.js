@@ -30,8 +30,8 @@ function App() {
                 dispatch(setUserAuth());
             })
             .catch((err) => {
-                dispatch(updateUser(userDetails));
-                dispatch(setUserAuth());
+                // dispatch(updateUser(userDetails));
+                // dispatch(setUserAuth());
                 console.error(err);
             });
     }, [userAuthentication, dispatch]);

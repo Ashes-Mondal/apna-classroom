@@ -1,19 +1,21 @@
 {
     "publicRoutes":[
-        "/register",
         "/login",
-        "/singleUpload",
-        "/multipleUpload",
-        "/file/:fileID"
+        "/files/download"
     ],
     "studentRoutes":[
         "/logout",
-        "/getUserInfo"
+        "/getUserInfo",
+        "/getUserClassrooms",
+
+        "/getAssignmentDetails",
+        "/getUpcomingAssignments",
+        "/getClassroomDetails"
     ],
     "teacherRoutes":[
-
+        "/postAssignment"
     ],
     "adminRoutes":[
-        
+        "/register"
     ]
 }

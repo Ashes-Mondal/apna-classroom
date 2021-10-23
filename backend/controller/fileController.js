@@ -1,70 +1,80 @@
 //Upload Controllers
-const multer = require('multer');
-const singleUpload = require('../model/uploads/uploads').upload.single('file')
+const multer = require("multer");
+const singleUpload = require("../model/uploads/uploads").upload.single("file");
 exports.singleFileUpload = (req, res) => {
     singleUpload(req, res, (err) => {
         if (err instanceof multer.MulterError) {
-            res.status(400).json({ data: null, error: 'File too large' });
-            return
-        }
-        else if (err) {
-            console.log('File upload error:', err)
-            res.status(500).json({ data: null, error: err })
+            res.status(400).json({ data: null, error: "File too large" });
+            return;
+        } else if (err) {
+            console.log("File upload error:", err);
+            res.status(500).json({ data: null, error: err });
             return;
         }
         res.status(200).json({ data: req.file, error: null });
-    })
-}
+    });
+};
 
-const multipleUpload = require('../model/uploads/uploads').upload.array('file')
+const multipleUpload = require("../model/uploads/uploads").upload.array("file");
 exports.multipleFileUpload = (req, res) => {
     multipleUpload(req, res, (err) => {
         if (err instanceof multer.MulterError) {
-            res.status(400).json({ data: null, error: 'File too large' });
-            return
-        }
-        else if (err) {
-            console.log('File upload error:', err)
-            res.status(500).json({ data: null, error: err })
+            res.status(400).json({ data: null, error: "File too large" });
+            return;
+        } else if (err) {
+            console.log("File upload error:", err);
+            res.status(500).json({ data: null, error: err });
             return;
         }
         res.status(200).json({ data: req.files, error: null });
-    })
-}
+    });
+};
 
 //GridFSBucket
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const ObjectID = mongoose.Types.ObjectId;
 let gfs;
 try {
     var conn = mongoose.createConnection(global.mongoURI, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        connectTimeoutMS: 1000
+        connectTimeoutMS: 1000,
     });
-    conn.once('open', () => {
+    conn.once("open", () => {
         gfs = new mongoose.mongo.GridFSBucket(conn.db, {
-            bucketName: 'Uploads',
+            bucketName: "Uploads",
         });
-        console.log(global.color.green, 'Successfully created connection for GridFS ', global.color.reset);
+        console.log(
+            global.color.green,
+            "Successfully created connection for GridFS ",
+            global.color.reset
+        );
     });
 } catch (error) {
-    console.error(global.color.red, "Failed to created connection for GridFS ", global.color.reset);
-    throw (error);
+    console.error(
+        global.color.red,
+        "Failed to created connection for GridFS ",
+        global.color.reset
+    );
+    throw error;
 }
 
-exports.downloadFile = ({ params: { fileID } }, res) => {
-    if (!fileID || fileID === 'undefined') {
-        res.status(400).json({ data: null, error: 'No file id provided' });
+exports.downloadFile = ({ query: { id } }, res) => {
+    if (!id || id === "undefined") {
+        res.status(400).json({ data: null, error: "No file id provided" });
         return;
     }
-    gfs.find({ _id: ObjectID(fileID) }).toArray((err, files) => {
+    gfs.find({ _id: ObjectID(id) }).toArray((err, files) => {
         if (err) {
-            res.status(500).json({ data: null, error: 'Internal server error!' })
+            res.status(500).json({
+                data: null,
+                error: "Internal server error!",
+            });
             return;
-        }
-        else if (!files || files.length === 0)
-            return res.status(400).json({ data: null, error: 'No such file exist!' });
-        gfs.openDownloadStream(ObjectID(fileID)).pipe(res);
+        } else if (!files || files.length === 0)
+            return res
+                .status(400)
+                .json({ data: null, error: "No such file exist!" });
+        gfs.openDownloadStream(ObjectID(id)).pipe(res);
     });
-}
+};

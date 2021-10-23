@@ -4,7 +4,6 @@ const router = express.Router();
 const authController = require("../controller/authController");
 const authValidator = require("../validator/authValidations");
 const userController = require("../controller/userController");
-const classController = require("../controller/classController");
 
 router.post(
     "/register",
@@ -30,17 +29,7 @@ router.post(
 router.get(
     "/getUserClassrooms",
     authValidator.logoutValidator,
-    classController.getClassrooms
-);
-router.get(
-    "/getUpcomingAsgs/:classroomID",
-    authValidator.logoutValidator,
-    classController.getUpcomingAsgs
-);
-router.get(
-    "/getClassroomDetail/:classroomID",
-    authValidator.logoutValidator,
-    classController.getClassroomDetail
+    userController.getUserClassrooms
 );
 // Exporting routes
 module.exports.router = router;

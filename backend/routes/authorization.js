@@ -5,10 +5,19 @@ let teacherRoutes = studentRoutes.concat(validRoutes.teacherRoutes);
 let adminRoutes = teacherRoutes.concat(validRoutes.adminRoutes);
 const { accessTokenVerification } = require("../utils/jwt");
 
+const isRequestValid = (url, role) => {
+    return (
+        (role === "student" && studentRoutes.includes(url)) ||
+        (role === "teacher" && teacherRoutes.includes(url)) ||
+        (role === "admin" && adminRoutes.includes(url))
+    );
+};
+
 //checkauthorization is a middleware function , checkauthorization is called before every route
 async function checkauthorization(req, res, next) {
     try {
-        if (publicRoutes.includes(req.url)) {
+        const url = req.url.split("?")[0];
+        if (publicRoutes.includes(url)) {
             next();
         } else {
             const accessToken = req.cookies.login
@@ -37,18 +46,7 @@ async function checkauthorization(req, res, next) {
             }
 
             //2.Check whether the following request is valid
-            if (req.method === "GET") {
-                req.body.uuid = jwtdata.uuid;
-                req.body.sessionID = jwtdata.sessionID;
-                next();
-            }
-            if (
-                (jwtdata.role === "student" &&
-                    studentRoutes.includes(req.url)) ||
-                (jwtdata.role === "teacher" &&
-                    teacherRoutes.includes(req.url)) ||
-                (jwtdata.role === "admin" && adminRoutes.includes(req.url))
-            ) {
+            if (isRequestValid(jwtdata.role, url)) {
                 //3.Adding uuid and sessionID to req.body
                 req.body.uuid = jwtdata.uuid;
                 req.body.sessionID = jwtdata.sessionID;
