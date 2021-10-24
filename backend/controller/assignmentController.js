@@ -9,7 +9,9 @@ exports.getAssignmentDetails = async (req, res) => {
         const assignmentID = req.query.asgID;
         const classroomID = req.query.classID;
         const uuid = req.body.uuid;
-        const result = await assignmentModel.findById(ObjectID(assignmentID));
+        const result = await assignmentModel
+            .findById(ObjectID(assignmentID))
+            .populate("commentIDs");
         if (
             result.classroomID === classroomID &&
             isUserInClass(uuid, classroomID)
