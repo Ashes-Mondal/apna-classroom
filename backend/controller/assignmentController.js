@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const ObjectID = mongoose.Types.ObjectId;
 const assignmentModel = require("../model/post/assignmentSchema");
 const { isUserInClass } = require("../utils/controllerUtils");
+const { multipleFileUpload } = require("./fileController");
 
 exports.getAssignmentDetails = async (req, res) => {
     try {
@@ -22,18 +23,23 @@ exports.getAssignmentDetails = async (req, res) => {
     }
 };
 
+const multipleUpload = require("../model/uploads/uploads").upload.array("file");
 exports.postAssignment = async (req, res) => {
     try {
         const formData = req.body.formData;
         const classroomID = req.body.classroomID;
-        const uuid = req.body.uuid;
+        const uuid = req.uuid;
+        console.log(formData);
+        console.log(req.body);
+        console.log(req.files);
+
         if (isUserInClass(uuid, classroomID)) {
-            await assignmentModel.create(formData);
+            // await assignmentModel.create(formData);
 
             //Step1: create empty submissions for batch
             //Step2: create base results for batch
-            
-            res.status(200).json({data:'Success',error:null});
+
+            res.status(200).json({ data: "Success", error: null });
         } else {
             res.status(403).json({ data: null, error: "Access Denied" });
         }
