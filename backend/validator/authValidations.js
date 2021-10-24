@@ -10,6 +10,7 @@ module.exports.registerValidator = (req, res, next) => {
     const registerRequestValidate = Joi.object({
         password: Joi.string().required(),
         email: Joi.string().email().required(),
+        name: Joi.string().required(),
     });
     //
     const { error, value } = registerRequestValidate.validate(
