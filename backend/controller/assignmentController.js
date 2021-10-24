@@ -8,7 +8,9 @@ exports.getAssignmentDetails = async (req, res) => {
         const assignmentID = req.query.asgID;
         const classroomID = req.query.classID;
         const uuid = req.body.uuid;
-        const result = await assignmentModel.findById(ObjectID(assignmentID));
+        const result = await assignmentModel
+            .findById(ObjectID(assignmentID))
+            .populate("commentIDs");
         if (
             result.classroomID === classroomID &&
             isUserInClass(uuid, classroomID)
@@ -32,8 +34,8 @@ exports.postAssignment = async (req, res) => {
 
             //Step1: create empty submissions for batch
             //Step2: create base results for batch
-            
-            res.status(200).json({data:'Success',error:null});
+
+            res.status(200).json({ data: "Success", error: null });
         } else {
             res.status(403).json({ data: null, error: "Access Denied" });
         }
