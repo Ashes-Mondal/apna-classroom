@@ -6,7 +6,6 @@ let adminRoutes = teacherRoutes.concat(validRoutes.adminRoutes);
 const { accessTokenVerification } = require("../utils/jwt");
 
 const isRequestValid = (url, role) => {
-    console.log(url,role)
     return (
         (role === "student" && studentRoutes.includes(url)) ||
         (role === "teacher" && teacherRoutes.includes(url)) ||
@@ -32,6 +31,7 @@ async function checkauthorization(req, res, next) {
             let jwtdata = await accessTokenVerification(accessToken);
             //==>if token was renewed
             if (jwtdata.newAccessToken) {
+                // console.log('newAccessToken:',jwtdata.newAccessToken);
                 res.clearCookie("login");
                 res.cookie(
                     "login",

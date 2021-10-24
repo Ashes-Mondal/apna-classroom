@@ -5,7 +5,7 @@ exports.getUserInfo = async (req, res) => {
         const result = await userModel
             .findOne(
                 { uuid: req.body.uuid },
-                { name: true, email: true, classroomIDs: true }
+                { name: true, email: true, classroomIDs: true, role: true }
             )
             .populate("classroomIDs");
         result._id

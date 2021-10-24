@@ -15,6 +15,7 @@ const UsersSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        batchCode:String,
         password: {
             type: String,
             required: true,

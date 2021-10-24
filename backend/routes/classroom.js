@@ -14,5 +14,10 @@ router.get(
     classroomValidator.validateClassroom,
     classController.getClassroomDetails
 );
+router.post(
+    "/createClassroom",
+    classroomValidator.createClassroom,
+    classController.createClassroom
+);
 // Exporting routes
 module.exports.router = router;

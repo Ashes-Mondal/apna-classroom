@@ -13,9 +13,12 @@ import { setUserAuth } from "./redux/actions/userAuthentication";
 import { updateClassrooms } from "./redux/actions/enrolledClassrooms";
 import { updateThemes } from "./redux/actions/theme";
 import { updateUser } from "./redux/actions/user";
+import { setLoading, unsetLoading } from "./redux/actions/loading";
+import SyncLoader from "react-spinners/SyncLoader";
 
 function App() {
     const userAuthentication = useSelector((state) => state.userAuthentication);
+    const loading = useSelector((state) => state.loading);
     const dispatch = useDispatch();
 
     /******************   useEffect()   **************/
@@ -29,9 +32,10 @@ function App() {
             }
             return result;
         };
+        dispatch(setLoading());
         fetchUserDetails()
             .then((resp) => {
-                console.log(resp);
+                // console.log(resp);
                 dispatch(updateUser(resp.data));
                 dispatch(setUserAuth());
 
@@ -39,9 +43,12 @@ function App() {
                 const enrolledClassrooms = resp.data.classroomIDs || [];
                 dispatch(updateThemes(computeThemeList(enrolledClassrooms)));
                 dispatch(updateClassrooms(enrolledClassrooms.reverse()));
+                dispatch(unsetLoading());
             })
             .catch((err) => {
+                // dispatch(setUserAuth());
                 console.error(err);
+                dispatch(unsetLoading());
             });
     }, [userAuthentication, dispatch]);
 
@@ -60,36 +67,45 @@ function App() {
                 className="l-main"
                 style={!userAuthentication ? { height: "calc(100vh)" } : {}}
             >
-                {!userAuthentication ? (
-                    <Switch>
+                <div className="spinner">
+                    <SyncLoader
+                        size={20}
+                        margin={5}
+                        color="#BD10E0"
+                        loading={loading}
+                    />
+                    {loading ? <div>Loading...</div> : null}
+                </div>
+                <Switch>
+                    {!loading && !userAuthentication ? (
                         <Route exact path="/" component={Login} />
-                        <Route exact path="*" component={Error} />
-                    </Switch>
-                ) : (
-                    <Switch>
-                        {publicRoutes.map((route, index) => {
-                            return (
-                                <Route
-                                    key={index}
-                                    exact
-                                    path={route.path}
-                                    component={route.component}
-                                />
-                            );
-                        })}
-                        {userAuthentication
-                            ? protectedRoutes.map((route, index) => (
+                    ) : null}
+                    {!loading && userAuthentication
+                        ? publicRoutes.map((route, index) => {
+                              return (
                                   <Route
                                       key={index}
                                       exact
                                       path={route.path}
                                       component={route.component}
                                   />
-                              ))
-                            : null}
+                              );
+                          })
+                        : null}
+                    {!loading && userAuthentication
+                        ? protectedRoutes.map((route, index) => (
+                              <Route
+                                  key={index}
+                                  exact
+                                  path={route.path}
+                                  component={route.component}
+                              />
+                          ))
+                        : null}
+                    {loading ? null : (
                         <Route exact path="*" component={Error} />
-                    </Switch>
-                )}
+                    )}
+                </Switch>
             </main>
             {userAuthentication ? (
                 <footer className="l-footer">

@@ -1,7 +1,8 @@
 {
     "publicRoutes":[
         "/login",
-        "/files/download"
+        "/files/download",
+        "/register"
     ],
     "studentRoutes":[
         "/logout",
@@ -12,7 +13,8 @@
         "/getClassroomDetails"
     ],
     "teacherRoutes":[
-        "/postAssignment"
+        "/postAssignment",
+        "/createClassroom"
     ],
     "adminRoutes":[
         "/register"
