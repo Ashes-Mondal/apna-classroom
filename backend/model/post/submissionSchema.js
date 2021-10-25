@@ -8,7 +8,8 @@ const SubmissionSchema = new mongoose.Schema
             studentID: { type: Schema.Types.ObjectId, ref: 'Users' },
             marks: {
                 type: Number,
-                default:-1
+                default:-1,
+                required:true
             },
             fileIDs: [{ type: Schema.Types.ObjectId, ref: 'Uploads' }],
         },

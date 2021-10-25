@@ -9,17 +9,20 @@ import { useSelector } from 'react-redux'
 const Navbar = () => {
     const history = useHistory();
     const enrolledClassrooms = useSelector(state => state.enrolledClassrooms);
-    const links = useMemo(() => [
-        {
-            title: 'Results',
-            link: `/results/${enrolledClassrooms.length ? enrolledClassrooms[0].subjectName : 'no-data'}`
-        },
-        {
-            title: 'ToDos',
-            link: '/toDos'
-        },
-
-    ], [enrolledClassrooms])
+    const links = useMemo(() => {
+        if(enrolledClassrooms.length){
+            return [
+                {
+                    title: 'Results',
+                    link: `class/${enrolledClassrooms[0]._id}/results`
+                },
+                {
+                    title: 'ToDos',
+                    link: `/class/${enrolledClassrooms[0]._id}/todos`
+                },
+            ]
+        }else return [];
+    }, [enrolledClassrooms])
     const checkResultActive = (match, location) => {
         // //some additional logic to verify you are in the home URI
         if (!location) return false;

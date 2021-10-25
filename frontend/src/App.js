@@ -6,7 +6,6 @@ import Error from "./components/pages/error/Error";
 import protectedRoutes from "./routes/protected";
 import publicRoutes from "./routes/public";
 import { useDispatch, useSelector } from "react-redux";
-import Login from "./components/pages/login/Login";
 import { useEffect } from "react";
 import { fetchUserDetails } from "./axios/user";
 import { setUserAuth } from "./redux/actions/userAuthentication";
@@ -27,7 +26,7 @@ function App() {
         const computeThemeList = (enrolledClassrooms) => {
             let result = {};
             for (let i = 0; i < enrolledClassrooms.length; i++) {
-                result[enrolledClassrooms[i].subjectName] =
+                result[enrolledClassrooms[i]._id] =
                     enrolledClassrooms[i].theme;
             }
             return result;
@@ -46,7 +45,6 @@ function App() {
                 dispatch(unsetLoading());
             })
             .catch((err) => {
-                // dispatch(setUserAuth());
                 console.error(err);
                 dispatch(unsetLoading());
             });
@@ -77,10 +75,7 @@ function App() {
                     {loading ? <div>Loading...</div> : null}
                 </div>
                 <Switch>
-                    {!loading && !userAuthentication ? (
-                        <Route exact path="/" component={Login} />
-                    ) : null}
-                    {!loading && userAuthentication
+                    {!loading && !userAuthentication
                         ? publicRoutes.map((route, index) => {
                               return (
                                   <Route

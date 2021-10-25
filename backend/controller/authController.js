@@ -128,7 +128,7 @@ exports.registerController = async (req, res, next) => {
         //3.Inserting user data in User's table
         await userModel.insertMany([
             {
-                name:req.body.name,
+                name: req.body.name,
                 uuid: uuid,
                 email: req.body.email,
                 password: hashPassword,

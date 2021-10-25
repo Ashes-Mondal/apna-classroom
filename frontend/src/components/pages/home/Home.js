@@ -1,40 +1,17 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import Card from "../../common/cards/Card";
 import "./Home.scss";
 import NewClassroomModal from "./NewClassroomModal";
 
 const Home = () => {
+    const enrolledClassrooms = useSelector((state) => state.enrolledClassrooms);
     return (
         <>
             <div className="class-grid">
-                <Card />
-                <Card theme="red" />
-                <Card theme="blue" />
-                <Card theme="purple" />
-                <Card theme="yellow" />
-                <Card theme="green" />
-                <Card theme="orange" />
-                <Card />
-                <Card theme="red" />
-                <Card theme="blue" />
-                <Card theme="purple" />
-                <Card theme="yellow" />
-                <Card theme="green" />
-                <Card theme="orange" />
-                <Card />
-                <Card theme="red" />
-                <Card theme="blue" />
-                <Card theme="purple" />
-                <Card theme="yellow" />
-                <Card theme="green" />
-                <Card theme="orange" />
-                <Card />
-                <Card theme="red" />
-                <Card theme="blue" />
-                <Card theme="purple" />
-                <Card theme="yellow" />
-                <Card theme="green" />
-                <Card theme="orange" />
+                {enrolledClassrooms.map((item, idx) => (
+                    <Card key={idx} details={item} />
+                ))}
             </div>
             <NewClassroomModal />
         </>

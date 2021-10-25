@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 //Assignment endpoints
 const assignmentController = require("../controller/assignmentController");
+const { multipleFileUpload } = require("../controller/fileController");
 const assignmentValidator = require("../validator/assignmentValidator");
 
 router.get(
@@ -11,6 +12,7 @@ router.get(
 );
 router.post(
     "/postAssignment",
+    multipleFileUpload,
     assignmentController.postAssignment
 );
 // Exporting routes

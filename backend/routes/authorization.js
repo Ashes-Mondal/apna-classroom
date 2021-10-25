@@ -47,9 +47,10 @@ async function checkauthorization(req, res, next) {
             }
 
             //2.Check whether the following request is valid
-            if (isRequestValid(url,jwtdata.role)) {
+            if (isRequestValid(url, jwtdata.role)) {
                 //3.Adding uuid and sessionID to req.body
                 req.body.uuid = jwtdata.uuid;
+                req.uuid = jwtdata.uuid;
                 req.body.sessionID = jwtdata.sessionID;
                 next();
             } else {

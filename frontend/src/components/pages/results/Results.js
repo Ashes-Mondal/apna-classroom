@@ -1,25 +1,18 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import './result.scss'
-import Activity from './Activity'
-import Head from './Head'
+import React, { useEffect, useMemo, useState } from "react";
+import "./result.scss";
+import Activity from "./Activity";
+import Head from "./Head";
 import { useParams } from "react-router-dom";
-import AverageSection from './AverageSection';
-import Error from '../error/Error';
-import { useSelector } from 'react-redux';
-import { all_activities } from '../../../Dummy-data/activities';
-import NoData from '../../common/no-data/NoData';
+import AverageSection from "./AverageSection";
+import Error from "../error/Error";
+import { useSelector } from "react-redux";
+import { all_activities } from "../../../Dummy-data/activities";
+import NoData from "../../common/no-data/NoData";
 
-/* DUMMY DATA STARTS HERE*/
-const marks = {
-    yourMarks: 70,
-    totalMarks: 100,
-    yourAverage: 70,
-    classAverage: 50
-}
-
-/* DUMMY DATA ENDS HERE*/
 const calcMarks = (activities) => {
-    let totalMarks = 0, yourMarks = 0, ct = 0;
+    let totalMarks = 0,
+        yourMarks = 0,
+        ct = 0;
     for (let i = 0; i < activities.length; i++) {
         if (activities[i].marks > -1) {
             ct++;
@@ -36,16 +29,23 @@ const calcMarks = (activities) => {
     const marks = {
         yourMarks,
         totalMarks,
-        yourAverage:Math.ceil(yourMarks/totalMarks * 100),
-        classAverage:50,
+        yourAverage: Math.ceil((yourMarks / totalMarks) * 100),
+        classAverage: 50,
     };
-    return marks
-}
+    return marks;
+};
+
+const getSubjectName = (enrolledClassrooms, classroonID) => {
+    for (let i = 0; i < enrolledClassrooms.length; i++) {
+        if (enrolledClassrooms[i]._id === classroonID)
+            return enrolledClassrooms[i].subjectName;
+    }
+};
 
 const Results = () => {
-    const { subject } = useParams();
-    const theme = useSelector(state => state.theme);
-    const enrolledClassrooms = useSelector(state => state.enrolledClassrooms);
+    const { classroomID } = useParams();
+    const theme = useSelector((state) => state.theme);
+    const enrolledClassrooms = useSelector((state) => state.enrolledClassrooms);
     const [activities, setActivities] = useState([]);
 
     const dropdownList = useMemo(() => {
@@ -53,60 +53,54 @@ const Results = () => {
         for (let i = 0; i < enrolledClassrooms.length; i++) {
             result.push({
                 name: enrolledClassrooms[i].subjectName,
-                href: `/results/${enrolledClassrooms[i].subjectName}`,
-            })
+                href: `/class/${enrolledClassrooms[i]._id}/results`,
+            });
         }
         return result;
     }, [enrolledClassrooms]);
 
-
     /******************   useEffect()   **************/
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, [subject])
+    }, [classroomID]);
 
     //fetch all subject activities
     useEffect(() => {
         //fetch from backend logic
-
-        if (subject === 'Computer Graphics') {
-            setActivities([]);
-        } else
-            setActivities(all_activities || []);
-    }, [subject])
+    }, [classroomID]);
     /******************   useEffect()   **************/
-    if (subject === 'no-data') {
-        return <NoData />
-    }
-    if (!theme[subject]) {
-        return <Error />
+    if (!theme[classroomID]) {
+        return <Error />;
     }
     return (
-        <div className='result-page'>
-            <Head theme={theme[subject]} active={subject} list={dropdownList} />
-            <div className='result-page-main'>
-                {
-                    !activities.length ?
-                        <NoData />
-                        :
-                        <>
-                            <AverageSection marks={calcMarks(activities)} theme={theme[subject]} />
-                            {
-                                activities.map((activity, idx) => <Activity
-                                    key={idx}
-                                    activity={activity}
-                                    theme={theme[subject]}
-                                    link={`/${subject}/${activity.AssignmentID._id}`}
-                                />)
-                            }
-                        </>
-                }
-
-
+        <div className="result-page">
+            <Head
+                theme={theme[classroomID]}
+                active={getSubjectName(enrolledClassrooms,classroomID)}
+                list={dropdownList}
+            />
+            <div className="result-page-main">
+                {!activities.length ? (
+                    <NoData />
+                ) : (
+                    <>
+                        <AverageSection
+                            marks={calcMarks(activities)}
+                            theme={theme[classroomID]}
+                        />
+                        {activities.map((activity, idx) => (
+                            <Activity
+                                key={idx}
+                                activity={activity}
+                                theme={theme[classroomID]}
+                                link={`class/${classroomID}/asg/${activity.AssignmentID._id}`}
+                            />
+                        ))}
+                    </>
+                )}
             </div>
-
         </div>
-    )
-}
+    );
+};
 
-export default Results
+export default Results;

@@ -7,7 +7,13 @@ exports.getUserInfo = async (req, res) => {
                 { uuid: req.body.uuid },
                 { name: true, email: true, classroomIDs: true, role: true }
             )
-            .populate("classroomIDs");
+            .populate({
+                path: "classroomIDs",
+                populate: {
+                    path: "facultyID",
+                    select: "name email",
+                },
+            });
         result._id
             ? res.status(200).json({ data: result, error: null })
             : res
