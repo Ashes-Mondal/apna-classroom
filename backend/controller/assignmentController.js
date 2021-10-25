@@ -38,17 +38,27 @@ exports.postAssignment = async (req, res) => {
         return submissions;
     };
 
+    const getFileIDList = () => {
+        const files = req.files;
+        let fileIDs = [];
+        for (let i = 0; i < files.length; i++) {
+            fileIDs.push(files[i].id);
+        }
+        return fileIDs;
+    };
+
     try {
         const formData = JSON.parse(req.body.formData);
         const classroomID = req.body.classroomID;
         const uuid = req.body.uuid;
-        console.log(formData, classroomID, uuid);
+        // console.log(formData, classroomID, uuid);
         if (isUserInClass(uuid, classroomID)) {
-            //Getting studentIDs
+            //Getting studentIDs and fileIDs
             const studentIDs = await getStudentIDs(classroomID);
+            const fileIDs = await getFileIDList();
 
             //Step1: create assignment
-            const asgDetails = await assignmentModel.create(formData);
+            const asgDetails = await assignmentModel.create({...formData,fileIDs});
             const asgID = asgDetails._id;
             if (!asgID) {
                 res.status(500).json({
@@ -63,8 +73,8 @@ exports.postAssignment = async (req, res) => {
             await submissionModel.insertMany(submissions);
 
             //Step3: create results for batch
-            await resultModel.create({assignmentID:asgID});
-            res.status(200).json({ data: {assignmentID:asgID}, error: null });
+            await resultModel.create({ assignmentID: asgID });
+            res.status(200).json({ data: asgID, error: null });
         } else {
             res.status(403).json({ data: null, error: "Access Denied" });
         }

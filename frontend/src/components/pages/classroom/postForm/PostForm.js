@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { GrFormClose } from "react-icons/gr";
 import { useSelector } from "react-redux";
-import { createClassroom, postAssignment } from "../../../../axios/classroom";
+import {postAssignment } from "../../../../axios/classroom";
 import "./PostForm.scss";
 
 const PostForm = ({ setShowForm, formType, classroomID }) => {
@@ -19,8 +19,6 @@ const PostForm = ({ setShowForm, formType, classroomID }) => {
         e.preventDefault();
 
         const data = new FormData();
-        // data.append("title", title);
-        // data.append("body", body);
         let formData = {
             title,
             body,
@@ -29,36 +27,28 @@ const PostForm = ({ setShowForm, formType, classroomID }) => {
             formData.dueDate = dueDate;
             formData.maxMarks = maxMarks;
             formData.facultyID = user._id;
-            // data.append("dueDate", dueDate);
-            // data.append("maxMarks", maxMarks);
-            // data.append("facultyID", user._id);
         }
         data.append("formData", JSON.stringify(formData));
         data.append("classroomID", classroomID);
-        if (!selectedFiles || !selectedFiles.length) {
+        if (selectedFiles) {
             for (let i = 0; i < selectedFiles.length; i++) {
                 data.append(`file`, selectedFiles[i]);
             }
         }
-
-        // const data = {
-        //     formData: {
-        //         title,
-        //         body,
-        //         dueDate,
-        //         maxMarks,
-        //         facultyID: user._id,
-        //     },
-        // };
-        postAssignment(data)
-            .then((resp) => {
-                console.log(resp);
-                const redirectURL = `/class/${resp.data}`;
-                // history.push(redirectURL);
-            })
-            .catch((e) => {
-                console.log(e);
-            });
+        if (formType === "asg") {
+            postAssignment(data)
+                .then((resp) => {
+                    // console.log(resp);
+                    const redirectURL = `/class/${classroomID}/asg/${resp.data}`;
+                    history.push(redirectURL);
+                    return;
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+        } else {
+            //postAnnouncement
+        }
     };
     return (
         <>
@@ -116,6 +106,7 @@ const PostForm = ({ setShowForm, formType, classroomID }) => {
                             type="file"
                             placeholder="Attach A File"
                             multiple="multiple"
+                            id="files"
                             onChange={(e) => setSelectedFiles(e.target.files)}
                         />
                     </div>

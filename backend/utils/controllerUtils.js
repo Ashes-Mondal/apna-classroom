@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+const ObjectID = mongoose.Types.ObjectId;
 const userModel = require("../model/user/userSchema");
 const classroomModel = require("../model/classroom/classroom");
 
@@ -14,9 +16,10 @@ exports.isUserInClass = async (uuid, classroomID) => {
 
 exports.getStudentIDs = async (classroomID) => {
     try {
-        return await classroomModel.findById(ObjectID(classroomID), {
+        const result = await classroomModel.findById(ObjectID(classroomID), {
             studentIDs: true,
-        }).studentIDs;
+        });
+        return result.studentIDs;
     } catch (e) {
         throw e;
     }

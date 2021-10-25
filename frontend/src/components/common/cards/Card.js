@@ -24,15 +24,6 @@ const Dropdown = (props) => {
     );
 };
 
-// const details = {
-//     _id:123,
-//     theme: '',
-//     facultyName: 'Santosh Singh Rathore',
-//     subjectName: 'Software Engineering',
-//     batchCode: 'IPG 2019',
-//     semester: 5
-// }
-
 const Card = (props) => {
     const history = useHistory();
     const {details} = props;
@@ -54,8 +45,8 @@ const Card = (props) => {
                 <span className="three-dots"><Dropdown list={list}/></span>
             </div>
             <div className='card-bottom'>
-                <span><HiOutlineClipboardList /> Todo</span>
-                <span><SiGooglehangoutsmeet /> Meeting</span>
+                <span onClick={()=>history.push(`/class/${details._id}/todos`)}><HiOutlineClipboardList /> Todo</span>
+                <span onClick={()=>history.push(`/class/${details._id}/meeting`)}><SiGooglehangoutsmeet /> Meeting</span>
             </div>
         </div>
     )

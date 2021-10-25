@@ -9,12 +9,23 @@ function AddAsgModal({ classroomID }) {
     const user = useSelector((state) => state.user);
     return (
         <>
-            {showForm ? (
-                <PostForm classroomID={classroomID} setShowForm={setShowForm} formType="asg" />
+            {user.role !== "student" ? (
+                <div>
+                    {showForm ? (
+                        <PostForm
+                            classroomID={classroomID}
+                            setShowForm={setShowForm}
+                            formType="asg"
+                        />
+                    ) : null}
+                    <div
+                        onClick={() => setShowForm(true)}
+                        className="add-asg-cta"
+                    >
+                        <h5>Post Assignment</h5>
+                    </div>
+                </div>
             ) : null}
-            <div onClick={() => setShowForm(true)} className="add-asg-cta">
-                <h5>Post Assignment</h5>
-            </div>
         </>
     );
 }
