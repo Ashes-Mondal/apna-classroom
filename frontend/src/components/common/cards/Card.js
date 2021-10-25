@@ -24,17 +24,18 @@ const Dropdown = (props) => {
     );
 };
 
-const details = {
-    _id:123,
-    theme: '',
-    facultyName: 'Santosh Singh Rathore',
-    subjectName: 'Software Engineering',
-    batchCode: 'IPG 2019',
-    semester: 5
-}
+// const details = {
+//     _id:123,
+//     theme: '',
+//     facultyName: 'Santosh Singh Rathore',
+//     subjectName: 'Software Engineering',
+//     batchCode: 'IPG 2019',
+//     semester: 5
+// }
 
 const Card = (props) => {
     const history = useHistory();
+    const {details} = props;
     const list = useMemo(() => [
         {
             title: 'Unroll',
@@ -43,10 +44,10 @@ const Card = (props) => {
     ], [])
     
     return (
-        <div className={`card subject-card bg-${props.theme}`}>
+        <div className={`card subject-card bg-${details.theme}`}>
             <div className="card-body">
                 <div className="subject-body" onClick={()=>history.push(`/class/${details._id}`)}>
-                    <h5 className={`card-title subject-name font-${props.theme}`}>{details.subjectName}</h5>
+                    <h5 className={`card-title subject-name font-${details.theme}`}>{details.subjectName}</h5>
                     <h6 id='subject-description'>{`${details.batchCode} | Semester ${details.semester} `}</h6>
                     <h6 id='subject-faculty'>{details.facultyName}</h6>
                 </div>

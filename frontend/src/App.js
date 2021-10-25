@@ -27,7 +27,7 @@ function App() {
         const computeThemeList = (enrolledClassrooms) => {
             let result = {};
             for (let i = 0; i < enrolledClassrooms.length; i++) {
-                result[enrolledClassrooms[i].subjectName] =
+                result[enrolledClassrooms[i]._id] =
                     enrolledClassrooms[i].theme;
             }
             return result;

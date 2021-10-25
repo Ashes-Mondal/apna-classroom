@@ -1,7 +1,7 @@
 //Upload Controllers
 const multer = require("multer");
 const singleUpload = require("../model/uploads/uploads").upload.single("file");
-exports.singleFileUpload = (req, res) => {
+exports.singleFileUpload = (req, res,next) => {
     singleUpload(req, res, (err) => {
         if (err instanceof multer.MulterError) {
             res.status(400).json({ data: null, error: "File too large" });
@@ -11,12 +11,13 @@ exports.singleFileUpload = (req, res) => {
             res.status(500).json({ data: null, error: err });
             return;
         }
-        res.status(200).json({ data: req.file, error: null });
+        next();
     });
 };
 
 const multipleUpload = require("../model/uploads/uploads").upload.array("file");
-exports.multipleFileUpload = (req, res) => {
+exports.multipleFileUpload = (req, res,next) => {
+    const uuid = req.body.uuid;
     multipleUpload(req, res, (err) => {
         if (err instanceof multer.MulterError) {
             res.status(400).json({ data: null, error: "File too large" });
@@ -26,7 +27,8 @@ exports.multipleFileUpload = (req, res) => {
             res.status(500).json({ data: null, error: err });
             return;
         }
-        res.status(200).json({ data: req.files, error: null });
+        req.body.uuid = uuid;
+        next();
     });
 };
 

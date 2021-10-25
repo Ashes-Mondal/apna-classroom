@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 const ObjectID = mongoose.Types.ObjectId;
 const assignmentModel = require("../model/post/assignmentSchema");
-const { isUserInClass } = require("../utils/controllerUtils");
-const { multipleFileUpload } = require("./fileController");
+const submissionModel = require("../model/post/submissionSchema");
+const resultModel = require("../model/results/resultSchema");
+const { isUserInClass, getStudentIDs } = require("../utils/controllerUtils");
 
 exports.getAssignmentDetails = async (req, res) => {
     try {
@@ -25,23 +26,45 @@ exports.getAssignmentDetails = async (req, res) => {
     }
 };
 
-const multipleUpload = require("../model/uploads/uploads").upload.array("file");
 exports.postAssignment = async (req, res) => {
+    const getSubmissionList = (studentIDs, assignmentID) => {
+        let submissions = [];
+        for (let i = 0; i < studentIDs.length; i++) {
+            submissions.push({
+                assignmentID,
+                studentID: studentIDs[i],
+            });
+        }
+        return submissions;
+    };
+
     try {
-        const formData = req.body.formData;
+        const formData = JSON.parse(req.body.formData);
         const classroomID = req.body.classroomID;
-        const uuid = req.uuid;
-        console.log(formData);
-        console.log(req.body);
-        console.log(req.files);
-
+        const uuid = req.body.uuid;
+        console.log(formData, classroomID, uuid);
         if (isUserInClass(uuid, classroomID)) {
-            // await assignmentModel.create(formData);
+            //Getting studentIDs
+            const studentIDs = await getStudentIDs(classroomID);
 
-            //Step1: create empty submissions for batch
-            //Step2: create base results for batch
+            //Step1: create assignment
+            const asgDetails = await assignmentModel.create(formData);
+            const asgID = asgDetails._id;
+            if (!asgID) {
+                res.status(500).json({
+                    data: null,
+                    error: "Failed to create the assignment.",
+                });
+                return;
+            }
 
-            res.status(200).json({ data: "Success", error: null });
+            //Step2: create empty submissions for batch
+            const submissions = getSubmissionList(studentIDs, asgID);
+            await submissionModel.insertMany(submissions);
+
+            //Step3: create results for batch
+            await resultModel.create({assignmentID:asgID});
+            res.status(200).json({ data: {assignmentID:asgID}, error: null });
         } else {
             res.status(403).json({ data: null, error: "Access Denied" });
         }
