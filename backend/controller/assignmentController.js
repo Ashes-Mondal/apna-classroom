@@ -75,6 +75,7 @@ exports.postAssignment = async (req, res) => {
             //Step3: create results for batch
             await resultModel.create({ assignmentID: asgID });
             res.status(200).json({ data: asgID, error: null });
+
         } else {
             res.status(403).json({ data: null, error: "Access Denied" });
         }
