@@ -6,14 +6,14 @@ const { multipleFileUpload } = require("../controller/fileController");
 const announcementValidator = require("../validator/announcementValidator");
 
 router.get(
-    "/getAnnoucementDetails",
-    announcementValidator.validateAnnoucement,
-    announcementController.getAnnoucementDetails
+    "/getAnnouncementDetails",
+    announcementValidator.validateAnnouncement,
+    announcementController.getAnnouncementDetails
 );
 router.post(
-    "/postAnnoucement",
+    "/postAnnouncement",
     multipleFileUpload,
-    announcementController.postAnnoucement
+    announcementController.postAnnouncement
 );
 // Exporting routes
 module.exports.router = router;

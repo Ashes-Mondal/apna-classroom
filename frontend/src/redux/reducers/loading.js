@@ -1,4 +1,4 @@
-const intitialState = false;
+const intitialState = true;
 
 const loading = (state = intitialState, action) => {
     switch (action.type) {
