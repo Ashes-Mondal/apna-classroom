@@ -3,13 +3,13 @@ const { isUserInClass } = require("../utils/controllerUtils");
 const mongoose = require("mongoose");
 const ObjectID = mongoose.Types.ObjectId;
 
-exports.getAnnoucementDetails = async (req, res) => {
+exports.getAnnouncementDetails = async (req, res) => {
     try {
-        const annoucementID = req.query.annouceID;
+        const announcementID = req.query.annouceID;
         const classroomID = req.query.classID;
         const uuid = req.body.uuid;
         const result = await announcementModel
-            .findById(ObjectID(annoucementID))
+            .findById(ObjectID(announcementID))
             .populate("commentIDs");
         if (
             result.classroomID === classroomID &&
@@ -24,8 +24,7 @@ exports.getAnnoucementDetails = async (req, res) => {
     }
 };
 
-
-exports.postAnnoucement = async (req, res) => {
+exports.postAnnouncement = async (req, res) => {
     const getFileIDList = () => {
         const files = req.files;
         let fileIDs = [];
@@ -45,19 +44,19 @@ exports.postAnnoucement = async (req, res) => {
             const fileIDs = await getFileIDList();
 
             //Step1: create assignment
-            const annoucementDetails = await announcementModel.create({
+            const announcementDetails = await announcementModel.create({
                 ...formData,
                 fileIDs,
             });
-            const annoucementID = annoucementDetails._id;
-            if (!annoucementID) {
+            const announcementID = announcementDetails._id;
+            if (!announcementID) {
                 res.status(500).json({
                     data: null,
-                    error: "Failed to create the annoucement.",
+                    error: "Failed to create the announcement.",
                 });
                 return;
             }
-            res.status(200).json({ data: annoucementID, error: null });
+            res.status(200).json({ data: announcementID, error: null });
         } else {
             res.status(403).json({ data: null, error: "Access Denied" });
         }

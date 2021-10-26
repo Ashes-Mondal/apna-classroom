@@ -1,24 +1,24 @@
 {
-    "publicRoutes":[
+    "publicRoutes": [
         "/login",
         "/files/download",
         "/register",
         "/sendResetPasswordEmail",
         "/resetPassword"
     ],
-    "studentRoutes":[
+    "studentRoutes": [
         "/logout",
         "/getUserInfo",
 
+        "/postAnnouncement",
         "/getAssignmentDetails",
         "/getUpcomingAssignments",
         "/getClassroomDetails"
     ],
-    "teacherRoutes":[
+    "teacherRoutes": [
         "/postAssignment",
-        "/createClassroom"
+        "/createClassroom",
+        "/postAnnouncement"
     ],
-    "adminRoutes":[
-        "/register"
-    ]
+    "adminRoutes": ["/register"]
 }

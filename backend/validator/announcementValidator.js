@@ -6,20 +6,20 @@ const options = {
     convert: true,
 };
 
-module.exports.validateAnnoucement= (req, res, next) => {
-    const validateAnnoucementBody = Joi.object({
+module.exports.validateAnnouncement = (req, res, next) => {
+    const validateAnnouncementBody = Joi.object({
         uuid: Joi.string().required(),
     });
-    const validateAnnoucementQuery = Joi.object({
+    const validateAnnouncementQuery = Joi.object({
         classID: Joi.string().required(),
         annouceID: Joi.string().required(),
     });
     //
-    const { bodyError, bodyValue } = validateAnnoucementBody.validate(
+    const { bodyError, bodyValue } = validateAnnouncementBody.validate(
         req.body,
         options
     );
-    const { queryError, queryValue } = validateAnnoucementQuery.validate(
+    const { queryError, queryValue } = validateAnnouncementQuery.validate(
         req.query,
         options
     );
