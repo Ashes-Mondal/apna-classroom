@@ -157,3 +157,52 @@ exports.logoutController = async (req, res, next) => {
         res.status(400).json({ data: null, error: e.message });
     }
 };
+
+exports.resetPassword = async (req, res, next) => {
+    try {
+        //0.decode the jwt token
+        const decoded = await jwt.decodeResetLinkAccessToken(
+            req.body.accessToken
+        );
+        //1.Creating hashed password
+        let hashPassword = await brcypt.createPasswordHash(
+            req.body.newPassword
+        );
+        console.log(decoded,decoded.email,hashPassword)
+        const userInfo = await userModel.updateOne(
+            { email: decoded.email },
+            { password: hashPassword }
+        );
+        //==>User does exists
+        if (!userInfo.modifiedCount) {
+            res.status(401).json({
+                data: null,
+                error: "Access Denied",
+            });
+            return;
+        }
+        res.status(200).json({ data: "Success", error: null });
+    } catch (e) {
+        res.status(400).json({ data: null, error: e.message || e });
+    }
+};
+
+exports.sendResetPasswordEmail = async (req, res, next) => {
+    try {
+        //0.Checking if user exists
+        let userInfo = await userModel.findOne({ email: req.body.email });
+        //==>User does exists
+        if (!userInfo) {
+            res.status(400).json({
+                data: null,
+                error: "User not registered",
+            });
+            return;
+        }
+        //1.create reset link
+        const resetlink = await jwt.createResetLink({email:req.body.email});
+        res.status(200).json({ data: resetlink, error: null });
+    } catch (e) {
+        res.status(400).json({ data: null, error: e.message || e });
+    }
+};

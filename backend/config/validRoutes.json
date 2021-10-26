@@ -2,7 +2,9 @@
     "publicRoutes":[
         "/login",
         "/files/download",
-        "/register"
+        "/register",
+        "/sendResetPasswordEmail",
+        "/resetPassword"
     ],
     "studentRoutes":[
         "/logout",

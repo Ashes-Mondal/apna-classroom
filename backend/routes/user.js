@@ -25,5 +25,15 @@ router.post(
     authValidator.logoutValidator,
     userController.getUserInfo
 );
+router.post(
+    "/resetPassword",
+    authValidator.resetPassword,
+    authController.resetPassword
+);
+router.post(
+    "/sendResetPasswordEmail",
+    authValidator.sendResetPasswordEmail,
+    authController.sendResetPasswordEmail
+);
 // Exporting routes
 module.exports.router = router;

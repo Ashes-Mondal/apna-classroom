@@ -4,8 +4,9 @@ import { ThemeProvider, withStyles } from "react-jss";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { setUserAuth } from "../../../redux/actions/userAuthentication";
-import { handleLogin } from "../../../axios/handleSession";
+import { handleLogin, sendResetPasswordEmail } from "../../../axios/handleSession";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import ResetPassword from "../reset-password/ResetPassword";
 // import img from '../../../images/login/spotted4.jpg'
 
 const mainTheme = {
@@ -90,7 +91,7 @@ const darkTheme = {
     },
     blob: "6373b3",
 };
-// 
+//
 const loginLayoutStyles = (theme) => ({
     loginLayout: {
         maxWidth: "100%",
@@ -238,7 +239,6 @@ const inputStyles = (theme) => ({
     },
 });
 
-
 const labelStyles = (theme) => ({
     label: {
         fontSize: ".875rem",
@@ -336,16 +336,31 @@ const CustomThemeProvider = (props) => {
 function LoginLayout(props) {
     const classes = props.classes;
 
-    return <div style={{background:`white`,backgroundSize: 'cover'}} className={classes.loginLayout}>{props.children}</div>;
+    return (
+        <div
+            style={{ background: `white`, backgroundSize: "cover" }}
+            className={classes.loginLayout}
+        >
+            {props.children}
+        </div>
+    );
 }
 LoginLayout = withStyles(loginLayoutStyles)(LoginLayout);
 
 function Divider(props) {
-    return <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div style={{ height: '1px', width: '100%', background: '#d1d5db' }}></div>
-        <p style={{ margin: '10px', fontWeight: 100, color: '#94979c' }}>OR</p>
-        <div style={{ height: '1px', width: '100%', background: '#d1d5db' }}></div>
-    </div>
+    return (
+        <div style={{ display: "flex", alignItems: "center" }}>
+            <div
+                style={{ height: "1px", width: "100%", background: "#d1d5db" }}
+            ></div>
+            <p style={{ margin: "10px", fontWeight: 100, color: "#94979c" }}>
+                OR
+            </p>
+            <div
+                style={{ height: "1px", width: "100%", background: "#d1d5db" }}
+            ></div>
+        </div>
+    );
 }
 
 function Alert(props) {
@@ -412,7 +427,6 @@ function Input(props) {
 }
 Input = withStyles(inputStyles)(Input);
 
-
 function LoginPage(props) {
     const dispatch = useDispatch();
     const classes = props.classes;
@@ -420,7 +434,7 @@ function LoginPage(props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [formErrors, setFormErrors] = useState([]);
-    const [isSuccessed, setSuccess] = useState(false);
+    const [isSuccessed, setSuccess] = useState([]);
 
     const emailValidate = (value) => {
         const emailRegex =
@@ -430,9 +444,9 @@ function LoginPage(props) {
     };
 
     const passwordValidate = (value) => {
-        if (!value || value.length < 1) return 'Invalid password';
+        if (!value || value.length < 1) return "Invalid password";
         return undefined;
-    }
+    };
 
     const loginSubmitHandler = async (e) => {
         e.preventDefault();
@@ -451,12 +465,41 @@ function LoginPage(props) {
                     email: email,
                     password: password,
                 });
-                
-                setSuccess(true);
+
+                setSuccess(["Logged in"]);
                 dispatch(setUserAuth());
             } catch (e) {
+                setFormErrors(
+                    e.error === "Invalid request parameters"
+                        ? ["Please correct the email..."]
+                        : [e.error]
+                );
+            }
+        }
+    };
+
+    const handleForgotPassword = async (e) => {
+        e.preventDefault();
+        let errors = [];
+        let emailCheck = emailValidate(email);
+        if (emailCheck)
+            errors.push(
+                "Provide institute email to continue with reset password process."
+            );
+        setFormErrors(errors);
+        if (!errors.length) {
+            try {
+                //handle sever logic
+                const {data} =  await sendResetPasswordEmail({email});
+                window.location.replace(data);
+                setSuccess(["Check your email to continue with reset password process."]);
+            } catch (e) {
                 console.error(e);
-                setFormErrors(e.error === 'Invalid request parameters'?['Please correct the email...']:[e.error]);
+                setFormErrors(
+                    e.error === "Invalid request parameters"
+                        ? ["Please correct the email..."]
+                        : [e.error]
+                );
             }
         }
     };
@@ -468,7 +511,7 @@ function LoginPage(props) {
             <div className="form">
                 <form onSubmit={loginSubmitHandler}>
                     {formErrors.length ? (
-                        <Alert title="Failed to login">
+                        <Alert title="Failed to validate">
                             {formErrors.map((err) => (
                                 <div>{err}</div>
                             ))}
@@ -477,18 +520,19 @@ function LoginPage(props) {
                         ""
                     )}
 
-                    {isSuccessed ? (
-                        <Alert
-                            type="success"
-                            title="Successfully Logged in"
-                        ></Alert>
+                    {isSuccessed.length ? (
+                        <Alert type="success" title="Successfull">
+                            {isSuccessed.map((msg) => (
+                                <div>{msg}</div>
+                            ))}
+                        </Alert>
                     ) : (
                         ""
                     )}
 
                     <div name="email" validate={emailValidate}>
                         <Label>
-                            <span>Email</span>
+                            <span>Institute Email</span>
                             <Input
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
@@ -519,7 +563,14 @@ function LoginPage(props) {
             </div>
 
             <Divider />
-            <Button fullWidth color="green" iconLeft={<RiLockPasswordFill size={20}/>}>Forgot Password</Button>
+            <Button
+                onClick={handleForgotPassword}
+                fullWidth
+                color="green"
+                iconLeft={<RiLockPasswordFill size={20} />}
+            >
+                Forgot Password
+            </Button>
         </div>
     );
 }

@@ -69,3 +69,41 @@ module.exports.logoutValidator = (req, res, next) => {
         next();
     }
 };
+
+module.exports.resetPassword = (req, res, next) => {
+    const resetPasswordValidate = Joi.object({
+        newPassword: Joi.string().required(),
+        accessToken: Joi.string().required(),
+    });
+    //
+    const { error, value } = resetPasswordValidate.validate(req.body, options);
+    if (error) {
+        res.status(400).json({
+            data: null,
+            error: "Invalid request parameters",
+        });
+        return;
+    } else {
+        req.body = value;
+        next();
+    }
+};
+module.exports.sendResetPasswordEmail = (req, res, next) => {
+    const sendResetPasswordEmailValidate = Joi.object({
+        email: Joi.string().email().required(),
+    });
+    //
+    const { error, value } = sendResetPasswordEmailValidate.validate(req.body, options);
+    if (error) {
+        res.status(400).json({
+            data: null,
+            error: "Invalid request parameters",
+        });
+        return;
+    } else {
+        value.email = value.email.toLowerCase();
+        req.body = value;
+        next();
+    }
+};
+
