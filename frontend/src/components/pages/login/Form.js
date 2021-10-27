@@ -491,7 +491,7 @@ function LoginPage(props) {
             try {
                 //handle sever logic
                 const {data} =  await sendResetPasswordEmail({email});
-                window.location.replace(data);
+                // window.location.replace(data);
                 setSuccess(["Check your email to continue with reset password process."]);
             } catch (e) {
                 console.error(e);
