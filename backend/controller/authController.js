@@ -3,6 +3,8 @@ const userModel = require("../model/user/userSchema"),
     brcypt = require("../utils/userPassword"),
     Session = require("../model/session/sessionSchema"),
     UID = require("../utils/uid");
+const { resetPasswordHTML } = require("../template/reset-password");
+const { sendEmail } = require("../utils/nodemailer");
 
 exports.loginController = async (req, res, next) => {
     try {
@@ -168,7 +170,7 @@ exports.resetPassword = async (req, res, next) => {
         let hashPassword = await brcypt.createPasswordHash(
             req.body.newPassword
         );
-        console.log(decoded,decoded.email,hashPassword)
+        console.log(decoded, decoded.email, hashPassword);
         const userInfo = await userModel.updateOne(
             { email: decoded.email },
             { password: hashPassword }
@@ -200,9 +202,18 @@ exports.sendResetPasswordEmail = async (req, res, next) => {
             return;
         }
         //1.create reset link
-        const resetlink = await jwt.createResetLink({email:req.body.email});
-        res.status(200).json({ data: resetlink, error: null });
+        const resetlink = await jwt.createResetLink({ email: req.body.email });
+        const html = resetPasswordHTML.replace("<RESET_LINK>", resetlink);
+        const emailOptions = {
+            from: process.env.EMAIL,
+            to: req.body.email,
+            subject: "Reset Password",
+            html,
+        };
+        await sendEmail(emailOptions);
+        res.status(200).json({ data: "Success", error: null });
     } catch (e) {
+        // console.log(e)
         res.status(400).json({ data: null, error: e.message || e });
     }
 };
