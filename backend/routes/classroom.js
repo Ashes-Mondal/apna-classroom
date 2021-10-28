@@ -19,5 +19,10 @@ router.post(
     classroomValidator.createClassroom,
     classController.createClassroom
 );
+router.get(
+    "/getPostFeed",
+    classroomValidator.validateClassroom,
+    classController.getPostFeed
+);
 // Exporting routes
 module.exports.router = router;

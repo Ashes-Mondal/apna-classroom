@@ -2,25 +2,45 @@ import "./PostCard.scss";
 import FileAtt from "../fileAtt/FileAtt";
 
 import React from "react";
+import { useHistory } from "react-router";
 
-function PostCard({ postType, theme }) {
+function formatDate(datestr) {
+    // console.log("formatting", typeof date);
+    const date = new Date(datestr);
+    const d = date
+        .toLocaleDateString("en-GB", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+            hour12: true,
+            hour: "2-digit",
+            minute: "2-digit",
+        })
+        .split(",");
+    return d[0] + d[1].toUpperCase();
+}
+
+function PostCard({ postType, theme, content, classroomID }) {
+    const history = useHistory();
+    const openAsg = (postType) => {
+        if (postType === "asg") {
+            history.push(`/class/${classroomID}/asg/${content._id}`);
+        }
+    };
     return (
-        <div className={`post-card border-${theme}`}>
-            {postType === "asg" && <h5 className={`asg-marker font-${theme}`}>ASSIGNMENT &bull; DUE 10:00AM 24th Oct 2021</h5>}
-            <h2>Lorem ipsum dolor sit amet consectetur.</h2>
+        <div onClick={() => openAsg(postType)} className={`post-card border-${theme} ${postType}-card`}>
+            {postType === "asg" && <h5 className={`asg-marker font-${theme}`}>ASSIGNMENT &bull; DUE {formatDate(content.dueDate)}</h5>}
+            <h2>{content.title}</h2>
             <div className="subtitle">
-                <h5 className="post-auth">John Doe</h5>
+                <h5 className="post-auth">{postType === "asg" ? content.facultyID.name : content.userID.name}</h5>
                 <h5>&bull;</h5>
                 <h5 className="post-date">10:46AM 24th September 2021</h5>
             </div>
-            <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. In beatae omnis possimus asperiores facilis, eum provident corporis modi ex ut nobis, laboriosam dolorum, iste corrupti? Cum
-                temporibus dolore voluptatum iure, nesciunt eum officiis. Saepe, ut itaque at, eos explicabo corrupti nobis quo eaque error ratione odit assumenda atque officiis veritatis amet vero
-                fugit possimus, facere aspernatur impedit. Exercitationem, recusandae dolore?
-            </p>
+            {content.body ? <p>{content.body}</p> : null}
             <div className="attachments">
-                <FileAtt />
-                <FileAtt />
+                {content.fileIDs.map((file, key) => {
+                    return <FileAtt key={key} fileData={file} />;
+                })}
             </div>
         </div>
     );

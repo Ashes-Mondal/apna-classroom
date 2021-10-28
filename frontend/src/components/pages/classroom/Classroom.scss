@@ -2,6 +2,9 @@
     display: flex;
     margin: 0 2%;
     gap: 20px;
+    @media only screen and (max-width: 860px) {
+        flex-direction: column-reverse;
+    }
     .left-column {
         flex: 3;
     }

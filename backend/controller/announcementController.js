@@ -43,10 +43,11 @@ exports.postAnnouncement = async (req, res) => {
             //Getting fileIDs
             const fileIDs = await getFileIDList();
 
-            //Step1: create assignment
+            //Step1: create announcement
             const announcementDetails = await announcementModel.create({
                 ...formData,
                 fileIDs,
+                classroomID,
             });
             const announcementID = announcementDetails._id;
             if (!announcementID) {
