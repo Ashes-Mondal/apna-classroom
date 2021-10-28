@@ -58,7 +58,11 @@ exports.postAssignment = async (req, res) => {
             const fileIDs = await getFileIDList();
 
             //Step1: create assignment
-            const asgDetails = await assignmentModel.create({...formData,fileIDs});
+            const asgDetails = await assignmentModel.create({
+                ...formData,
+                fileIDs,
+                classroomID,
+            });
             const asgID = asgDetails._id;
             if (!asgID) {
                 res.status(500).json({
@@ -75,7 +79,6 @@ exports.postAssignment = async (req, res) => {
             //Step3: create results for batch
             await resultModel.create({ assignmentID: asgID });
             res.status(200).json({ data: asgID, error: null });
-
         } else {
             res.status(403).json({ data: null, error: "Access Denied" });
         }

@@ -1,8 +1,11 @@
 const mongoose = require("mongoose");
 const ObjectID = mongoose.Types.ObjectId;
 const assignmentModel = require("../model/post/assignmentSchema");
+const announcementModel = require("../model/post/announcementSchema");
 const classroomModel = require("../model/classroom/classroom");
-const isUserInClass = require("../utils/controllerUtils");
+const commentsModel = require("../model/comment/commentSchema");
+const { uploadMetaModel } = require("../model/uploads/uploads");
+const { isUserInClass } = require("../utils/controllerUtils");
 const userModel = require("../model/user/userSchema");
 
 exports.getUpcomingAssignments = async (req, res) => {
@@ -30,6 +33,43 @@ exports.getClassroomDetails = async (req, res) => {
         if (isUserInClass(uuid, classroomID)) {
             const result = await classroomModel.findById(ObjectID(classroomID));
             res.status(200).json({ data: result, error: null });
+        } else {
+            res.status(403).json({ data: result, error: "Access Denied" });
+        }
+    } catch (error) {
+        res.status(500).json({ data: null, error: error.message });
+    }
+};
+
+exports.getPostFeed = async (req, res) => {
+    try {
+        const classroomID = req.query.classID;
+        const uuid = req.body.uuid;
+        if (isUserInClass(uuid, classroomID)) {
+            const asgFeed = await assignmentModel
+                .find({
+                    classroomID: classroomID,
+                })
+                .populate("commentIDs")
+                .populate({
+                    path: "facultyID",
+                    select: "name email",
+                })
+                .populate("fileIDs");
+
+            const annFeed = await announcementModel
+                .find({
+                    classroomID: classroomID,
+                })
+                .populate("commentIDs")
+                .populate({
+                    path: "userID",
+                    select: "name email",
+                })
+                .populate("fileIDs");
+            let feed = [...asgFeed, ...annFeed];
+            feed.sort((a, b) => a.createdAt - b.createdAt);
+            res.status(200).json({ data: feed, error: null });
         } else {
             res.status(403).json({ data: result, error: "Access Denied" });
         }

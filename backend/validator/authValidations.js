@@ -93,7 +93,10 @@ module.exports.sendResetPasswordEmail = (req, res, next) => {
         email: Joi.string().email().required(),
     });
     //
-    const { error, value } = sendResetPasswordEmailValidate.validate(req.body, options);
+    const { error, value } = sendResetPasswordEmailValidate.validate(
+        req.body,
+        options
+    );
     if (error) {
         res.status(400).json({
             data: null,
@@ -106,4 +109,3 @@ module.exports.sendResetPasswordEmail = (req, res, next) => {
         next();
     }
 };
-

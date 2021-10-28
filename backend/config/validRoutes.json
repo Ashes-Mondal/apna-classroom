@@ -13,12 +13,12 @@
         "/postAnnouncement",
         "/getAssignmentDetails",
         "/getUpcomingAssignments",
-        "/getClassroomDetails"
+        "/getClassroomDetails",
+        "/getPostFeed"
     ],
     "teacherRoutes": [
         "/postAssignment",
-        "/createClassroom",
-        "/postAnnouncement"
+        "/createClassroom"
     ],
     "adminRoutes": ["/register"]
 }

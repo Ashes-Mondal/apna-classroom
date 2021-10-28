@@ -27,6 +27,8 @@ const PostForm = ({ setShowForm, formType, classroomID, theme }) => {
             formData.dueDate = dueDate;
             formData.maxMarks = maxMarks;
             formData.facultyID = user._id;
+        } else {
+            formData.userID = user._id;
         }
         data.append("formData", JSON.stringify(formData));
         data.append("classroomID", classroomID);
@@ -50,6 +52,7 @@ const PostForm = ({ setShowForm, formType, classroomID, theme }) => {
             postAnnouncement(data)
                 .then((resp) => {
                     console.log(resp);
+                    setShowForm(false);
                     return;
                 })
                 .catch((e) => {
