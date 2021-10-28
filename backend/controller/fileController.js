@@ -1,7 +1,7 @@
 //Upload Controllers
 const multer = require("multer");
 const singleUpload = require("../model/uploads/uploads").upload.single("file");
-exports.singleFileUpload = (req, res,next) => {
+exports.singleFileUpload = (req, res, next) => {
     singleUpload(req, res, (err) => {
         if (err instanceof multer.MulterError) {
             res.status(400).json({ data: null, error: "File too large" });
@@ -16,7 +16,7 @@ exports.singleFileUpload = (req, res,next) => {
 };
 
 const multipleUpload = require("../model/uploads/uploads").upload.array("file");
-exports.multipleFileUpload = (req, res,next) => {
+exports.multipleFileUpload = (req, res, next) => {
     const uuid = req.body.uuid;
     multipleUpload(req, res, (err) => {
         if (err instanceof multer.MulterError) {
@@ -86,6 +86,8 @@ exports.downloadFile = ({ query: { id } }, res) => {
             return res
                 .status(400)
                 .json({ data: null, error: "No such file exist!" });
+        const originalname = files[0].metadata.originalname;
+        res.set("Content-Disposition","attachment;filename=" + originalname);
         gfs.openDownloadStream(ObjectID(id)).pipe(res);
     });
 };
