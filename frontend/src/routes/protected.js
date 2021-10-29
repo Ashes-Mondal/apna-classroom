@@ -1,9 +1,10 @@
-import Assignment from '../components/pages/Assignment/Assignment'
-import Results from '../components/pages/results/Results'
-import Upload from '../components/common/file-upload/Upload'
-import Classroom from '../components/pages/classroom/Classroom'
-import Home from '../components/pages/home/Home'
-import ToDos from '../components/pages/todos/ToDos'
+import Assignment from "../components/pages/Assignment/Assignment";
+import Results from "../components/pages/results/Results";
+import Upload from "../components/common/file-upload/Upload";
+import Classroom from "../components/pages/classroom/Classroom";
+import Home from "../components/pages/home/Home";
+import ToDos from "../components/pages/todos/ToDos";
+import VC from "../components/pages/vc/VC";
 
 const protectedRoutes = [
     {
@@ -16,11 +17,11 @@ const protectedRoutes = [
     },
     {
         component: Results,
-        path: '/class/:classroomID/results',
+        path: "/class/:classroomID/results",
     },
     {
         component: ToDos,
-        path: '/class/:classroomID/todos',
+        path: "/class/:classroomID/todos",
     },
     {
         component: Upload,
@@ -29,6 +30,10 @@ const protectedRoutes = [
     {
         component: Classroom,
         path: "/class/:classroomID",
+    },
+    {
+        component: VC,
+        path: "/class/:classroomID/meet/:meetingID",
     },
 ];
 export default protectedRoutes;

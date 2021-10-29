@@ -14,16 +14,18 @@ function Classroom() {
     const { classroomID } = useParams();
     const [feed, setFeed] = useState([]);
     const enrolledClassrooms = useSelector((state) => state.enrolledClassrooms);
+    const [currentClassroom, setCurrentClassroom] = useState({});
     const loading = useSelector((state) => state.loading);
-    const currentClassroom = enrolledClassrooms.find((item) => item._id === classroomID) || {};
-    // console.log("currclass:", currentClassroom);
     useEffect(() => {
         getPostFeed(classroomID).then((res) => {
-            // console.log("feed gotten", res);
             setFeed(res.data);
         });
         return;
     }, [classroomID]);
+    useEffect(() => {
+        setCurrentClassroom(enrolledClassrooms.find((item) => item._id === classroomID) || {});
+        return;
+    }, [enrolledClassrooms, classroomID]);
 
     return (
         <div>
