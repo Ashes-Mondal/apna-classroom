@@ -6,8 +6,13 @@ const classroomValidator = require("../validator/classroomValidator");
 
 router.get(
     "/getUpcomingAssignments",
-    classroomValidator.validateClassroom,
+    classroomValidator.getUserClassAssignments,
     classController.getUpcomingAssignments
+);
+router.get(
+    "/getUserClassAssignments",
+    classroomValidator.getUserClassAssignments,
+    classController.getUserClassAssignments
 );
 router.get(
     "/getClassroomDetails",

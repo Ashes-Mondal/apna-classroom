@@ -11,8 +11,10 @@
         "/getUserInfo",
 
         "/postAnnouncement",
+        
         "/getAssignmentDetails",
         "/getUpcomingAssignments",
+        "/getUserClassAssignments",
         "/getClassroomDetails",
         "/getPostFeed"
     ],

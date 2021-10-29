@@ -14,7 +14,6 @@ export const getPostFeed = async (data) => {
     const url = `/getPostFeed?classID=${data}`;
     try {
         const res = await axios.get(url);
-        console.log("feed", res);
         return res.data;
     } catch (error) {
         throw error.response ? error.response.data : { data: null, error: "Not Connected to server" };
@@ -43,6 +42,26 @@ export const postAnnouncement = async (data) => {
                 "Content-Type": "multipart/form-data",
             },
         });
+        return res.data;
+    } catch (error) {
+        throw error.response ? error.response.data : { data: null, error: "Not Connected to server" };
+    }
+};
+
+export const getUpcomingAssignments = async (data) => {
+    const url = `/getUpcomingAssignments?classID=${data.classroomID}&id=${data.studentID}`;
+    try {
+        const res = await axios.get(url);
+        return res.data;
+    } catch (error) {
+        throw error.response ? error.response.data : { data: null, error: "Not Connected to server" };
+    }
+};
+
+export const getUserClassAssignments = async (data) => {
+    const url = `/getUserClassAssignments?classID=${data.classroomID}&id=${data.id}`;
+    try {
+        const res = await axios.get(url);
         return res.data;
     } catch (error) {
         throw error.response ? error.response.data : { data: null, error: "Not Connected to server" };

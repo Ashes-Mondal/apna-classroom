@@ -6,7 +6,7 @@ const AverageSection = ({marks,theme}) => {
         <div className='result-percentage'>
             <div className='d-flex flex-column'>
                 <span><strong>Total Marks:</strong></span>
-                <span style={{fontSize:'25px'}}><strong className={`font-${theme}`}>{marks.yourMarks}</strong>/{marks.totalMarks}</span>
+                <span style={{fontSize:'25px'}}><strong className={`font-${theme}`}>{marks.yourMarks}</strong>/{marks.maxMarks}</span>
             </div>
             <div className='d-flex flex-column align-items-center'>
                 <span className='text-nowrap'><strong>Your Average:</strong></span>

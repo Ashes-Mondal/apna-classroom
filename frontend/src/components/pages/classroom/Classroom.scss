@@ -2,12 +2,15 @@
     display: flex;
     margin: 0 2%;
     gap: 20px;
+
     @media only screen and (max-width: 860px) {
         flex-direction: column-reverse;
     }
+
     .left-column {
         flex: 3;
     }
+
     .right-column {
         flex: 1;
         display: flex;
@@ -15,7 +18,20 @@
         gap: 20px;
     }
 }
-.no-data-class-img img {
-    margin: auto;
-    max-height: 400px;
+
+.no-data-class-img {
+    border-top: 2px solid red;
+    border-radius: 20px;
+
+    img {
+        margin: auto;
+    }
+
+    div {
+        color: rgb(250, 3, 3);
+        font-weight: 600;
+        align-items: center;
+        text-align: center;
+        font-size: 25px;
+    }
 }

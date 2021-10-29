@@ -8,30 +8,27 @@ import { useParams } from "react-router";
 import AddAnnModal from "./addAnnModal/AddAnnModal";
 import AddAsgModal from "./addAsgModal/AddAsgModal";
 import { getPostFeed } from "../../../axios/classroom";
-import img from "../../../images/no-data/no-data.jpg";
+import img from "./no-data.png";
 
 function Classroom() {
     const { classroomID } = useParams();
-    let enrolledClassrooms = [];
-    enrolledClassrooms = useSelector((state) => state.enrolledClassrooms);
-    console.log("enrolledc:", enrolledClassrooms);
-    const currentClassroom = enrolledClassrooms.find((item) => item._id === classroomID);
-    console.log("currclass:", currentClassroom);
-    let [feed, setFeed] = useState([]);
+    const [feed, setFeed] = useState([]);
+    const enrolledClassrooms = useSelector((state) => state.enrolledClassrooms);
+    const currentClassroom = enrolledClassrooms.find((item) => item._id === classroomID) || {};
+    // console.log("currclass:", currentClassroom);
     useEffect(() => {
         getPostFeed(classroomID).then((res) => {
-            console.log("feed gotten", res);
+            // console.log("feed gotten", res);
             setFeed(res.data);
         });
         return;
-    }, []);
+    }, [classroomID]);
 
     return (
         <div>
             <Banner currentClassroom={currentClassroom} />
             <div className="feed">
                 <div className="left-column">
-                    {/* <div className="post-cta"></div> */}
                     {feed.length ? (
                         feed.map((post, key) => {
                             return <PostCard classroomID={classroomID} key={key} content={post} postType={post.dueDate ? "asg" : "ann"} theme={currentClassroom.theme} />;
@@ -39,12 +36,9 @@ function Classroom() {
                     ) : (
                         <div className="no-data-class-img">
                             <img src={img} alt="no-data" />
+                            <div>Nothing to see here.</div>
                         </div>
                     )}
-                    {/* <PostCard theme={currentClassroom.theme} />
-                    <PostCard postType="asg" theme={currentClassroom.theme} />
-                    <PostCard postType="asg" theme={currentClassroom.theme} />
-                    <PostCard theme={currentClassroom.theme} /> */}
                 </div>
                 <div className="right-column">
                     <AddAnnModal classroomID={classroomID} theme={currentClassroom.theme} />
