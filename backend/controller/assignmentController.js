@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const ObjectID = mongoose.Types.ObjectId;
 const assignmentModel = require("../model/post/assignmentSchema");
 const submissionModel = require("../model/post/submissionSchema");
-const resultModel = require("../model/results/resultSchema");
 const { isUserInClass, getStudentIDs } = require("../utils/controllerUtils");
 
 exports.getAssignmentDetails = async (req, res) => {
@@ -76,8 +75,6 @@ exports.postAssignment = async (req, res) => {
             const submissions = getSubmissionList(studentIDs, asgID);
             await submissionModel.insertMany(submissions);
 
-            //Step3: create results for batch
-            await resultModel.create({ assignmentID: asgID });
             res.status(200).json({ data: asgID, error: null });
         } else {
             res.status(403).json({ data: null, error: "Access Denied" });

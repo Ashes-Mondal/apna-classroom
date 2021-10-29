@@ -1,9 +1,10 @@
 const mongoose = require("mongoose"),
     Schema = mongoose.Schema;
 
-const ResultSchema = new mongoose.Schema(
+const StudentClassAvgSchema = new mongoose.Schema(
     {
-        assignmentID: { type: Schema.Types.ObjectId, ref: "Assignments" },
+        classroomID: { type: Schema.Types.ObjectId, ref: "Classrooms" },
+        studentID: { type: Schema.Types.ObjectId, ref: "Students" },
         totalMarks: {
             type: Number,
             default: 0,
@@ -14,24 +15,9 @@ const ResultSchema = new mongoose.Schema(
             default: 0,
             required: true,
         },
-        averageMarks: {
-            type: Number,
-            default: 0,
-            required: true,
-        },
-        highestMarks: {
-            type: Number,
-            default: 0,
-            required: true,
-        },
-        lowestMarks: {
-            type: Number,
-            default: 0,
-            required: true,
-        },
     },
     {
         timestamps: true,
     }
 );
-module.exports = mongoose.model("Results", ResultSchema);
+module.exports = mongoose.model("StudentClassAvg", StudentClassAvgSchema);

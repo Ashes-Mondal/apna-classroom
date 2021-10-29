@@ -22,6 +22,7 @@ const ClassRoomSchema = new mongoose.Schema
                 required: true
             },
             studentIDs: [{ type: Schema.Types.ObjectId, ref: 'Users' }],
+            //studentAverages: [{type:Number}]
             meetingID: {
                 type: String,
             },
