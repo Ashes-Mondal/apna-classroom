@@ -14,6 +14,7 @@ function Classroom() {
     const { classroomID } = useParams();
     const [feed, setFeed] = useState([]);
     const enrolledClassrooms = useSelector((state) => state.enrolledClassrooms);
+    const loading = useSelector((state) => state.loading);
     const currentClassroom = enrolledClassrooms.find((item) => item._id === classroomID) || {};
     // console.log("currclass:", currentClassroom);
     useEffect(() => {
@@ -33,7 +34,7 @@ function Classroom() {
                         feed.map((post, key) => {
                             return <PostCard classroomID={classroomID} key={key} content={post} postType={post.dueDate ? "asg" : "ann"} theme={currentClassroom.theme} />;
                         })
-                    ) : (
+                    ) : loading ? null : (
                         <div className="no-data-class-img">
                             <img src={img} alt="no-data" />
                             <div>Nothing to see here.</div>

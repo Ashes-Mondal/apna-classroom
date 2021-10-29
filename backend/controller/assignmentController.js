@@ -12,8 +12,9 @@ exports.getAssignmentDetails = async (req, res) => {
         const result = await assignmentModel
             .findById(ObjectID(assignmentID))
             .populate("commentIDs");
+
         if (
-            result.classroomID === classroomID &&
+            result.classroomID == classroomID &&
             isUserInClass(uuid, classroomID)
         ) {
             res.status(200).json({ data: result, error: null });
@@ -21,7 +22,7 @@ exports.getAssignmentDetails = async (req, res) => {
             res.status(403).json({ data: null, error: "Access Denied" });
         }
     } catch (error) {
-        res.status(500).json({ data: null, error: e.message });
+        res.status(500).json({ data: null, error: error.message });
     }
 };
 

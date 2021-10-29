@@ -1,5 +1,5 @@
 import "./PostCard.scss";
-import FileAtt from "../fileAtt/FileAtt";
+import FileAtt from "../../../common/fileAtt/FileAtt";
 
 import React from "react";
 import { useHistory } from "react-router";
@@ -34,7 +34,7 @@ function PostCard({ postType, theme, content, classroomID }) {
             <div className="subtitle">
                 <h5 className="post-auth">{postType === "asg" ? content.facultyID.name : content.userID.name}</h5>
                 <h5>&bull;</h5>
-                <h5 className="post-date">10:46AM 24th September 2021</h5>
+                <h5 className="post-date">{formatDate(content.createdAt)}</h5>
             </div>
             {content.body ? <p>{content.body}</p> : null}
             <div className="attachments">
