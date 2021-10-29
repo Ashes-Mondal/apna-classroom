@@ -1,5 +1,5 @@
-import React from 'react'
-import { useHistory } from 'react-router';
+import React from "react";
+import { useHistory } from "react-router";
 
 const getDate = (givenDate) => {
     const date = new Date(givenDate);
@@ -14,28 +14,36 @@ const Activity = ({ activity, ...props }) => {
     const getActivityStatus = () => {
         const submissionDate = activity.createdAt;
         if (submissionDate > activity.assignmentID.dueDate) {
-            if (activity.marks < 0) return 'Not submitted';
-            return 'Turned in late'
+            if (activity.marks < 0) return "Not submitted";
+            return "Turned in late";
         } else {
-            return '';
+            return "";
         }
-    }
+    };
     const status = getActivityStatus();
     return (
-        <div onClick={()=>history.push(props.link)} className={`activity-container border-${props.theme}`}>
-            <div className='activity-details'>
-                <div className='activity-details-head'>
-                    <span className='activity-details-title'><strong>{activity.assignmentID.title}</strong></span>
-                    <span className='activity-details-status'><strong><span style={status==='Undergoing Checking ...'?{color:'rgb(236, 186, 19)'}:{}}>{status}</span></strong></span>
+        <div onClick={() => history.push(props.link)} className={`activity-container border-${props.theme}`}>
+            <div className="activity-details">
+                <div className="activity-details-head">
+                    <span className="activity-details-title">
+                        <strong>{activity.assignmentID.title}</strong>
+                    </span>
+                    <span className="activity-details-status">
+                        <strong>
+                            <span style={status === "Undergoing Checking ..." ? { color: "rgb(236, 186, 19)" } : {}}>{status}</span>
+                        </strong>
+                    </span>
                 </div>
                 <div>{getDate(activity.assignmentID.dueDate)}</div>
             </div>
-            <div className='activity-marks'>
+            <div className="activity-marks">
                 <strong>Marks:</strong>
-                <strong><span className={`font-${props.theme}`}>{activity.marks < 0 ? '--' : activity.marks}</span> / {activity.assignmentID.maxMarks}</strong>
+                <strong>
+                    <span className={`font-${props.theme}`}>{activity.marks < 0 ? "--" : activity.marks}</span> / {activity.assignmentID.maxMarks}
+                </strong>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Activity
+export default Activity;

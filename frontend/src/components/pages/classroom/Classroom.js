@@ -15,6 +15,7 @@ function Classroom() {
     const [feed, setFeed] = useState([]);
     const enrolledClassrooms = useSelector((state) => state.enrolledClassrooms);
     const [currentClassroom, setCurrentClassroom] = useState({});
+    const loading = useSelector((state) => state.loading);
     useEffect(() => {
         getPostFeed(classroomID).then((res) => {
             setFeed(res.data);
@@ -35,7 +36,7 @@ function Classroom() {
                         feed.map((post, key) => {
                             return <PostCard classroomID={classroomID} key={key} content={post} postType={post.dueDate ? "asg" : "ann"} theme={currentClassroom.theme} />;
                         })
-                    ) : (
+                    ) : loading ? null : (
                         <div className="no-data-class-img">
                             <img src={img} alt="no-data" />
                             <div>Nothing to see here.</div>

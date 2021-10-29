@@ -62,25 +62,23 @@ const Navbar = () => {
                 </span>
             </a>
             <div className="navbar-links">
-                {user.role === "student"
-                    ? getLinks(enrolledClassrooms).map((navLink, key) => {
-                          if (navLink.title === "Results") {
-                              return (
-                                  <NavLink key={key} className="navlink" activeClassName="active-navlink" isActive={checkResultActive} to={navLink.link} onClick={() => history.push(navLink.link)}>
-                                      {navLink.title}
-                                  </NavLink>
-                              );
-                          } else if (navLink.title === "ToDos") {
-                              return (
-                                  <NavLink key={key} className="navlink" activeClassName="active-navlink" isActive={checkTodosActive} to={navLink.link}>
-                                      {navLink.title}
-                                  </NavLink>
-                              );
-                          } else {
-                              return <></>;
-                          }
-                      })
-                    : null}
+                {getLinks(enrolledClassrooms).map((navLink, key) => {
+                    if (navLink.title === "Results") {
+                        return (
+                            <NavLink key={key} className="navlink" activeClassName="active-navlink" isActive={checkResultActive} to={navLink.link} onClick={() => history.push(navLink.link)}>
+                                {navLink.title}
+                            </NavLink>
+                        );
+                    } else if (user.role == "student" && navLink.title === "ToDos") {
+                        return (
+                            <NavLink key={key} className="navlink" activeClassName="active-navlink" isActive={checkTodosActive} to={navLink.link}>
+                                {navLink.title}
+                            </NavLink>
+                        );
+                    } else {
+                        return <></>;
+                    }
+                })}
                 <span onClick={LogoutHandler}>Logout</span>
             </div>
         </div>
