@@ -8,7 +8,7 @@ import { useParams } from "react-router";
 import AddAnnModal from "./addAnnModal/AddAnnModal";
 import AddAsgModal from "./addAsgModal/AddAsgModal";
 import { getPostFeed } from "../../../axios/classroom";
-import img from "../../../images/no-data/no-data.jpg";
+import img from "./no-data.png";
 
 function Classroom() {
     const { classroomID } = useParams();
@@ -22,7 +22,7 @@ function Classroom() {
             setFeed(res.data);
         });
         return;
-    }, []);
+    }, [classroomID]);
 
     return (
         <div>
@@ -36,6 +36,7 @@ function Classroom() {
                     ) : (
                         <div className="no-data-class-img">
                             <img src={img} alt="no-data" />
+                            <div>Nothing to see here.</div>
                         </div>
                     )}
                 </div>

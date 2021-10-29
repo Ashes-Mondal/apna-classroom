@@ -48,8 +48,8 @@ export const postAnnouncement = async (data) => {
     }
 };
 
-export const getUpcomingAssignments = async (classroomID) => {
-    const url = `/getUpcomingAssignments?classID=${classroomID}`;
+export const getUpcomingAssignments = async (data) => {
+    const url = `/getUpcomingAssignments?classID=${data.classroomID}&id=${data.studentID}`;
     try {
         const res = await axios.get(url);
         return res.data;

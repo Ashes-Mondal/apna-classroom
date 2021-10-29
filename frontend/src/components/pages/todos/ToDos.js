@@ -6,7 +6,7 @@ import { setLoading, unsetLoading } from "../../../redux/actions/loading";
 import NoData from "../../common/no-data/NoData";
 import Error from "../error/Error";
 import Head from "../results/Head";
-import ToDo from "./ToDo";
+import Activity from "../results/Activity";
 
 const getSubjectName = (enrolledClassrooms, classroonID) => {
     for (let i = 0; i < enrolledClassrooms.length; i++) {
@@ -18,6 +18,7 @@ const ToDos = () => {
     const { classroomID } = useParams();
     const theme = useSelector((state) => state.theme);
     const enrolledClassrooms = useSelector((state) => state.enrolledClassrooms);
+    const user = useSelector((state) => state.user);
     const loading = useSelector((state) => state.loading);
     const dispatch = useDispatch();
     const [upcommingAssignment, setUpcommingAssignment] = useState([]);
@@ -41,7 +42,7 @@ const ToDos = () => {
     useEffect(() => {
         //fetch from backend logic
         dispatch(setLoading());
-        getUpcomingAssignments(classroomID)
+        getUpcomingAssignments({ classroomID, studentID: user._id })
             .then((resp) => {
                 // console.log("getUpcomingAssignments_resp:", resp);
                 dispatch(unsetLoading());
@@ -51,7 +52,7 @@ const ToDos = () => {
                 console.error(err);
                 dispatch(unsetLoading());
             });
-    }, [classroomID, dispatch]);
+    }, [classroomID, dispatch, user]);
     /******************   useEffect()   **************/
     if (!theme[classroomID]) {
         return <Error />;
@@ -65,7 +66,7 @@ const ToDos = () => {
                 ) : (
                     <>
                         {upcommingAssignment.map((activity, idx) => (
-                            <ToDo key={idx} activity={activity} theme={theme[classroomID]} link={`/class/${classroomID}/asg/${activity._id}`} />
+                            <Activity key={idx} activity={activity} theme={theme[classroomID]} link={`/class/${classroomID}/asg/${activity._id}`} />
                         ))}
                     </>
                 )}

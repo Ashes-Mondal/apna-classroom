@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import "./Navbar.scss";
 import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router";
@@ -24,6 +24,7 @@ const getLinks = (enrolledClassrooms) => {
 const Navbar = () => {
     const history = useHistory();
     const enrolledClassrooms = useSelector((state) => state.enrolledClassrooms);
+    const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
 
     const checkResultActive = (match, location) => {
@@ -52,32 +53,34 @@ const Navbar = () => {
     };
     return (
         <div className="navbar-container">
-            <div className="logo">
+            <a className="logo" href={"/"}>
                 <span>
-                    <img src={logo} alt="logo" onClick={() => history.push("/")} />
+                    <img src={logo} alt="logo" />
                 </span>
-                <span id="site-name" onClick={() => history.push("/")}>
+                <span id="site-name">
                     Apna<strong style={{ color: "black" }}>Classroom</strong>
                 </span>
-            </div>
+            </a>
             <div className="navbar-links">
-                {getLinks(enrolledClassrooms).map((navLink, key) => {
-                    if (navLink.title === "Results") {
-                        return (
-                            <NavLink key={key} className="navlink" activeClassName="active-navlink" isActive={checkResultActive} to={navLink.link} onClick={() => history.push(navLink.link)}>
-                                {navLink.title}
-                            </NavLink>
-                        );
-                    } else if (navLink.title === "ToDos") {
-                        return (
-                            <NavLink key={key} className="navlink" activeClassName="active-navlink" isActive={checkTodosActive} to={navLink.link}>
-                                {navLink.title}
-                            </NavLink>
-                        );
-                    } else {
-                        return <></>;
-                    }
-                })}
+                {user.role === "student"
+                    ? getLinks(enrolledClassrooms).map((navLink, key) => {
+                          if (navLink.title === "Results") {
+                              return (
+                                  <NavLink key={key} className="navlink" activeClassName="active-navlink" isActive={checkResultActive} to={navLink.link} onClick={() => history.push(navLink.link)}>
+                                      {navLink.title}
+                                  </NavLink>
+                              );
+                          } else if (navLink.title === "ToDos") {
+                              return (
+                                  <NavLink key={key} className="navlink" activeClassName="active-navlink" isActive={checkTodosActive} to={navLink.link}>
+                                      {navLink.title}
+                                  </NavLink>
+                              );
+                          } else {
+                              return <></>;
+                          }
+                      })
+                    : null}
                 <span onClick={LogoutHandler}>Logout</span>
             </div>
         </div>
