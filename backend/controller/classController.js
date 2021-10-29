@@ -7,10 +7,11 @@ const commentsModel = require("../model/comment/commentSchema");
 const { uploadMetaModel } = require("../model/uploads/uploads");
 const { isUserInClass } = require("../utils/controllerUtils");
 const userModel = require("../model/user/userSchema");
+const submissionModel = require("../model/post/submissionSchema");
 
 exports.getUpcomingAssignments = async (req, res) => {
     try {
-        const classroomID = req.query.class;
+        const classroomID = req.query.classID;
         const uuid = req.body.uuid;
         if (isUserInClass(uuid, classroomID)) {
             const result = await assignmentModel.find({
@@ -19,7 +20,43 @@ exports.getUpcomingAssignments = async (req, res) => {
             });
             res.status(200).json({ data: result, error: null });
         } else {
-            res.status(403).json({ data: result, error: "Access Denied" });
+            res.status(403).json({ data: null, error: "Access Denied" });
+        }
+    } catch (error) {
+        res.status(500).json({ data: null, error: error.message });
+    }
+};
+
+exports.getUserClassAssignments = async (req, res) => {
+    try {
+        const classroomID = req.query.classID;
+        const studentID = req.query.id;
+        const uuid = req.body.uuid;
+        if (isUserInClass(uuid, classroomID)) {
+            const result = await submissionModel
+                .find({
+                    studentID: ObjectID(studentID),
+                })
+                .populate({
+                    path: "assignmentID",
+                    match: {
+                        classroomID: ObjectID(classroomID),
+                    },
+                });
+                let assignmentIDs = [];
+                let assignments = result.filter(asg=>{
+                    if(asg.assignmentID){
+                        assignmentIDs.push(asg.assignmentID._id);
+                        return true;
+                    }
+                    return false
+                });
+                //calculate class Average
+
+
+            res.status(200).json({ data: {assignments,classAverage:0}, error: null });
+        } else {
+            res.status(403).json({ data: null, error: "Access Denied" });
         }
     } catch (error) {
         res.status(500).json({ data: null, error: error.message });

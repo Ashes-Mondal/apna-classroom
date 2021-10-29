@@ -12,15 +12,13 @@ import img from "../../../images/no-data/no-data.jpg";
 
 function Classroom() {
     const { classroomID } = useParams();
-    let enrolledClassrooms = [];
-    enrolledClassrooms = useSelector((state) => state.enrolledClassrooms);
-    console.log("enrolledc:", enrolledClassrooms);
-    const currentClassroom = enrolledClassrooms.find((item) => item._id === classroomID);
-    console.log("currclass:", currentClassroom);
-    let [feed, setFeed] = useState([]);
+    const [feed, setFeed] = useState([]);
+    const enrolledClassrooms = useSelector((state) => state.enrolledClassrooms);
+    const currentClassroom = enrolledClassrooms.find((item) => item._id === classroomID) || {};
+    // console.log("currclass:", currentClassroom);
     useEffect(() => {
         getPostFeed(classroomID).then((res) => {
-            console.log("feed gotten", res);
+            // console.log("feed gotten", res);
             setFeed(res.data);
         });
         return;
@@ -31,7 +29,6 @@ function Classroom() {
             <Banner currentClassroom={currentClassroom} />
             <div className="feed">
                 <div className="left-column">
-                    {/* <div className="post-cta"></div> */}
                     {feed.length ? (
                         feed.map((post, key) => {
                             return <PostCard classroomID={classroomID} key={key} content={post} postType={post.dueDate ? "asg" : "ann"} theme={currentClassroom.theme} />;
@@ -41,10 +38,6 @@ function Classroom() {
                             <img src={img} alt="no-data" />
                         </div>
                     )}
-                    {/* <PostCard theme={currentClassroom.theme} />
-                    <PostCard postType="asg" theme={currentClassroom.theme} />
-                    <PostCard postType="asg" theme={currentClassroom.theme} />
-                    <PostCard theme={currentClassroom.theme} /> */}
                 </div>
                 <div className="right-column">
                     <AddAnnModal classroomID={classroomID} theme={currentClassroom.theme} />

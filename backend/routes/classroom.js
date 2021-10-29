@@ -10,6 +10,11 @@ router.get(
     classController.getUpcomingAssignments
 );
 router.get(
+    "/getUserClassAssignments",
+    classroomValidator.getUserClassAssignments,
+    classController.getUserClassAssignments
+);
+router.get(
     "/getClassroomDetails",
     classroomValidator.validateClassroom,
     classController.getClassroomDetails

@@ -4,34 +4,45 @@ import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router";
 import logo from "../../../images/logo/logo.png";
 import { handleLogout } from "../../../axios/handleSession";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { unsetUserAuth } from "../../../redux/actions/userAuthentication";
+
+const getLinks = (enrolledClassrooms) => {
+    if (enrolledClassrooms.length === 0) return [];
+    return [
+        {
+            title: "Results",
+            link: `/class/${enrolledClassrooms[0]._id}/results`,
+        },
+        {
+            title: "ToDos",
+            link: `/class/${enrolledClassrooms[0]._id}/todos`,
+        },
+    ];
+};
 
 const Navbar = () => {
     const history = useHistory();
     const enrolledClassrooms = useSelector((state) => state.enrolledClassrooms);
-    const links = useMemo(() => {
-        if (enrolledClassrooms.length) {
-            return [
-                {
-                    title: "Results",
-                    link: `/class/${enrolledClassrooms[0]._id}/results`,
-                },
-                {
-                    title: "ToDos",
-                    link: `/class/${enrolledClassrooms[0]._id}/todos`,
-                },
-            ];
-        } else return [];
-    }, [enrolledClassrooms]);
+    const dispatch = useDispatch();
+
     const checkResultActive = (match, location) => {
         // //some additional logic to verify you are in the home URI
         if (!location) return false;
         const { pathname } = location;
         return pathname.includes("/results");
     };
+    const checkTodosActive = (match, location) => {
+        // //some additional logic to verify you are in the home URI
+        if (!location) return false;
+        const { pathname } = location;
+        return pathname.includes("/todos");
+    };
+
     const LogoutHandler = async () => {
         try {
             await handleLogout();
+            dispatch(unsetUserAuth());
             history.push("/");
             window.location.reload();
         } catch (err) {
@@ -50,19 +61,21 @@ const Navbar = () => {
                 </span>
             </div>
             <div className="navbar-links">
-                {links.map((navLink, key) => {
+                {getLinks(enrolledClassrooms).map((navLink, key) => {
                     if (navLink.title === "Results") {
                         return (
-                            <NavLink key={key} className="navlink" activeClassName="active-navlink" isActive={checkResultActive} to={navLink.link}>
+                            <NavLink key={key} className="navlink" activeClassName="active-navlink" isActive={checkResultActive} to={navLink.link} onClick={() => history.push(navLink.link)}>
+                                {navLink.title}
+                            </NavLink>
+                        );
+                    } else if (navLink.title === "ToDos") {
+                        return (
+                            <NavLink key={key} className="navlink" activeClassName="active-navlink" isActive={checkTodosActive} to={navLink.link}>
                                 {navLink.title}
                             </NavLink>
                         );
                     } else {
-                        return (
-                            <NavLink key={key} className="navlink" activeClassName="active-navlink" to={navLink.link}>
-                                {navLink.title}
-                            </NavLink>
-                        );
+                        return <></>;
                     }
                 })}
                 <span onClick={LogoutHandler}>Logout</span>
