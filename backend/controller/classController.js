@@ -181,7 +181,7 @@ exports.createClassroom = async (req, res) => {
         }
         await studentClassAvgModel.insertMany(insertOption);
         if (classID) {
-            res.status(200).json({ data: classID, error: null });
+            res.status(200).json({ data: result, error: null });
         } else {
             res.status(500).json({
                 data: null,
