@@ -9,6 +9,7 @@ const { isUserInClass } = require("../utils/controllerUtils");
 const userModel = require("../model/user/userSchema");
 const submissionModel = require("../model/post/submissionSchema");
 const studentClassAvgModel = require("../model/results/StudentClassAvgSchema");
+const { nanoid } = require("nanoid");
 
 exports.getUpcomingAssignments = async (req, res) => {
     try {
@@ -16,11 +17,13 @@ exports.getUpcomingAssignments = async (req, res) => {
         const studentID = req.query.id;
         const uuid = req.body.uuid;
         if (isUserInClass(uuid, classroomID)) {
-            const result = await submissionModel.find({
-                classroomID: ObjectID(classroomID),
-                studentID: ObjectID(studentID),
-                submissionDate: { $exists: false },
-            }).populate('assignmentID');
+            const result = await submissionModel
+                .find({
+                    classroomID: ObjectID(classroomID),
+                    studentID: ObjectID(studentID),
+                    submissionDate: { $exists: false },
+                })
+                .populate("assignmentID");
             res.status(200).json({ data: result, error: null });
         } else {
             res.status(403).json({ data: null, error: "Access Denied" });
@@ -155,6 +158,7 @@ exports.createClassroom = async (req, res) => {
             ...req.body,
             theme,
             studentIDs,
+            meetingID: nanoid(10),
         });
         const classID = result._id;
         //enroll students to the classroom
@@ -174,7 +178,7 @@ exports.createClassroom = async (req, res) => {
                 classroomID: classID,
                 studentID: studentIDs[i],
             });
-        };
+        }
         await studentClassAvgModel.insertMany(insertOption);
         if (classID) {
             res.status(200).json({ data: classID, error: null });
