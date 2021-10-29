@@ -14,7 +14,7 @@ const Navbar = () => {
             return [
                 {
                     title: "Results",
-                    link: `class/${enrolledClassrooms[0]._id}/results`,
+                    link: `/class/${enrolledClassrooms[0]._id}/results`,
                 },
                 {
                     title: "ToDos",
