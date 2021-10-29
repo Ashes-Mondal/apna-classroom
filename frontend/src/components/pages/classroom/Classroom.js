@@ -8,6 +8,7 @@ import { useParams } from "react-router";
 import AddAnnModal from "./addAnnModal/AddAnnModal";
 import AddAsgModal from "./addAsgModal/AddAsgModal";
 import { getPostFeed } from "../../../axios/classroom";
+import img from "../../../images/no-data/no-data.jpg";
 
 function Classroom() {
     const { classroomID } = useParams();
@@ -31,9 +32,15 @@ function Classroom() {
             <div className="feed">
                 <div className="left-column">
                     {/* <div className="post-cta"></div> */}
-                    {feed.map((post, key) => {
-                        return <PostCard classroomID={classroomID} key={key} content={post} postType={post.dueDate ? "asg" : "ann"} theme={currentClassroom.theme} />;
-                    })}
+                    {feed.length ? (
+                        feed.map((post, key) => {
+                            return <PostCard classroomID={classroomID} key={key} content={post} postType={post.dueDate ? "asg" : "ann"} theme={currentClassroom.theme} />;
+                        })
+                    ) : (
+                        <div className="no-data-class-img">
+                            <img src={img} alt="no-data" />
+                        </div>
+                    )}
                     {/* <PostCard theme={currentClassroom.theme} />
                     <PostCard postType="asg" theme={currentClassroom.theme} />
                     <PostCard postType="asg" theme={currentClassroom.theme} />
