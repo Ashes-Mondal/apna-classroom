@@ -4,6 +4,7 @@ import { config } from "./jitsiConfig";
 import "./VideoConference.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { setLoading, unsetLoading } from "../../../redux/actions/loading";
+import { validateMeetAccess } from "../../../axios/user";
 
 const VideoConference = () => {
     const { meetingID, classroomID } = useParams();
@@ -18,6 +19,19 @@ const VideoConference = () => {
             script.onload = resolve;
             document.body.appendChild(script);
         });
+
+    useEffect(() => {
+        validateMeetAccess(classroomID, meetingID)
+            .then((res) => {
+                if (res.data !== "valid") {
+                    window.location.replace(`/`);
+                }
+            })
+            .catch((e) => {
+                console.error(e);
+                window.location.replace(`/`);
+            });
+    }, []);
 
     useEffect(() => {
         const initialiseJitsi = async () => {

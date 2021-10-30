@@ -109,3 +109,34 @@ module.exports.sendResetPasswordEmail = (req, res, next) => {
         next();
     }
 };
+
+module.exports.meetAccessValidator = (req, res, next) => {
+    const validateBody = Joi.object({
+        uuid: Joi.string().required(),
+    });
+    const validateQuery = Joi.object({
+        classID: Joi.string().required(),
+        meetID: Joi.string().required(),
+    });
+    //
+    const body = validateBody.validate(
+        req.body,
+        options
+    );
+    const query = validateQuery.validate(
+        req.query,
+        options
+    );
+    //
+    if (body.error || query.error) {
+        res.status(400).json({
+            data: null,
+            error: "Invalid request parameters",
+        });
+        return;
+    } else {
+        req.body = body.value;
+        req.query = query.value;
+        next();
+    }
+};
