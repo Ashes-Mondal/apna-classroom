@@ -4,7 +4,7 @@ import Upload from "../components/common/file-upload/Upload";
 import Classroom from "../components/pages/classroom/Classroom";
 import Home from "../components/pages/home/Home";
 import ToDos from "../components/pages/todos/ToDos";
-import VC from "../components/pages/vc/VC";
+import VideoConference from "../components/pages/video-conference/VideoConference";
 
 const protectedRoutes = [
     {
@@ -32,7 +32,7 @@ const protectedRoutes = [
         path: "/class/:classroomID",
     },
     {
-        component: VC,
+        component: VideoConference,
         path: "/class/:classroomID/meet/:meetingID",
     },
 ];
