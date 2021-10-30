@@ -19,12 +19,14 @@ exports.getUpcomingAssignments = async (req, res) => {
         if (isUserInClass(uuid, classroomID)) {
             const result = await submissionModel
                 .find({
-                    classroomID: ObjectID(classroomID),
                     studentID: ObjectID(studentID),
                     submissionDate: { $exists: false },
                 })
-                .populate("assignmentID");
-            res.status(200).json({ data: result, error: null });
+                .populate({
+                    path:"assignmentID",
+                    match:{classroomID: ObjectID(classroomID),}
+                });
+            res.status(200).json({ data: result.filter(item=>item.assignmentID), error: null });
         } else {
             res.status(403).json({ data: null, error: "Access Denied" });
         }

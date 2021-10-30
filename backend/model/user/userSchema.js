@@ -28,6 +28,7 @@ const UsersSchema = new mongoose.Schema(
         status: {
             type: String,
             default: "Active",
+            required: true,
         },
         failedLoginAttempts: {
             type: Number,

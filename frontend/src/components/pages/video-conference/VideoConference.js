@@ -31,7 +31,7 @@ const VideoConference = () => {
                 console.error(e);
                 window.location.replace(`/`);
             });
-    }, []);
+    }, [classroomID,meetingID]);
 
     useEffect(() => {
         const initialiseJitsi = async () => {

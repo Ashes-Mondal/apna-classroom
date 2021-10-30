@@ -31,7 +31,7 @@ exports.loginController = async (req, res, next) => {
         }
 
         //3.checking whether User is active
-        if (userInfo.status != "Active") {
+        if (userInfo.status.toLowerCase() !== "active") {
             res.status(400).json({
                 data: null,
                 error: "Login disabled kindly contact admin",
@@ -89,7 +89,7 @@ exports.loginController = async (req, res, next) => {
         await Session.insertMany([
             {
                 sessionID: sessionID,
-                uuid: userInfo.uuid,
+                user: userInfo._id,
                 refreshToken: refreshToken,
                 jwtUid: jwtUid,
                 clientAgent: req.headers["user-agent"],

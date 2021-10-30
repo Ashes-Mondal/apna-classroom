@@ -7,20 +7,20 @@ const getDate = (givenDate) => {
     const finalDate = d[0] + d[1].toUpperCase();
     return finalDate;
 };
+const getActivityStatus = (activity) => {
+    const submissionDate = activity.createdAt;
+    if (submissionDate > activity.assignmentID.dueDate) {
+        if (activity.marks < 0) return "Not submitted";
+        return "Turned in late";
+    } else {
+        return "";
+    }
+};
 
 const Activity = ({ activity, ...props }) => {
     const history = useHistory();
-
-    const getActivityStatus = () => {
-        const submissionDate = activity.createdAt;
-        if (submissionDate > activity.assignmentID.dueDate) {
-            if (activity.marks < 0) return "Not submitted";
-            return "Turned in late";
-        } else {
-            return "";
-        }
-    };
-    const status = getActivityStatus();
+    console.log(activity);
+    const status = getActivityStatus(activity);
     return (
         <div onClick={() => history.push(props.link)} className={`activity-container border-${props.theme}`}>
             <div className="activity-details">
