@@ -1,29 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
-
-import Jitsi from "react-jitsi";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { config } from "./jitsiConfig";
-
 import "./VC.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading, unsetLoading } from "../../../redux/actions/loading";
 
 function VC() {
     const { meetingID, classroomID } = useParams();
     const user = useSelector((state) => state.user);
-    const history = useHistory();
+    const dispatch = useDispatch();
 
-    const loadApi = () => {
+    useEffect(() => {
+        dispatch(setLoading());
         const container = document.createElement("div");
+        document.querySelector("#jitsi").innerHTML = "";
         document.querySelector("#jitsi").appendChild(container);
+
         container.id = "meet";
+        container.style.width = "100vw";
         container.style.height = "100vh";
         var domain = "meet.jit.si";
         var options = {
-            roomName: "meetingID",
+            roomName: meetingID,
             parentNode: container,
-            // userDetails: {
-            //     avatarUrl: localStorage.getItem("photoUrl"),
-            // },
             ...config,
             userInfo: {
                 email: user.email,
@@ -31,15 +30,16 @@ function VC() {
             },
         };
         let api = new window.JitsiMeetExternalAPI(domain, options);
-        api.addListener("videoConferenceLeft", (e) => {
-            console.log("/!\\ USER LEFT", e);
+        api.on("videoConferenceLeft", (e) => {
+            if (e) console.error(e);
             api.dispose();
-            history.replace(`/class/${classroomID}`);
+            window.location.replace(`/class/${classroomID}`);
         });
-    };
-    useEffect(() => {
-        loadApi();
-    }, []);
+        dispatch(unsetLoading());
+        return () => {
+            api.dispose();
+        };
+    }, [classroomID, meetingID, user, dispatch]);
     return <div id="jitsi"></div>;
 }
 
