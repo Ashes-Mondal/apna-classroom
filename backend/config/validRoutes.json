@@ -15,13 +15,9 @@
         "/getUserClassAssignments",
         "/getClassroomDetails",
         "/getPostFeed",
-        "/validMeetAccess"
+        "/validMeetAccess",
+        "/postComment"
     ],
-    "teacherRoutes": [
-        "/postAssignment",
-        "/createClassroom"
-    ],
-    "adminRoutes": [
-        "/register"
-    ]
+    "teacherRoutes": ["/postAssignment", "/createClassroom"],
+    "adminRoutes": ["/register"]
 }

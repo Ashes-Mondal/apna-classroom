@@ -11,7 +11,10 @@ exports.getAssignmentDetails = async (req, res) => {
         const uuid = req.body.uuid;
         const result = await assignmentModel
             .findById(ObjectID(assignmentID))
-            .populate("commentIDs")
+            .populate({
+                path: "commentIDs",
+                populate: { path: "userID", select: "name" },
+            })
             .populate("fileIDs");
 
         if (

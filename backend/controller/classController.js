@@ -23,10 +23,13 @@ exports.getUpcomingAssignments = async (req, res) => {
                     submissionDate: { $exists: false },
                 })
                 .populate({
-                    path:"assignmentID",
-                    match:{classroomID: ObjectID(classroomID),}
+                    path: "assignmentID",
+                    match: { classroomID: ObjectID(classroomID) },
                 });
-            res.status(200).json({ data: result.filter(item=>item.assignmentID), error: null });
+            res.status(200).json({
+                data: result.filter((item) => item.assignmentID),
+                error: null,
+            });
         } else {
             res.status(403).json({ data: null, error: "Access Denied" });
         }
@@ -112,7 +115,10 @@ exports.getPostFeed = async (req, res) => {
                 .find({
                     classroomID: classroomID,
                 })
-                .populate("commentIDs")
+                .populate({
+                    path: "commentIDs",
+                    populate: { path: "userID", select: "name" },
+                })
                 .populate({
                     path: "facultyID",
                     select: "name email",
@@ -123,14 +129,17 @@ exports.getPostFeed = async (req, res) => {
                 .find({
                     classroomID: classroomID,
                 })
-                .populate("commentIDs")
+                .populate({
+                    path: "commentIDs",
+                    populate: { path: "userID", select: "name" },
+                })
                 .populate({
                     path: "userID",
                     select: "name email",
                 })
                 .populate("fileIDs");
             let feed = [...asgFeed, ...annFeed];
-            feed.sort((a, b) => a.createdAt - b.createdAt);
+            feed.sort((a, b) => b.createdAt - a.createdAt);
             res.status(200).json({ data: feed, error: null });
         } else {
             res.status(403).json({ data: result, error: "Access Denied" });
