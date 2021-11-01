@@ -4,6 +4,7 @@ import Paperclip from "./Paperclip";
 import Send from "./Send";
 import { useParams } from "react-router";
 import { getAssignmentDetails } from "../../../axios/assignment";
+import FileAtt from "../../common/fileAtt/FileAtt";
 
 function Assignment() {
     const getDate = (givenDate) => {
@@ -63,12 +64,12 @@ function Assignment() {
                         <h3 className="asg-points asg-theme">{assignment.maxMarks} points</h3>
                     </span>
                     <div className="asg-text">{assignment.body}</div>
-                    <div className="attachment-component-type2">
-                        <Paperclip />
-                        <div className="asg-attachment-filename">
-                            <div className="bold">Template SRS.pdf</div>
-                            <div>DOCUMENT</div>
-                        </div>
+                    <div className="attachments">
+                        {assignment.fileIDs
+                            ? assignment.fileIDs.map((file, key) => {
+                                  return <FileAtt key={key} fileData={file} />;
+                              })
+                            : null}
                     </div>
                     <div className="asg-posted">Posted {getDate(assignment.createdAt)}</div>
                 </div>

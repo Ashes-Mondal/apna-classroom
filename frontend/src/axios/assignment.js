@@ -4,7 +4,7 @@ export const getAssignmentDetails = async (data) => {
     const url = `/getAssignmentDetails?classID=${data.classroomID}&asgID=${data.assignmentID}`;
     try {
         const res = await axios.get(url);
-        console.log("error:", res.data);
+        console.log("res.data:", res.data);
         return res.data;
     } catch (error) {
         console.log("error:", error);

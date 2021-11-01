@@ -11,7 +11,8 @@ exports.getAssignmentDetails = async (req, res) => {
         const uuid = req.body.uuid;
         const result = await assignmentModel
             .findById(ObjectID(assignmentID))
-            .populate("commentIDs");
+            .populate("commentIDs")
+            .populate("fileIDs");
 
         if (
             result.classroomID == classroomID &&
