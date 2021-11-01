@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import Navbar from "./components/common/navbar/Navbar";
 import Footer from "./components/common/footer/Footer";
 import Error from "./components/pages/error/Error";
-import protectedRoutes from "./routes/protected";
+import {protectedRoutes,adminRoutes} from "./routes/protected";
 import publicRoutes from "./routes/public";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -17,6 +17,7 @@ import SyncLoader from "react-spinners/SyncLoader";
 
 function App() {
     const userAuthentication = useSelector((state) => state.userAuthentication);
+    const user = useSelector((state) => state.user);
     const loading = useSelector((state) => state.loading);
     const dispatch = useDispatch();
 
@@ -69,7 +70,7 @@ function App() {
                               return <Route key={index} exact path={route.path} component={route.component} />;
                           })
                         : null}
-                    {userAuthentication ? protectedRoutes.map((route, index) => <Route key={index} exact path={route.path} component={route.component} />) : null}
+                    {userAuthentication ? (user.role?.toLowerCase()==='admin'?adminRoutes:protectedRoutes).map((route, index) => <Route key={index} exact path={route.path} component={route.component} />) : null}
                     {loading ? null : <Route exact path="*" component={Error} />}
                 </Switch>
             </main>
