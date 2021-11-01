@@ -10,7 +10,11 @@ exports.getAnnouncementDetails = async (req, res) => {
         const uuid = req.body.uuid;
         const result = await announcementModel
             .findById(ObjectID(announcementID))
-            .populate("commentIDs");
+            .populate({
+                path: "commentIDs",
+                populate: { path: "userID", select: "name" },
+            })
+            .populate("fileIDs");
         if (
             result.classroomID === classroomID &&
             isUserInClass(uuid, classroomID)

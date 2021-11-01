@@ -5,20 +5,29 @@ import Send from "./Send";
 import { useParams } from "react-router";
 import { getAssignmentDetails } from "../../../axios/assignment";
 import FileAtt from "../../common/fileAtt/FileAtt";
+import { postComment } from "../../../axios/comment";
 
 function Assignment() {
     const getDate = (givenDate) => {
         if (!givenDate) return;
         const date = new Date(givenDate);
         const d = date.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", hour12: true, hour: "2-digit", minute: "2-digit" }).split(",");
-        console.log("d", givenDate);
         const finalDate = d[0] + d[1].toUpperCase();
         return finalDate;
     };
-
+    const [body, setBody] = useState("");
     const { classroomID, assignmentID } = useParams();
     const [assignment, setAssignment] = useState({});
     console.log("asgDetails:", assignment);
+    const handleCommentSubmit = (e) => {
+        e.preventDefault();
+        const data = { body, postID: assignmentID, postType: "asg", classroomID };
+        postComment(data).then((res) => {
+            console.log("comments res", res);
+            setAssignment({ ...assignment, commentIDs: [res.data, ...assignment.commentIDs] });
+        });
+        setBody("");
+    };
     useEffect(() => {
         getAssignmentDetails({ classroomID, assignmentID })
             .then((res) => {
@@ -73,17 +82,30 @@ function Assignment() {
                     </div>
                     <div className="asg-posted">Posted {getDate(assignment.createdAt)}</div>
                 </div>
-                <div className="asg-comment">
-                    <input placeholder="Write a Comment..."></input>
-                    <div className="submit-btn-theme">
+                <form className="asg-comment" onSubmit={handleCommentSubmit}>
+                    <input
+                        placeholder="Write a Comment..."
+                        onChange={(e) => {
+                            setBody(e.target.value);
+                        }}
+                        value={body}
+                    ></input>
+                    <button className="submit-btn-theme">
                         <Send />
-                    </div>
-                </div>
+                    </button>
+                </form>
                 <div className="asg-class-comments">
                     <h3>Class Comments</h3>
                     <div className="asg-class-comment">
-                        <h6 className="bold">Aaryak Shah</h6> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum, iusto. Quo tempore ab ipsum necessitatibus quos, explicabo unde excepturi,
-                        eveniet dignissimos sequi adipisci. Mollitia maiores consequuntur tempore sit nisi! Dolore!
+                        {assignment.commentIDs
+                            ? assignment.commentIDs.map((comment, key) => {
+                                  return (
+                                      <>
+                                          <h6 className="bold">{comment.userID.name}</h6> {comment.body}
+                                      </>
+                                  );
+                              })
+                            : null}
                     </div>
                 </div>
             </div>
