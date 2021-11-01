@@ -9,18 +9,19 @@
     "studentRoutes": [
         "/logout",
         "/getUserInfo",
-
         "/postAnnouncement",
-        
         "/getAssignmentDetails",
         "/getUpcomingAssignments",
         "/getUserClassAssignments",
         "/getClassroomDetails",
-        "/getPostFeed"
+        "/getPostFeed",
+        "/validMeetAccess"
     ],
     "teacherRoutes": [
         "/postAssignment",
         "/createClassroom"
     ],
-    "adminRoutes": ["/register"]
+    "adminRoutes": [
+        "/register"
+    ]
 }

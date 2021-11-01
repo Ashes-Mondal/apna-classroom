@@ -35,5 +35,10 @@ router.post(
     authValidator.sendResetPasswordEmail,
     authController.sendResetPasswordEmail
 );
+router.get(
+    "/validMeetAccess",
+    authValidator.meetAccessValidator,
+    authController.validMeetAccess
+)
 // Exporting routes
 module.exports.router = router;

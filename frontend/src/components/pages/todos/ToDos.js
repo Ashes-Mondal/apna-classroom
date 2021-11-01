@@ -46,10 +46,11 @@ const ToDos = () => {
             .then((resp) => {
                 // console.log("getUpcomingAssignments_resp:", resp);
                 dispatch(unsetLoading());
-                setUpcommingAssignment(resp.data);
+                setUpcommingAssignment(resp.data.sort((a,b)=>b.assignmentID.dueDate - a.assignmentID.dueDate ));
             })
             .catch((err) => {
                 console.error(err);
+                setUpcommingAssignment([]);
                 dispatch(unsetLoading());
             });
     }, [classroomID, dispatch, user]);

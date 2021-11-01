@@ -21,10 +21,6 @@ const UsersSessionSchema = new mongoose.Schema
                 type: String,
                 required: true
             },
-            Status: {
-                type: String,
-                default: "Active"
-            }
         },
         {
             timestamps: true

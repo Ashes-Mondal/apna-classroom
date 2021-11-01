@@ -64,12 +64,13 @@ const Results = () => {
         getUserClassAssignments({ classroomID, id: user._id })
             .then((resp) => {
                 // console.log("getUserClassAssignments_res", resp);
-                setActivities(resp.data.assignments);
+                setActivities(resp.data.assignments.sort((a,b)=>b.assignmentID.dueDate - a.assignmentID.dueDate ));
                 classAverage = resp.data.classAverage;
                 dispatch(unsetLoading());
             })
             .catch((err) => {
                 console.error(err);
+                setActivities([]);
                 dispatch(unsetLoading());
             });
     }, [classroomID, user, dispatch]);

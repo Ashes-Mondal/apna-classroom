@@ -1,10 +1,13 @@
 const userModel = require("../model/user/userSchema"),
+    classModel = require("../model/classroom/classroom"),
     jwt = require("../utils/jwt"),
     brcypt = require("../utils/userPassword"),
     Session = require("../model/session/sessionSchema"),
     UID = require("../utils/uid");
 const { resetPasswordHTML } = require("../template/reset-password");
 const { sendEmail } = require("../utils/nodemailer");
+const mongoose = require("mongoose");
+const ObjectID = mongoose.Types.ObjectId;
 
 exports.loginController = async (req, res, next) => {
     try {
@@ -28,7 +31,7 @@ exports.loginController = async (req, res, next) => {
         }
 
         //3.checking whether User is active
-        if (userInfo.status != "Active") {
+        if (userInfo.status.toLowerCase() !== "active") {
             res.status(400).json({
                 data: null,
                 error: "Login disabled kindly contact admin",
@@ -86,7 +89,7 @@ exports.loginController = async (req, res, next) => {
         await Session.insertMany([
             {
                 sessionID: sessionID,
-                uuid: userInfo.uuid,
+                user: userInfo._id,
                 refreshToken: refreshToken,
                 jwtUid: jwtUid,
                 clientAgent: req.headers["user-agent"],
@@ -215,5 +218,25 @@ exports.sendResetPasswordEmail = async (req, res, next) => {
     } catch (e) {
         // console.log(e)
         res.status(400).json({ data: null, error: e.message || e });
+    }
+};
+
+exports.validMeetAccess = async (req, res, next) => {
+    try {
+        //
+        let user = await userModel.findOne({ uuid: req.body.uuid });
+        let currentClass = await classModel.findById(
+            ObjectID(req.query.classID)
+        );
+        if (
+            user?.classroomIDs.includes(currentClass._id) &&
+            currentClass.meetingID == req.query.meetID
+        ) {
+            res.status(200).json({ data: "valid", error: null });
+        } else {
+            res.status(403).json({ data: null, error: "Unauthorized" });
+        }
+    } catch (e) {
+        res.status(400).json({ data: null, error: e.message });
     }
 };

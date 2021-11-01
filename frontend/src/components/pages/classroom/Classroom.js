@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Banner from "./banner/Banner";
 import PostCard from "./postCard/PostCard";
 import "./Classroom.scss";
@@ -9,19 +9,23 @@ import AddAnnModal from "./addAnnModal/AddAnnModal";
 import AddAsgModal from "./addAsgModal/AddAsgModal";
 import { getPostFeed } from "../../../axios/classroom";
 import img from "./no-data.png";
+import { setLoading, unsetLoading } from "../../../redux/actions/loading";
 
 function Classroom() {
     const { classroomID } = useParams();
     const [feed, setFeed] = useState([]);
     const enrolledClassrooms = useSelector((state) => state.enrolledClassrooms);
     const [currentClassroom, setCurrentClassroom] = useState({});
+    const dispatch = useDispatch();
     const loading = useSelector((state) => state.loading);
     useEffect(() => {
+        dispatch(setLoading());
         getPostFeed(classroomID).then((res) => {
             setFeed(res.data);
+            dispatch(unsetLoading());
         });
         return;
-    }, [classroomID]);
+    }, [classroomID,dispatch]);
     useEffect(() => {
         setCurrentClassroom(enrolledClassrooms.find((item) => item._id === classroomID) || {});
         return;
