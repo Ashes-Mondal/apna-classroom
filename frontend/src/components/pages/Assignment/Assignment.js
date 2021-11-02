@@ -18,7 +18,6 @@ function Assignment() {
     const user = useSelector((state) => state.user);
     const theme = useSelector((state) => state.theme);
     const [showSubmissions, setShowSubmissions] = useState(false);
-
     const handleCommentSubmit = (e) => {
         e.preventDefault();
         const data = { body, postID: assignmentID, postType: "asg", classroomID };
