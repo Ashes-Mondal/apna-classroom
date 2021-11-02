@@ -3,7 +3,6 @@
     display: inline-flex;
     padding: 15px 20px;
     margin: 10px;
-    width: 300px;
     border-radius: 5px;
     cursor: pointer;
     align-items: center;
@@ -14,7 +13,12 @@
         font-size: 24px;
     }
 
-    h5, h6 {
+    h5,
+    h6 {
+        width: 180px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         color: black;
         margin: 0;
     }
