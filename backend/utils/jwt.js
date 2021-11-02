@@ -66,7 +66,10 @@ const renewAccessToken = async (accessToken) => {
 
         try {
             //==>Verification successfull
-            await jwt.verify(result._doc.refreshToken, global.RefreshTokenSecret);
+            await jwt.verify(
+                result._doc.refreshToken,
+                global.RefreshTokenSecret
+            );
         } catch (error) {
             //==>Verification failed
             if (error.name === "TokenExpiredError") {
@@ -118,8 +121,8 @@ module.exports.accessTokenVerification = async (accessToken) => {
         const userSession = await Sessions.findOne({
             sessionID: decoded.sessionID,
             jwtUid: decoded.jwtUid,
-        }).populate('user');
-        if (!userSession._doc) throw "Session does not exist!";
+        }).populate("user");
+        if (!userSession) throw "Session does not exist!";
         else if (userSession._doc?.user.status?.toLowerCase() === "inactive") {
             await Sessions.deleteOne({ sessionID: decoded.sessionID });
             throw "User is disabled!";
