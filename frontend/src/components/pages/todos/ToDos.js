@@ -44,7 +44,7 @@ const ToDos = () => {
         dispatch(setLoading());
         getUpcomingAssignments({ classroomID, studentID: user._id })
             .then((resp) => {
-                // console.log("getUpcomingAssignments_resp:", resp);
+                console.log("getUpcomingAssignments_resp:", resp);
                 dispatch(unsetLoading());
                 setUpcommingAssignment(resp.data.sort((a, b) => b.assignmentID.dueDate - a.assignmentID.dueDate));
             })
