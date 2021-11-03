@@ -127,3 +127,71 @@
 .asg-class-comment {
     margin: 3% 0%;
 }
+.submissions-list-container {
+    margin: 2% 15%;
+}
+.asg-secondrow {
+    display: flex;
+    justify-content: space-between;
+}
+.asg-secondrow1 {
+    display: flex;
+}
+.asg-filter-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20px;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 5px 20px;
+    cursor: pointer;
+}
+.asg-toprow h2 {
+    font-weight: bold;
+    color: black;
+}
+.asg-secondrow h4 {
+    margin: 0px;
+    font-weight: bold;
+    color: black;
+}
+.submissions-list {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.submission-item {
+    margin: 10px 0px;
+    background: white;
+    color: black;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    border-radius: 5px;
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.05);
+}
+.submission-item:hover {
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+.submission-item-name {
+    margin: 10px 20px;
+}
+.submission-item-pipeline {
+    margin: auto 10px;
+    font-size: 22px;
+}
+.submission-item-rollno {
+    margin: 10px 10px;
+}
+.submission-item-marks {
+    margin: auto;
+    font-weight: bold;
+}
+.submission-item-attachments {
+    margin: 10px 0px;
+    margin-right: 10%;
+}
