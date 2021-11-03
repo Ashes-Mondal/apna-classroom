@@ -3,7 +3,7 @@ import React from "react";
 import { FaPaperclip } from "react-icons/fa";
 
 function FileAtt({ fileData }) {
-    const originalname = fileData.metadata.originalname;
+    const originalname = typeof fileData === "string" ? fileData : fileData.metadata.originalname;
     const namesplit = originalname.split(".");
     const ext = namesplit[namesplit.length - 1];
     return (

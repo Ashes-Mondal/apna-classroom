@@ -4,6 +4,13 @@ import { GrFormClose } from "react-icons/gr";
 import { useSelector } from "react-redux";
 import { postAnnouncement, postAssignment } from "../../../../axios/classroom";
 import "./PostForm.scss";
+import FileAtt from "../../../common/fileAtt/FileAtt";
+import { AiOutlineCloudUpload } from "react-icons/ai";
+
+const FileShow = ({ file }) => {
+    console.log("showing file", file);
+    return <h5>{file.name}</h5>;
+};
 
 const PostForm = ({ setShowForm, formType, classroomID, theme }) => {
     const history = useHistory();
@@ -11,9 +18,13 @@ const PostForm = ({ setShowForm, formType, classroomID, theme }) => {
     const [body, setBody] = useState("");
     const [dueDate, setDueDate] = useState("");
     const [maxMarks, setMaxMarks] = useState("");
-    const [selectedFiles, setSelectedFiles] = useState();
+    const [selectedFiles, setSelectedFiles] = useState([]);
 
     const user = useSelector((state) => state.user);
+
+    const fileUploadHandler = () => {
+        document.querySelector("#files").click();
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -85,10 +96,23 @@ const PostForm = ({ setShowForm, formType, classroomID, theme }) => {
                         {body.length ? <h6>DESCRIPTION</h6> : null}
                         <textarea placeholder="Description..." rows={6} onChange={(e) => setBody(e.target.value)} />
                     </div>
-                    <div className="form-input file-input">
-                        <h6>ATTACH FILE</h6>
-                        <input type="file" placeholder="Attach A File" multiple="multiple" id="files" onChange={(e) => setSelectedFiles(e.target.files)} />
+                    <div className="">
+                        <div className="selected-files">
+                            {console.log("sel", selectedFiles)}
+                            {selectedFiles.map((file, key) => {
+                                // console.log("file rendered", file);
+                                return <FileAtt fileData={file.name} key={key} />;
+                            })}
+                        </div>
                     </div>
+                    <div className="form-input file-input" onClick={fileUploadHandler}>
+                        <h6>ATTACH FILES</h6>
+                        <div className="file-upload-icon">
+                            <AiOutlineCloudUpload />
+                        </div>
+                        <input type="file" placeholder="Attach A File" multiple="multiple" id="files" onChange={(e) => setSelectedFiles(Array.from(e.target.files || []))} />
+                    </div>
+
                     <button className={`bg-${theme}`} onSubmit={handleSubmit}>
                         Post {formType === "asg" ? "Assignment" : "Announcement"}
                     </button>
