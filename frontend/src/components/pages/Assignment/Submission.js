@@ -56,7 +56,7 @@ function Submission({ assignment, theme }) {
                     <div>
                         <div className="selected-files">
                             {selectedFiles.map((file, key) => (
-                                <FileAtt fileData={file.metadata.originalname} key={key} />
+                                <FileAtt fileData={file.metadata?file.metadata.originalname:file.name} key={key} />
                             ))}
                         </div>
                     </div>
