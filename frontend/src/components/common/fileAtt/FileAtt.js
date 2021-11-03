@@ -4,7 +4,7 @@ import { FaPaperclip } from "react-icons/fa";
 const baseUrl = "http://localhost:8000/api";
 
 function FileAtt({ fileData }) {
-    console.log(fileData);
+    // console.log(fileData);
     const originalname = fileData.metadata ? fileData.metadata.originalname : fileData;
     const namesplit = originalname.split(".");
     const ext = namesplit[namesplit.length - 1];
