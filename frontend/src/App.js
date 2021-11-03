@@ -32,11 +32,12 @@ function App() {
             return result;
         };
         dispatch(setLoading());
+        if(!user._id)
         fetchUserDetails()
             .then((resp) => {
-                // console.log(resp);
+                // console.log('fetchUserDetails_resp:',resp);
                 dispatch(updateUser(resp.data));
-                dispatch(setUserAuth());
+                dispatch(setUserAuth())
 
                 //enrolledClassrooms
                 const enrolledClassrooms = resp.data.classroomIDs || [];
@@ -46,10 +47,10 @@ function App() {
             })
             .catch((err) => {
                 console.error(err);
-                dispatch(unsetUserAuth());
+                dispatch(unsetUserAuth())
                 dispatch(unsetLoading());
             });
-    }, [userAuthentication, dispatch]);
+    }, [dispatch,user,userAuthentication]);
 
     /******************   useEffect()   **************/
     return (

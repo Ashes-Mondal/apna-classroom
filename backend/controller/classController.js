@@ -31,7 +31,7 @@ exports.getUpcomingAssignments = async (req, res) => {
                     match: { classroomID: ObjectID(classroomID) },
                 });
             res.status(200).json({
-                data: result.filter((item) => item.assignmentID),
+                data: result.filter((item) => item.assignmentID && item.assignmentID.dueDate>Date.now()),
                 error: null,
             });
         } else {
