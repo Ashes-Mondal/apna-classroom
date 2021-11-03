@@ -35,9 +35,18 @@ const ClassForm = ({ setShowForm }) => {
                 console.log(e);
             });
     };
+    const closeOnOverlayClick = (e) => {
+        if (e.target.classList[0] === "overlay") {
+            // console.log("overlay click");
+            setShowForm(false);
+        }
+        if (e.target.classList[0] === "post-form") {
+            // console.log("form click");
+        }
+    };
     return (
         <>
-            <div className="overlay">
+            <div className="overlay" onClick={closeOnOverlayClick}>
                 <form className="classroom-form" onSubmit={handleSubmit}>
                     <h2>Add New Classroom</h2>
                     <div className="form-input">

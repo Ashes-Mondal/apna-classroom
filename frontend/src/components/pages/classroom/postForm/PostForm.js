@@ -22,6 +22,16 @@ const PostForm = ({ setShowForm, formType, classroomID, theme }) => {
 
     const user = useSelector((state) => state.user);
 
+    const closeOnOverlayClick = (e) => {
+        if (e.target.classList[0] === "overlay") {
+            // console.log("overlay click");
+            setShowForm(false);
+        }
+        if (e.target.classList[0] === "post-form") {
+            // console.log("form click");
+        }
+    };
+
     const fileUploadHandler = () => {
         document.querySelector("#files").click();
     };
@@ -73,7 +83,7 @@ const PostForm = ({ setShowForm, formType, classroomID, theme }) => {
     };
     return (
         <>
-            <div className="overlay">
+            <div className="overlay" onClick={closeOnOverlayClick}>
                 <form className="post-form" onSubmit={handleSubmit}>
                     <h2>Post An {formType === "asg" ? "Assignment" : "Announcement"}</h2>
                     <div className="form-input">
