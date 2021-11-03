@@ -7,13 +7,20 @@
     background-color: #f0f0f0;
     height: fit-content;
     min-height: 100vh;
+    display: flex;
+    justify-content: center;
 }
 .asg-container1 {
     height: fit-content;
     border-radius: 10px;
     background-color: white;
     box-shadow: 4px 4px 10px 0px rgb(201, 201, 201);
-    padding: 4%;
+    padding: 2%;
+    flex: 2;
+}
+.asg-container2 {
+    flex: 5;
+    max-width: 70%;
 }
 .asg-detail {
     background-color: white;
@@ -26,10 +33,23 @@
 .asg-container h3 {
     font-weight: bold;
 }
+.asg-toprow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
 .asg-heading {
     display: flex;
     flex-direction: row;
     margin-bottom: 1%;
+}
+.showsubmissions-btn {
+    background: #f1ae00;
+    color: white;
+    border-radius: 5px;
+    padding: 3px 10px;
+    height: fit-content;
+    cursor: pointer;
 }
 .asg-points {
     margin: 0 20px;
@@ -44,18 +64,14 @@
     border-radius: 5px;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     cursor: pointer;
+    margin-top: 5px;
+    font-size: 24px;
 }
-.attachment-component-type2 {
-    background-color: #e0e0e0;
-    padding: 1%;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: row;
-    width: 35%;
-    //temporary margin:
-    margin: 2% 0%;
-    cursor: pointer;
+.upload-icon-attachment {
+    font-size: 30px;
+    margin-right: 20px;
 }
 .bold {
     font-weight: bold;
@@ -70,14 +86,6 @@
     height: fit-content;
 }
 .attach-submit {
-    background-color: #e0e0e0;
-    width: fit-content;
-    height: 65px;
-    margin: 5% 0% 5% 2%;
-    padding: 3%;
-    border-radius: 5px;
-    font-size: larger;
-    cursor: pointer;
 }
 .asg-posted {
     font-size: 13px;
@@ -97,11 +105,13 @@
 .asg-comment input {
     width: 100%;
     border: 0;
+    outline: none;
 }
 .submit-btn-theme {
-    color: #f1ae00;
-    fill: #f1ae00;
+    fill: #000000;
     cursor: pointer;
+    border: none;
+    background: white;
 }
 .asg-comment {
     fill: #f1ae00;

@@ -69,7 +69,7 @@ const Navbar = () => {
                                 {navLink.title}
                             </NavLink>
                         );
-                    } else if (user.role == "student" && navLink.title === "ToDos") {
+                    } else if (user.role === "student" && navLink.title === "ToDos") {
                         return (
                             <NavLink key={key} className="navlink" activeClassName="active-navlink" isActive={checkTodosActive} to={navLink.link}>
                                 {navLink.title}
