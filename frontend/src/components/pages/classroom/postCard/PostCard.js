@@ -8,7 +8,6 @@ import { IoSendSharp } from "react-icons/io5";
 import { postComment } from "../../../../axios/comment";
 
 function formatDate(datestr) {
-    // console.log("formatting", typeof date);
     const date = new Date(datestr);
     const d = date
         .toLocaleDateString("en-GB", {

@@ -18,17 +18,22 @@ function Assignment() {
     const user = useSelector((state) => state.user);
     const theme = useSelector((state) => state.theme);
     const [showSubmissions, setShowSubmissions] = useState(false);
-    console.log("asgDetails:", assignment);
+
     const handleCommentSubmit = (e) => {
         e.preventDefault();
         const data = { body, postID: assignmentID, postType: "asg", classroomID };
         postComment(data).then((res) => {
-            console.log("comments res", res);
+            // console.log("comments res", res);
             const commentsList = [res.data, ...assignment.commentIDs];
             setAssignment({ ...assignment, commentIDs: commentsList });
         });
         setBody("");
     };
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [assignment]);
+
     useEffect(() => {
         getAssignmentDetails({ classroomID, assignmentID })
             .then((res) => {
@@ -38,8 +43,6 @@ function Assignment() {
             .catch((e) => {
                 console.error(e);
             });
-        window.scrollTo(0, 0);
-        return;
     }, [classroomID, assignmentID]);
     return (
         <>

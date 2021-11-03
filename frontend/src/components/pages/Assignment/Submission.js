@@ -23,7 +23,7 @@ function Submission({ assignment, theme }) {
         }
         postSubmission(data)
             .then((res) => {
-                console.log("res", res);
+                // console.log("postSubmission_res", res);
                 setSubmissionDate(res.data.submissionDate);
             })
             .catch((e) => {
@@ -32,10 +32,9 @@ function Submission({ assignment, theme }) {
     };
     useEffect(() => {
         if (assignment?._id) {
-            console.log("asggg:", assignment);
             getSubmission({ classroomID: assignment.classroomID, assignmentID: assignment._id })
                 .then((res) => {
-                    console.log("submission:", res.data);
+                    // console.log("submission:", res.data);
                     setSelectedFiles(res.data.fileIDs);
                 })
                 .catch((e) => {
@@ -56,11 +55,9 @@ function Submission({ assignment, theme }) {
                     <h5>Attachments:</h5>
                     <div>
                         <div className="selected-files">
-                            {!selectedFiles.length
-                                ? selectedFiles.map((file, key) => {
-                                      return <FileAtt fileData={file.name} key={key} />;
-                                  })
-                                : null}
+                            {selectedFiles.map((file, key) => (
+                                <FileAtt fileData={file.metadata.originalname} key={key} />
+                            ))}
                         </div>
                     </div>
                     {!submissionDate ? (

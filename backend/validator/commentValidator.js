@@ -16,7 +16,6 @@ module.exports.postCommentValidator = (req, res, next) => {
     });
     //
     const { error, value } = postCommentValidate.validate(req.body, options);
-    console.log("body", req.body);
     //
     if (error) {
         res.status(400).json({

@@ -204,7 +204,6 @@ exports.createClassroom = async (req, res) => {
             });
         }
     } catch (error) {
-        console.log(error);
         res.status(500).json({ data: null, error: error.message });
     }
 };

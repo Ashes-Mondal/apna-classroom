@@ -173,7 +173,7 @@ exports.resetPassword = async (req, res, next) => {
         let hashPassword = await brcypt.createPasswordHash(
             req.body.newPassword
         );
-        console.log(decoded, decoded.email, hashPassword);
+        // console.log(decoded, decoded.email, hashPassword);
         const userInfo = await userModel.updateOne(
             { email: decoded.email },
             { password: hashPassword }

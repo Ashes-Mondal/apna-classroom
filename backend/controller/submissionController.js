@@ -51,7 +51,6 @@ exports.getSubmission = async (req, res) => {
         const classroomID = req.query.classID;
         const { userID } = await uuidToUserDetails(req.body.uuid);
         const assignmentID = req.query.asgID;
-        console.log("que", req.query);
         if (
             isUserInClass(req.body.uuid, classroomID) &&
             isPostInClass(assignmentID, "asg", classroomID)

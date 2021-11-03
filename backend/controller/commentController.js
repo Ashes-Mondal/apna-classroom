@@ -25,7 +25,7 @@ exports.postComment = async (req, res) => {
         ) {
             //Getting UUIDs
             const user = await userModel.findOne({ uuid: uuid });
-            const userID = user._doc._id;
+            const userID = user._id;
             let comment = await commentModel.create({
                 userID: userID,
                 body: body,
@@ -34,9 +34,8 @@ exports.postComment = async (req, res) => {
                 path: "userID",
                 select: "name",
             });
-            console.log("comm:", comment);
-            await insertComment(comment._doc._id);
-            res.status(200).json({ data: comment._doc, error: null });
+            await insertComment(comment._id);
+            res.status(200).json({ data: comment, error: null });
         } else {
             res.status(403).json({ data: null, error: "Access Denied" });
         }
