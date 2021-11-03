@@ -18,6 +18,8 @@ function Classroom() {
     const [currentClassroom, setCurrentClassroom] = useState({});
     const dispatch = useDispatch();
     const loading = useSelector((state) => state.loading);
+    const user = useSelector((state) => state.user);
+
     useEffect(() => {
         dispatch(setLoading());
         getPostFeed(classroomID).then((res) => {
@@ -25,7 +27,7 @@ function Classroom() {
             dispatch(unsetLoading());
         });
         return;
-    }, [classroomID,dispatch]);
+    }, [classroomID, dispatch]);
     useEffect(() => {
         setCurrentClassroom(enrolledClassrooms.find((item) => item._id === classroomID) || {});
         return;
@@ -50,7 +52,7 @@ function Classroom() {
                 <div className="right-column">
                     <AddAnnModal classroomID={classroomID} theme={currentClassroom.theme} />
                     <AddAsgModal classroomID={classroomID} theme={currentClassroom.theme} />
-                    <MiniToDo />
+                    {user.role === "student" ? <MiniToDo classroomID={classroomID} /> : null}
                 </div>
             </div>
         </div>

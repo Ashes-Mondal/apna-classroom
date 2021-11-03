@@ -40,7 +40,6 @@ module.exports.getUserClassAssignments = (req, res, next) => {
     });
     const validateQuery = Joi.object({
         classID: Joi.string().required(),
-        id: Joi.string().required(),
     });
 
     //

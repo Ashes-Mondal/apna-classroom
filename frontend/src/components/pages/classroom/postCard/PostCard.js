@@ -72,14 +72,16 @@ function PostCard({ postType, theme, content, classroomID }) {
                 {(showAllComments ? comments : comments.slice(0, 1))?.map((comment, key) => {
                     return <Comment key={key} comment={comment} theme={theme}></Comment>;
                 })}
-                <div
-                    className="show-all-btn"
-                    onClick={() => {
-                        setShowAllComments(!showAllComments);
-                    }}
-                >
-                    {showAllComments ? "SHOW LESS COMMENTS" : "SHOW MORE COMMENTS"}
-                </div>
+                {comments?.length > 1 ? (
+                    <div
+                        className="show-all-btn"
+                        onClick={() => {
+                            setShowAllComments(!showAllComments);
+                        }}
+                    >
+                        {showAllComments ? "SHOW LESS COMMENTS" : "SHOW MORE COMMENTS"}
+                    </div>
+                ) : null}
             </div>
         </div>
     );

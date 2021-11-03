@@ -46,7 +46,7 @@ const ToDos = () => {
             .then((resp) => {
                 // console.log("getUpcomingAssignments_resp:", resp);
                 dispatch(unsetLoading());
-                setUpcommingAssignment(resp.data.sort((a,b)=>b.assignmentID.dueDate - a.assignmentID.dueDate ));
+                setUpcommingAssignment(resp.data.sort((a, b) => b.assignmentID.dueDate - a.assignmentID.dueDate));
             })
             .catch((err) => {
                 console.error(err);
@@ -67,7 +67,7 @@ const ToDos = () => {
                 ) : (
                     <>
                         {upcommingAssignment.map((activity, idx) => (
-                            <Activity key={idx} activity={activity} theme={theme[classroomID]} link={`/class/${classroomID}/asg/${activity._id}`} />
+                            <Activity key={idx} activity={activity} theme={theme[classroomID]} link={`/class/${classroomID}/asg/${activity.assignmentID._id}`} />
                         ))}
                     </>
                 )}
