@@ -29,6 +29,7 @@ exports.getStudentIDs = async (classroomID) => {
 
 exports.isPostInClass = async (postID, postType, classroomID) => {
     try {
+        console.log("postID:", postID);
         const post = await (postType === "asg"
             ? assignmentModel
             : announcementModel
