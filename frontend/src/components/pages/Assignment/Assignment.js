@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./Assignment.scss";
-import Send from "./Send";
 import { useParams } from "react-router";
 import { getAssignmentDetails } from "../../../axios/assignment";
 import FileAtt from "../../common/fileAtt/FileAtt";
@@ -9,6 +8,8 @@ import Submission from "./Submission";
 import { getDate } from "../../../helper";
 import { useSelector } from "react-redux";
 import SubmissionsList from "./SubmissionsList";
+import Comment from "../../common/comment/Comment";
+import { IoSendSharp } from "react-icons/io5";
 
 function Assignment() {
     const [body, setBody] = useState("");
@@ -37,6 +38,7 @@ function Assignment() {
             .catch((e) => {
                 console.error(e);
             });
+        window.scrollTo(0, 0);
         return;
     }, [classroomID, assignmentID]);
     return (
@@ -55,9 +57,11 @@ function Assignment() {
                                     <h3>{assignment.title}</h3>
                                     <h3 className={`asg-points font-${theme[classroomID]}`}>{assignment.maxMarks} points</h3>
                                 </span>
-                                <span className={`showsubmissions-btn bg-${theme[classroomID]}`} onClick={() => setShowSubmissions(true)}>
-                                    show submissions
-                                </span>
+                                {user.role === "teacher" ? (
+                                    <span className={`showsubmissions-btn bg-${theme[classroomID]}`} onClick={() => setShowSubmissions(true)}>
+                                        show submissions
+                                    </span>
+                                ) : null}
                             </span>
                             <div className="asg-text">{assignment.body}</div>
                             <div className="attachments">
@@ -77,8 +81,8 @@ function Assignment() {
                                 }}
                                 value={body}
                             ></input>
-                            <button className="submit-btn-theme">
-                                <Send />
+                            <button className="submit-btn-theme submit-comment">
+                                <IoSendSharp />
                             </button>
                         </form>
                         <div className={`asg-class-comments border-${theme[classroomID]}`}>
@@ -86,11 +90,7 @@ function Assignment() {
                             <div className="asg-class-comment">
                                 {assignment.commentIDs
                                     ? assignment.commentIDs.map((comment, key) => {
-                                          return (
-                                              <>
-                                                  <h6 className="bold">{comment.userID.name}</h6> {comment.body}
-                                              </>
-                                          );
+                                          return <Comment key={key} comment={comment} theme={theme[classroomID]}></Comment>;
                                       })
                                     : null}
                             </div>

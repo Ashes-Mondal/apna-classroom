@@ -87,7 +87,7 @@ exports.downloadFile = ({ query: { id } }, res) => {
                 .status(400)
                 .json({ data: null, error: "No such file exist!" });
         const originalname = files[0].metadata.originalname;
-        res.set("Content-Disposition","attachment;filename=" + originalname);
+        res.set("Content-Disposition", "attachment;filename=" + originalname);
         gfs.openDownloadStream(ObjectID(id)).pipe(res);
     });
 };

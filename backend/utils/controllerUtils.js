@@ -29,11 +29,12 @@ exports.getStudentIDs = async (classroomID) => {
 
 exports.isPostInClass = async (postID, postType, classroomID) => {
     try {
+        console.log("postID:", postID);
         const post = await (postType === "asg"
             ? assignmentModel
             : announcementModel
         ).findById(postID);
-        return classroomID === post._doc.classroomID;
+        return classroomID === post.classroomID;
     } catch (e) {
         throw e;
     }
