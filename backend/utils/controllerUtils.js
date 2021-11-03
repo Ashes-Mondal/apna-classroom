@@ -38,3 +38,12 @@ exports.isPostInClass = async (postID, postType, classroomID) => {
         throw e;
     }
 };
+
+exports.uuidToUserDetails = async (uuid) => {
+    try {
+        const user = await userModel.findOne({ uuid: uuid });
+        return { userID: user._id, email: user.email };
+    } catch (e) {
+        throw e;
+    }
+};
