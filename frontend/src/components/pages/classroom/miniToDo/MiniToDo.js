@@ -1,16 +1,34 @@
-import React from 'react'
-import './MiniToDo.scss'
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router";
+import { getUpcomingAssignments } from "../../../../axios/classroom";
+import "./MiniToDo.scss";
 
-function MiniToDo() {
+function MiniToDo({ classroomID }) {
+    const [pendingSubmissions, setPendingSubmissions] = useState([]);
+    useEffect(() => {
+        getUpcomingAssignments({ classroomID })
+            .then((res) => {
+                console.log(res.data);
+                setPendingSubmissions(res.data);
+            })
+            .catch((e) => {
+                console.error(e);
+            });
+    }, []);
+    const history = useHistory();
+    const openAssignment = (assignmentID) => {
+        history.push(`/class/${classroomID}/asg/${assignmentID}`);
+    };
     return (
         <div className="mini-to-do">
             <h4>Pending Work</h4>
             <ul>
-                <li>Lorem ipsum dolor sit.</li>
-                <li>Lorem ipsum dolor sit.</li>
+                {pendingSubmissions.map((submission) => {
+                    return <li onClick={() => openAssignment(submission.assignmentID._id)}>{submission.assignmentID.title}</li>;
+                })}
             </ul>
         </div>
-    )
+    );
 }
 
-export default MiniToDo
+export default MiniToDo;

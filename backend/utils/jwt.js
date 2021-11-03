@@ -118,12 +118,14 @@ module.exports.accessTokenVerification = async (accessToken) => {
         const decoded = await jwt.verify(accessToken, global.AccessTokenSecret);
 
         //2.Verify with database
+        console.log("before getting sess", decoded.sessionID, decoded.jwtUid);
         const userSession = await Sessions.findOne({
             sessionID: decoded.sessionID,
             jwtUid: decoded.jwtUid,
         }).populate("user");
+        console.log("after gettinng sess", userSession);
         if (!userSession) throw "Session does not exist!";
-        else if (userSession._doc?.user.status?.toLowerCase() === "inactive") {
+        else if (userSession.user.status?.toLowerCase() === "inactive") {
             await Sessions.deleteOne({ sessionID: decoded.sessionID });
             throw "User is disabled!";
         }

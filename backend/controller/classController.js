@@ -5,7 +5,10 @@ require("../model/uploads/uploads").uploadMetaModel;
 const assignmentModel = require("../model/post/assignmentSchema");
 const announcementModel = require("../model/post/announcementSchema");
 const classroomModel = require("../model/classroom/classroom");
-const { isUserInClass } = require("../utils/controllerUtils");
+const {
+    isUserInClass,
+    uuidToUserDetails,
+} = require("../utils/controllerUtils");
 const userModel = require("../model/user/userSchema");
 const submissionModel = require("../model/post/submissionSchema");
 const studentClassAvgModel = require("../model/results/StudentClassAvgSchema");
@@ -14,12 +17,13 @@ const { nanoid } = require("nanoid");
 exports.getUpcomingAssignments = async (req, res) => {
     try {
         const classroomID = req.query.classID;
-        const studentID = req.query.id;
+        // const studentID = req.query.id;
         const uuid = req.body.uuid;
+        const { userID } = await uuidToUserDetails(uuid);
         if (isUserInClass(uuid, classroomID)) {
             const result = await submissionModel
                 .find({
-                    studentID: ObjectID(studentID),
+                    studentID: ObjectID(userID),
                     submissionDate: { $exists: false },
                 })
                 .populate({
@@ -41,12 +45,12 @@ exports.getUpcomingAssignments = async (req, res) => {
 exports.getUserClassAssignments = async (req, res) => {
     try {
         const classroomID = req.query.classID;
-        const studentID = req.query.id;
         const uuid = req.body.uuid;
+        const { userID } = await uuidToUserDetails(uuid);
         if (isUserInClass(uuid, classroomID)) {
             const result = await submissionModel
                 .find({
-                    studentID: ObjectID(studentID),
+                    studentID: ObjectID(userID),
                 })
                 .populate({
                     path: "assignmentID",
@@ -65,7 +69,7 @@ exports.getUserClassAssignments = async (req, res) => {
             //calculate class Average
             const studentAvg = await studentClassAvgModel.find({
                 classroomID,
-                studentID,
+                studentID: userID,
             });
             if (assignments.length && studentAvg.length) {
                 res.status(200).json({

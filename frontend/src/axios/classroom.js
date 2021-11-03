@@ -49,7 +49,7 @@ export const postAnnouncement = async (data) => {
 };
 
 export const getUpcomingAssignments = async (data) => {
-    const url = `/getUpcomingAssignments?classID=${data.classroomID}&id=${data.studentID}`;
+    const url = `/getUpcomingAssignments?classID=${data.classroomID}`;
     try {
         const res = await axios.get(url);
         return res.data;
@@ -59,7 +59,7 @@ export const getUpcomingAssignments = async (data) => {
 };
 
 export const getUserClassAssignments = async (data) => {
-    const url = `/getUserClassAssignments?classID=${data.classroomID}&id=${data.id}`;
+    const url = `/getUserClassAssignments?classID=${data.classroomID}`;
     try {
         const res = await axios.get(url);
         return res.data;
