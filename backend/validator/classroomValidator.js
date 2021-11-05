@@ -82,3 +82,45 @@ module.exports.createClassroom = (req, res, next) => {
         next();
     }
 };
+
+module.exports.addStudentToClassroom = (req, res, next) => {
+    const validateBody = Joi.object({
+        uuid: Joi.string().required(),
+        sessionID: Joi.string().required(),
+        classID: Joi.string().required(),
+        email: Joi.string().required(),
+    });
+    const body = validateBody.validate(req.body, options);
+
+
+    if (body.error) {
+        res.status(400).json({
+            data: null,
+            error: "Invalid request parameters",
+        });
+        return;
+    } else {
+        req.body = body.value;
+        next();
+    }
+};
+module.exports.unrollStudentFromClassroom = (req, res, next) => {
+    const validateBody = Joi.object({
+        uuid: Joi.string().required(),
+        sessionID: Joi.string().required(),
+        classID: Joi.string().required(),
+    });
+    const body = validateBody.validate(req.body, options);
+
+
+    if (body.error) {
+        res.status(400).json({
+            data: null,
+            error: "Invalid request parameters",
+        });
+        return;
+    } else {
+        req.body = body.value;
+        next();
+    }
+};

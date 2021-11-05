@@ -35,5 +35,20 @@ router.get(
     classController.getPeopleInClassroom
 );
 
+router.post(
+    "/addStudentToClassroom",
+    classroomValidator.addStudentToClassroom,
+    classController.addStudentToClassroom
+);
+router.delete(
+    "/removeStudentFromClassroom",
+    classroomValidator.addStudentToClassroom,
+    classController.removeStudentFromClassroom
+);
+router.delete(
+    "/unrollStudentFromClassroom",
+    classroomValidator.unrollStudentFromClassroom,
+    classController.unrollStudentFromClassroom
+);
 // Exporting routes
 module.exports.router = router;

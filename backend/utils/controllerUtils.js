@@ -47,3 +47,22 @@ exports.uuidToUserDetails = async (uuid) => {
         throw e;
     }
 };
+
+exports.getAllClassroomAssignments = async (
+    classroomID,
+    studentID = undefined
+) => {
+    try {
+        const assignments = await assignmentModel.find({ classroomID });
+        let allAssignments = [];
+        for (let i = 0; assignments && i < assignments.length; i++) {
+            allAssignments.push({
+                studentID,
+                assignmentID: assignments[0]._id,
+            });
+        }
+        return allAssignments;
+    } catch (e) {
+        throw e;
+    }
+};

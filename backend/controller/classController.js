@@ -8,6 +8,7 @@ const classroomModel = require("../model/classroom/classroom");
 const {
     isUserInClass,
     uuidToUserDetails,
+    getAllClassroomAssignments,
 } = require("../utils/controllerUtils");
 const userModel = require("../model/user/userSchema");
 const submissionModel = require("../model/post/submissionSchema");
@@ -232,6 +233,114 @@ exports.getPeopleInClassroom = async (req, res) => {
             res.status(403).json({ data: result, error: "Access Denied" });
         }
     } catch (error) {
-        res.status(500).json({ data: null, error: error.message });
+        res.status(500).json({
+            data: null,
+            error: error.message,
+        });
+    }
+};
+
+exports.addStudentToClassroom = async (req, res) => {
+    try {
+        const { classID, email, uuid } = req.body;
+        if (!isUserInClass(uuid, classID)) {
+            res.status(403).json({
+                data: null,
+                error: "User not faculty!",
+            });
+            return;
+        }
+        const student = await userModel.findOneAndUpdate(
+            {
+                email,
+            },
+            { $addToSet: { classroomIDs: classID } },
+            {
+                fields: { _id: 1 },
+                new: true,
+            }
+        );
+        await classroomModel.findByIdAndUpdate(classID, {
+            $addToSet: { studentIDs: student._id },
+        });
+        //check if there exist any assignments before enroll
+        const allAssignments = await getAllClassroomAssignments(
+            classID,
+            student._id
+        );
+        await submissionModel.insertMany(allAssignments);
+        res.status(200).json({ data: "Success", error: null });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            data: null,
+            error: "Failed to add student to class!",
+        });
+    }
+};
+
+exports.removeStudentFromClassroom = async (req, res) => {
+    try {
+        const { classID, email, uuid } = req.body;
+        if (!isUserInClass(uuid, classID)) {
+            res.status(403).json({
+                data: null,
+                error: "User not faculty!",
+            });
+            return;
+        }
+        const student = await userModel.findOneAndUpdate(
+            {
+                email,
+            },
+            { $pull: { classroomIDs: classID } },
+            {
+                fields: { _id: 1 },
+                new: true,
+            }
+        );
+        await classroomModel.findByIdAndUpdate(classID, {
+            $pull: { studentIDs: student._id },
+        });
+        res.status(200).json({ data: "Success", error: null });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            data: null,
+            error: "Failed to remove student to class!",
+        });
+    }
+};
+
+exports.unrollStudentFromClassroom = async (req, res) => {
+    try {
+        const { classID, uuid } = req.body;
+        if (!isUserInClass(uuid, classID)) {
+            res.status(403).json({
+                data: null,
+                error: "User not a student of the class!",
+            });
+            return;
+        }
+        const student = await userModel.findOneAndUpdate(
+            {
+                uuid,
+            },
+            { $pull: { classroomIDs: classID } },
+            {
+                fields: { _id: 1 },
+                new: true,
+            }
+        );
+        await classroomModel.findByIdAndUpdate(classID, {
+            $pull: { studentIDs: student._id },
+        });
+        res.status(200).json({ data: "Success", error: null });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            data: null,
+            error: "Failed to unroll student from class!",
+        });
     }
 };
