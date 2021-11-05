@@ -188,6 +188,10 @@
 }
 .submission-item-name {
     margin: 10px 20px;
+    width: 120px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 .submission-item-pipeline {
     margin: auto 10px;

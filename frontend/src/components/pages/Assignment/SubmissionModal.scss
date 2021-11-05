@@ -1,0 +1,36 @@
+.submission-modal {
+    position: relative;
+    padding: 4%;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    min-width: 50vw;
+    max-width: 100vw;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 90vh;
+    overflow: auto;
+    color: black;
+}
+.submission-modal-files {
+    border: 2px solid black;
+    height: 200px;
+    border-radius: 5px;
+    overflow: auto;
+}
+.submission-modal-input {
+    width: 60px;
+    overflow: hidden;
+}
+.submission-modal-files {
+    padding: 10px;
+}
+.submission-modal-file {
+    margin: 10px 20px;
+    cursor: pointer;
+}
+.submission-modal-file-icon {
+    margin-right: 10px;
+}
