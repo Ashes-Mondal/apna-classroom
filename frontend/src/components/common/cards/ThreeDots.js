@@ -32,7 +32,7 @@ const ThreeDots = (props) => {
                             .catch((e) => {
                                 console.error(e);
                             });
-                        setOpen(false);
+                        
                     },
                 },
             ];
@@ -42,7 +42,6 @@ const ThreeDots = (props) => {
                 handler: () => {
                     setOpenModal(true);
                     setModalType(1);
-                    setOpen(false);
                 },
             },
             {
@@ -50,7 +49,6 @@ const ThreeDots = (props) => {
                 handler: () => {
                     setOpenModal(true);
                     setModalType(2);
-                    setOpen(false);
                 },
             },
             {
@@ -58,7 +56,6 @@ const ThreeDots = (props) => {
                 handler: () => {
                     setOpenModal(true);
                     setModalType(3);
-                    setOpen(false);
                 },
             },
             {
@@ -66,7 +63,6 @@ const ThreeDots = (props) => {
                 handler: () => {
                     setOpenModal(true);
                     setModalType(4);
-                    setOpen(false);
                 },
             },
         ];
@@ -187,6 +183,7 @@ const ThreeDots = (props) => {
                         key={idx}
                         onClick={async () => {
                             await item.handler();
+                            setOpen(false);
                         }}
                     >
                         {item.title}
