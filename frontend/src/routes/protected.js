@@ -5,8 +5,9 @@ import Classroom from "../components/pages/classroom/Classroom";
 import Home from "../components/pages/home/Home";
 import ToDos from "../components/pages/todos/ToDos";
 import VideoConference from "../components/pages/video-conference/VideoConference";
+import Admin from "../components/pages/admin/Admin";
 
-const protectedRoutes = [
+export const protectedRoutes = [
     {
         component: Home,
         path: "/",
@@ -36,4 +37,10 @@ const protectedRoutes = [
         path: "/class/:classroomID/meet/:meetingID",
     },
 ];
-export default protectedRoutes;
+
+export const adminRoutes = [
+    {
+        component: Admin,
+        path: "/",
+    },
+];

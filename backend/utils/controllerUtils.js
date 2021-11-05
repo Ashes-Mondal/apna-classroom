@@ -33,7 +33,7 @@ exports.isPostInClass = async (postID, postType, classroomID) => {
             ? assignmentModel
             : announcementModel
         ).findById(postID);
-        return classroomID === post._doc.classroomID;
+        return classroomID === post.classroomID;
     } catch (e) {
         throw e;
     }

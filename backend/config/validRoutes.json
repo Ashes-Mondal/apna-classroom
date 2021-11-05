@@ -16,7 +16,9 @@
         "/getClassroomDetails",
         "/getPostFeed",
         "/validMeetAccess",
-        "/postComment"
+        "/postComment",
+        "/postSubmission",
+        "/getSubmission"
     ],
     "teacherRoutes": ["/postAssignment", "/createClassroom"],
     "adminRoutes": ["/register"]

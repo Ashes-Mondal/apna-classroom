@@ -61,7 +61,7 @@ const PostForm = ({ setShowForm, formType, classroomID, theme }) => {
         if (formType === "asg") {
             postAssignment(data)
                 .then((resp) => {
-                    // console.log(resp);
+                    // console.log('postAssignment_resp',resp);
                     const redirectURL = `/class/${classroomID}/asg/${resp.data}`;
                     history.push(redirectURL);
                     return;
@@ -72,7 +72,7 @@ const PostForm = ({ setShowForm, formType, classroomID, theme }) => {
         } else {
             postAnnouncement(data)
                 .then((resp) => {
-                    console.log(resp);
+                    // console.log('postAnnouncement',resp);
                     setShowForm(false);
                     return;
                 })
@@ -108,9 +108,7 @@ const PostForm = ({ setShowForm, formType, classroomID, theme }) => {
                     </div>
                     <div className="">
                         <div className="selected-files">
-                            {console.log("sel", selectedFiles)}
                             {selectedFiles.map((file, key) => {
-                                // console.log("file rendered", file);
                                 return <FileAtt fileData={file.name} key={key} />;
                             })}
                         </div>

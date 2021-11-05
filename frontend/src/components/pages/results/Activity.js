@@ -19,7 +19,6 @@ const getActivityStatus = (activity) => {
 
 const Activity = ({ activity, ...props }) => {
     const history = useHistory();
-    console.log(activity);
     const status = getActivityStatus(activity);
     return (
         <div onClick={() => history.push(props.link)} className={`activity-container border-${props.theme}`}>

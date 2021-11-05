@@ -51,6 +51,9 @@
     height: fit-content;
     cursor: pointer;
 }
+.showsubmissions-btn:hover {
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.05);
+}
 .asg-points {
     margin: 0 20px;
 }
@@ -68,10 +71,13 @@
     cursor: pointer;
     margin-top: 5px;
     font-size: 24px;
+    align-items: center;
 }
 .upload-icon-attachment {
     font-size: 30px;
-    margin-right: 20px;
+}
+#asg-submit-input {
+    display: none;
 }
 .bold {
     font-weight: bold;
@@ -84,8 +90,6 @@
     flex-direction: row;
     justify-content: flex-end;
     height: fit-content;
-}
-.attach-submit {
 }
 .asg-posted {
     font-size: 13px;
@@ -111,7 +115,9 @@
     fill: #000000;
     cursor: pointer;
     border: none;
-    background: white;
+}
+.submit-comment {
+    background-color: white;
 }
 .asg-comment {
     fill: #f1ae00;
@@ -141,12 +147,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 20px;
+    height: 25px;
     color: white;
     padding: 5px;
     border-radius: 5px;
-    margin: 5px 20px;
+    margin: auto 20px;
     cursor: pointer;
+}
+.asg-filter-btn:hover {
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.05);
 }
 .asg-toprow h2 {
     font-weight: bold;

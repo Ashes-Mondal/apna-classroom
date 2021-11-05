@@ -8,7 +8,7 @@ function MiniToDo({ classroomID }) {
     useEffect(() => {
         getUpcomingAssignments({ classroomID })
             .then((res) => {
-                console.log(res.data);
+                // console.log('getUpcomingAssignments_res',res);
                 setPendingSubmissions(res.data);
             })
             .catch((e) => {

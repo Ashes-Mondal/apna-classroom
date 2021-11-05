@@ -60,20 +60,18 @@ const renewAccessToken = async (accessToken) => {
             { sessionID: decoded.sessionID, jwtUid: decoded.jwtUid },
             { refreshToken: true }
         );
-        if (!result._doc) {
-            throw "Session does not exist!";
+        if (!result) {
+            throw "Session does not exist(renewAccessToken_error)!";
         }
 
         try {
             //==>Verification successfull
-            await jwt.verify(
-                result._doc.refreshToken,
-                global.RefreshTokenSecret
-            );
+            await jwt.verify(result.refreshToken, global.RefreshTokenSecret);
         } catch (error) {
             //==>Verification failed
             if (error.name === "TokenExpiredError") {
                 //delete session from database
+                console.log("USER SESSION DELETED(Session expired)");
                 await Sessions.deleteOne({ sessionID: decoded.sessionID });
                 //throw 'Session Expired' error
                 const err = "Session expired";
@@ -118,18 +116,23 @@ module.exports.accessTokenVerification = async (accessToken) => {
         const decoded = await jwt.verify(accessToken, global.AccessTokenSecret);
 
         //2.Verify with database
-        console.log("before getting sess", decoded.sessionID, decoded.jwtUid);
         const userSession = await Sessions.findOne({
             sessionID: decoded.sessionID,
             jwtUid: decoded.jwtUid,
         }).populate("user");
-        console.log("after gettinng sess", userSession);
+        console.log(
+            "decoded.sessionID:",
+            decoded.sessionID,
+            "userSessionID:",
+            userSession?.sessionID,
+            "\n"
+        );
         if (!userSession) throw "Session does not exist!";
-        else if (userSession.user.status?.toLowerCase() === "inactive") {
+        else if (userSession.user.status.toLowerCase() === "inactive") {
+            console.log("USER SESSION DELETED!");
             await Sessions.deleteOne({ sessionID: decoded.sessionID });
             throw "User is disabled!";
-        }
-        return decoded;
+        } else return decoded;
     } catch (error) {
         if (error.name === "TokenExpiredError") {
             return await renewAccessToken(accessToken);
