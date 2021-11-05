@@ -31,7 +31,7 @@ async function checkauthorization(req, res, next) {
             let jwtdata = await accessTokenVerification(accessToken);
             //==>if token was renewed
             if (jwtdata.newAccessToken) {
-                console.log('newAccessToken:',jwtdata.newAccessToken);
+                console.log("newAccessToken:", jwtdata.newAccessToken);
                 res.clearCookie("login");
                 res.cookie(
                     "login",
@@ -63,7 +63,7 @@ async function checkauthorization(req, res, next) {
         }
     } catch (e) {
         if (typeof e.message === "undefined") {
-            if (e === "Session expired" || e ==='User is disabled!') {
+            if (e === "Session expired" || e === "User is disabled!") {
                 console.log(e);
                 res.clearCookie("login");
             }
