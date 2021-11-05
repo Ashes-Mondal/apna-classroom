@@ -17,4 +17,10 @@ router.get(
     submissionController.getSubmission
 );
 
+router.get(
+    "/getSubmissions",
+    submissionValidator.getSubmissionValidator,
+    submissionController.getSubmissions
+);
+
 module.exports.router = router;

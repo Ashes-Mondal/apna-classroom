@@ -1,8 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import { getSubmissions } from "../../../axios/submission";
 
 function SubmissionsList({ assignment, theme, setShowSubmissions }) {
-    const submissions = [...Array(100).keys()];
+    const [submissions, setSubmissions] = useState([]);
+    const emailToRollNo = (email) => {
+        return email.slice(4, 8) + email.slice(0, 3).toUpperCase() + "-" + email.slice(8, 11);
+    };
+    useEffect(() => {
+        if (assignment?._id) {
+            getSubmissions({ classroomID: assignment.classroomID, assignmentID: assignment._id })
+                .then((res) => {
+                    console.log("submissions:", res.data);
+                    setSubmissions(res.data);
+                })
+                .catch((e) => {
+                    console.error(e);
+                });
+        }
+        return;
+    }, [assignment]);
     return (
         <div className="submissions-list-container">
             <div className="asg-toprow">
@@ -20,16 +37,16 @@ function SubmissionsList({ assignment, theme, setShowSubmissions }) {
                         <MdKeyboardArrowDown />
                     </span>
                 </span>
-                <h4>Total Submissions: 69/120</h4>
+                <h4>Total Submissions: ?/{submissions.length}</h4>
             </div>
             <div className="submissions-list">
-                {submissions.map(() => (
-                    <span className="submission-item">
-                        <span className="submission-item-name">Aaryak Shah </span>
+                {submissions.map((submission, key) => (
+                    <span key={key} className="submission-item">
+                        <span className="submission-item-name">{submission.studentID.name} </span>
                         <span className="submission-item-pipeline">|</span>
-                        <span className={`submission-item-rollno font-${theme} bold `}> 2019IMT-001 </span>
-                        <span className="submission-item-marks">__/20</span>
-                        <span className={`submission-item-attachments font-${theme} bold`}>Attachments: 3 </span>
+                        <span className={`submission-item-rollno font-${theme} bold `}>{emailToRollNo(submission.studentID.email)} </span>
+                        <span className="submission-item-marks">__/{submission.assignmentID.maxMarks}</span>
+                        <span className={`submission-item-attachments font-${theme} bold`}>Attachments: {submission.fileIDs.length} </span>
                     </span>
                 ))}
             </div>
