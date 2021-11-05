@@ -16,10 +16,8 @@ function Submission({ assignment, theme }) {
         const data = new FormData();
         data.append("assignmentID", assignment._id);
         data.append("classroomID", assignment.classroomID);
-        if (selectedFiles) {
-            for (let i = 0; i < selectedFiles.length; i++) {
-                data.append(`file`, selectedFiles[i]);
-            }
+        for (let i = 0; i < selectedFiles.length; i++) {
+            data.append(`file`, selectedFiles[i]);
         }
         postSubmission(data)
             .then((res) => {
@@ -30,12 +28,26 @@ function Submission({ assignment, theme }) {
                 console.error(e);
             });
     };
+    const getStatus = (dueDate, submissionDate) => {
+        if (submissionDate) {
+            if (submissionDate > dueDate) {
+                return "Submitted Late";
+            } else {
+                return "Submitted";
+            }
+        }
+        if (Date.now() > dueDate) {
+            return "Missing";
+        }
+        return "Not Submitted";
+    };
     useEffect(() => {
         if (assignment?._id) {
             getSubmission({ classroomID: assignment.classroomID, assignmentID: assignment._id })
                 .then((res) => {
-                    // console.log("submission:", res.data);
+                    console.log("submission:", res.data);
                     setSelectedFiles(res.data.fileIDs);
+                    setSubmissionDate(res.data.submissionDate);
                 })
                 .catch((e) => {
                     console.error(e);
@@ -47,16 +59,24 @@ function Submission({ assignment, theme }) {
         <>
             {assignment ? (
                 <div className="asg-container1">
-                    <h4> {!submissionDate ? "Not Submitted" : "Submitted"}</h4>
+                    <h4> {getStatus(assignment.dueDate, submissionDate)}</h4>
                     <h5>
-                        Submit By <span className={`asg-theme font-${theme}`}>{getDate(assignment.dueDate)}</span>
+                        {!submissionDate ? (
+                            <>
+                                Submit By <span className={`asg-theme font-${theme}`}>{getDate(assignment.dueDate)}</span>
+                            </>
+                        ) : (
+                            <>
+                                Submitted On <span className={`asg-theme font-${theme}`}>{getDate(submissionDate)}</span>
+                            </>
+                        )}
                     </h5>
                     <br />
-                    <h5>Attachments:</h5>
+                    <h5>{selectedFiles.length ? "Attachments:" : "No Attachments"}</h5>
                     <div>
                         <div className="selected-files">
                             {selectedFiles.map((file, key) => (
-                                <FileAtt fileData={file.metadata?file.metadata.originalname:file.name} key={key} />
+                                <FileAtt fileData={file.metadata ? file.metadata.originalname : file.name} key={key} />
                             ))}
                         </div>
                     </div>
@@ -68,7 +88,7 @@ function Submission({ assignment, theme }) {
                             </div>
 
                             <div className="attachment-component-type1 " onClick={handleSubmit}>
-                                SUBMIT <IoSendSharp className="submit-btn-theme" />
+                                Turn In <IoSendSharp className="submit-btn-theme" />
                             </div>
                         </>
                     ) : null}
