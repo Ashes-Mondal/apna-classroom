@@ -2,17 +2,19 @@ import React, { useMemo, useState } from "react";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { unrollStudentFromClassroom } from "../../../axios/classroom";
+import { unrollStudentFromClassroom, addStudentToClassroom, removeStudentFromClassroom } from "../../../axios/classroom";
 import { removeFromClassroom } from "../../../redux/actions/enrolledClassrooms";
 import { removeClassroomTheme } from "../../../redux/actions/theme";
 import "./Card.scss";
+import Modal from "../modal/Modal";
 
 const ThreeDots = (props) => {
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const { details } = props;
     const [open, setOpen] = useState(false);
-    const [openModal, setOpenModal] = useState(0);
+    const [openModal, setOpenModal] = useState(false);
+    const [modalType, setModalType] = useState(0);
 
     const list = useMemo(() => {
         if (user.role.toLowerCase() === "student")
@@ -30,6 +32,7 @@ const ThreeDots = (props) => {
                             .catch((e) => {
                                 console.error(e);
                             });
+                        setOpen(false);
                     },
                 },
             ];
@@ -37,39 +40,146 @@ const ThreeDots = (props) => {
             {
                 title: "Add Student",
                 handler: () => {
-                    setOpenModal(1);
-                    alert("Add Student handler");
+                    setOpenModal(true);
+                    setModalType(1);
+                    setOpen(false);
                 },
             },
             {
                 title: "Add Assistant",
                 handler: () => {
-                    setOpenModal(2);
-                    alert("Add Assistant handler");
+                    setOpenModal(true);
+                    setModalType(2);
+                    setOpen(false);
                 },
             },
             {
-                title: "remove Student",
+                title: "Remove Student",
                 handler: () => {
-                    setOpenModal(3);
-                    alert("Add Assistant handler");
+                    setOpenModal(true);
+                    setModalType(3);
+                    setOpen(false);
                 },
             },
             {
-                title: "remove Assistant",
+                title: "Remove Assistant",
                 handler: () => {
-                    setOpenModal(4);
-                    alert("Remove Assistant handler");
+                    setOpenModal(true);
+                    setModalType(4);
+                    setOpen(false);
                 },
             },
         ];
     }, [user, details, dispatch]);
+
+    const addStudentHandler = (data) => {
+        console.log("Add Student handler");
+        addStudentToClassroom({ classID: details._id, email: data["Email"] })
+            .then((resp) => {
+                console.log(resp);
+                alert(resp.data);
+            })
+            .catch((e) => {
+                console.error(e);
+            });
+        setOpenModal(false);
+    };
+    const addAssistantHandler = (data) => {
+        console.log("Add Assistant handler", data);
+        setOpenModal(false);
+    };
+    const removeStudentHandler = (data) => {
+        console.log("Remove Student handler");
+        removeStudentFromClassroom({ classID: details._id, email: data["Email"] })
+            .then((resp) => {
+                console.log(resp);
+                alert(resp.data);
+            })
+            .catch((e) => {
+                console.error(e);
+            });
+        setOpenModal(false);
+    };
+    const removeAssistantHandler = (data) => {
+        console.log("Remove Assistant handler", data);
+        setOpenModal(false);
+    };
+
+    const modalOptions = (num) => {
+        switch (num) {
+            case 1: {
+                return {
+                    form: [
+                        {
+                            name: "Email",
+                            type: "email",
+                        },
+                    ],
+                    theme: props.theme,
+                    buttonName: "Add",
+                    heading: "Classroom: Add Student",
+                    handleSubmit: addStudentHandler,
+                };
+            }
+            case 2: {
+                return {
+                    form: [
+                        {
+                            name: "Email",
+                            type: "email",
+                        },
+                    ],
+                    theme: props.theme,
+                    buttonName: "Add",
+                    heading: "Classroom: Add Assistant",
+                    handleSubmit: addAssistantHandler,
+                };
+            }
+            case 3: {
+                return {
+                    form: [
+                        {
+                            name: "Email",
+                            type: "email",
+                        },
+                    ],
+                    theme: props.theme,
+                    buttonName: "Remove",
+                    heading: "Classroom: Remove Student",
+                    handleSubmit: removeStudentHandler,
+                };
+            }
+            case 4: {
+                return {
+                    form: [
+                        {
+                            name: "Email",
+                            type: "email",
+                        },
+                    ],
+                    theme: props.theme,
+                    buttonName: "Remove",
+                    heading: "Classroom: Remove Assistant",
+                    handleSubmit: removeAssistantHandler,
+                };
+            }
+            default:
+                return {
+                    form: [
+                        {
+                            name: "Email",
+                            type: "email",
+                        },
+                    ],
+                    theme: props.theme,
+                };
+        }
+    };
     return (
         <div className="dropdown">
-            {openModal ? <div onClick={setOpenModal(0)}>MODAL OPENED</div> : null}
-            
+            <Modal options={modalOptions(modalType)} open={openModal} setOpen={setOpenModal} />
             <button className="dropbtn" onClick={() => setOpen(!open)}>
-            {!open?<BiDotsVerticalRounded size={30} />:<AiFillCloseCircle size={30}/>}
+                {!open ? <BiDotsVerticalRounded size={30} /> : <AiFillCloseCircle size={30} />}
             </button>
             <div className="dropdown-content" style={open ? { display: "block" } : {}}>
                 {list.map((item, idx) => (
@@ -77,7 +187,6 @@ const ThreeDots = (props) => {
                         key={idx}
                         onClick={async () => {
                             await item.handler();
-                            setOpen(false);
                         }}
                     >
                         {item.title}

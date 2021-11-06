@@ -7,11 +7,6 @@ import "./PostForm.scss";
 import FileAtt from "../../../common/fileAtt/FileAtt";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 
-const FileShow = ({ file }) => {
-    console.log("showing file", file);
-    return <h5>{file.name}</h5>;
-};
-
 const PostForm = ({ setShowForm, formType, classroomID, theme }) => {
     const history = useHistory();
     const [title, setTitle] = useState("");
@@ -26,9 +21,6 @@ const PostForm = ({ setShowForm, formType, classroomID, theme }) => {
         if (e.target.classList[0] === "overlay") {
             // console.log("overlay click");
             setShowForm(false);
-        }
-        if (e.target.classList[0] === "post-form") {
-            // console.log("form click");
         }
     };
 
@@ -106,13 +98,13 @@ const PostForm = ({ setShowForm, formType, classroomID, theme }) => {
                         {body.length ? <h6>DESCRIPTION</h6> : null}
                         <textarea placeholder="Description..." rows={6} onChange={(e) => setBody(e.target.value)} />
                     </div>
-                    <div className="">
-                        <div className="selected-files">
-                            {selectedFiles.map((file, key) => {
-                                return <FileAtt fileData={file.name} key={key} />;
-                            })}
-                        </div>
+
+                    <div className="selected-files">
+                        {selectedFiles.map((file, key) => {
+                            return <FileAtt fileData={file.name} key={key} />;
+                        })}
                     </div>
+
                     <div className="form-input file-input" onClick={fileUploadHandler}>
                         <h6>ATTACH FILES</h6>
                         <div className="file-upload-icon">

@@ -12,7 +12,7 @@ function Banner({ currentClassroom }) {
         <>
             <div className={`banner bg-${currentClassroom.theme}`}>
                 <span className="three-dots">
-                    <ThreeDots details={currentClassroom} />
+                    <ThreeDots details={currentClassroom} theme={currentClassroom.theme}/>
                 </span>
                 <div className="info">
                     <h1>{currentClassroom.subjectName}</h1>

@@ -1,5 +1,5 @@
 import "./FileAtt.scss";
-import React, { useEffect } from "react";
+import React from "react";
 import { FaPaperclip } from "react-icons/fa";
 const baseUrl = "http://localhost:8000/api";
 

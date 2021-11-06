@@ -4,10 +4,11 @@ import { SiGooglehangoutsmeet } from "react-icons/si";
 import { HiOutlineClipboardList } from "react-icons/hi";
 import { useHistory } from "react-router";
 import ThreeDots from "./ThreeDots";
-
+import { useSelector } from "react-redux";
 
 const Card = (props) => {
     const history = useHistory();
+    const user = useSelector((state) => state.user);
     const { details } = props;
 
     return (
@@ -19,13 +20,16 @@ const Card = (props) => {
                     <h6 id="subject-faculty">{details.facultyName}</h6>
                 </div>
                 <span className="three-dots">
-                    <ThreeDots details={details} />
+                    <ThreeDots details={details} theme={details.theme}/>
                 </span>
             </div>
             <div className="card-bottom">
-                <span onClick={() => history.push(`/class/${details._id}/todos`)}>
-                    <HiOutlineClipboardList /> Todo
-                </span>
+                {user.role.toLowerCase() === "student" ? (
+                    <span onClick={() => history.push(`/class/${details._id}/todos`)}>
+                        <HiOutlineClipboardList /> Todo
+                    </span>
+                ) : null}
+
                 <span onClick={() => history.push(`/class/${details._id}/meet/${details.meetingID}`)}>
                     <SiGooglehangoutsmeet /> Meeting
                 </span>

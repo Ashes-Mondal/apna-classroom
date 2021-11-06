@@ -40,12 +40,12 @@ router.post(
     classroomValidator.addStudentToClassroom,
     classController.addStudentToClassroom
 );
-router.delete(
+router.post(
     "/removeStudentFromClassroom",
     classroomValidator.addStudentToClassroom,
     classController.removeStudentFromClassroom
 );
-router.delete(
+router.post(
     "/unrollStudentFromClassroom",
     classroomValidator.unrollStudentFromClassroom,
     classController.unrollStudentFromClassroom

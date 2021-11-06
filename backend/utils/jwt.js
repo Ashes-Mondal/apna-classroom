@@ -1,5 +1,6 @@
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
+const Sessions = require("../model/session/sessionSchema");
 const accessTokenConfig = require("../config/accessTokenConfig.json");
 const refreshTokenConfig = require("../config/refreshTokenConfig.json"),
     jwtUidLength = 20;
@@ -18,8 +19,8 @@ module.exports.createAccessToken = async (params) => {
     try {
         return jwt.sign(
             {
-                jwtUid: params.jwtUid,
                 sessionID: params.sessionID,
+                jwtUid: params.jwtUid,
                 uuid: params.uuid,
                 role: params.role,
             },
@@ -35,7 +36,7 @@ module.exports.createRefreshToken = async (params) => {
     try {
         return jwt.sign(
             {
-                uuid: params.uuid,
+                sessionID: params.sessionID,
             },
             global.RefreshTokenSecret,
             refreshTokenConfig
@@ -45,41 +46,25 @@ module.exports.createRefreshToken = async (params) => {
     }
 };
 
-const Sessions = require("../model/session/sessionSchema");
 //function will renew the access Token
 const renewAccessToken = async (accessToken) => {
+    let decoded;
     try {
         //1.Get payload from expired access token
-        const decoded = await jwt.verify(
-            accessToken,
-            global.AccessTokenSecret,
-            { ignoreExpiration: true }
-        );
+        decoded = await jwt.verify(accessToken, global.AccessTokenSecret, {
+            ignoreExpiration: true,
+        });
         //2.verify refresh Token
-        let result = await Sessions.findOne(
-            { sessionID: decoded.sessionID, jwtUid: decoded.jwtUid },
-            { refreshToken: true }
-        );
+        let result = await Sessions.findOne({
+            sessionID: decoded.sessionID,
+        }).populate("user");
         if (!result) {
-            throw "Session does not exist(renewAccessToken_error)!";
+            throw "Session does not exist";
+        } else if (result.user.status.toLowerCase() === "inactive") {
+            throw "User is disabled!";
         }
 
-        try {
-            //==>Verification successfull
-            await jwt.verify(result.refreshToken, global.RefreshTokenSecret);
-        } catch (error) {
-            //==>Verification failed
-            if (error.name === "TokenExpiredError") {
-                //delete session from database
-                console.log("USER SESSION DELETED(Session expired)");
-                await Sessions.deleteOne({ sessionID: decoded.sessionID });
-                //throw 'Session Expired' error
-                const err = "Session expired";
-                throw err;
-            } else {
-                throw error;
-            }
-        }
+        await jwt.verify(result.refreshToken, global.RefreshTokenSecret);
 
         //3.Create new access token
         const UID = await module.exports.createJWTUniqueID();
@@ -96,15 +81,19 @@ const renewAccessToken = async (accessToken) => {
 
         //4.update the database
         await Sessions.updateOne(
-            { sessionID: decoded.sessionID, jwtUid: decoded.jwtUid },
+            { sessionID: decoded.sessionID },
             {
                 $set: {
                     jwtUid: UID,
                 },
             }
         );
-        return { ...decoded, jwtUid: UID, newAccessToken: newAccessToken };
+        return { ...decoded, newAccessToken };
     } catch (error) {
+        if (error.name === "TokenExpiredError") {
+            await Sessions.deleteOne({ sessionID: decoded.sessionID });
+            throw "Session expired";
+        }
         throw error;
     }
 };
@@ -114,25 +103,7 @@ module.exports.accessTokenVerification = async (accessToken) => {
     try {
         //1.Verify incoming access token
         const decoded = await jwt.verify(accessToken, global.AccessTokenSecret);
-
-        //2.Verify with database
-        const userSession = await Sessions.findOne({
-            sessionID: decoded.sessionID,
-            jwtUid: decoded.jwtUid,
-        }).populate("user");
-        console.log(
-            "decoded.sessionID:",
-            decoded.sessionID,
-            "userSessionID:",
-            userSession?.sessionID,
-            "\n"
-        );
-        if (!userSession) throw "Session does not exist!";
-        else if (userSession.user.status.toLowerCase() === "inactive") {
-            console.log("USER SESSION DELETED!");
-            await Sessions.deleteOne({ sessionID: decoded.sessionID });
-            throw "User is disabled!";
-        } else return decoded;
+        return decoded;
     } catch (error) {
         if (error.name === "TokenExpiredError") {
             return await renewAccessToken(accessToken);

@@ -75,7 +75,6 @@ $card-height : 13rem;
     top: 4px;
     right: 0px;
     color: white;
-    cursor: pointer;
 
     button:hover {
         color: rgba(255, 255, 255, 0.822);
@@ -85,6 +84,7 @@ $card-height : 13rem;
 
 // dropdwn
 .dropbtn {
+    cursor: pointer;
     padding: 0;
     width: max-content;
     background-color: transparent;
@@ -110,6 +110,7 @@ $card-height : 13rem;
 }
 
 .dropdown-content span {
+    cursor: pointer;
     color: black;
     padding: 12px;
     text-decoration: none;

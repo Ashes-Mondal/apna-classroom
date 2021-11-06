@@ -260,6 +260,13 @@ exports.addStudentToClassroom = async (req, res) => {
                 new: true,
             }
         );
+        if (!student) {
+            res.status(400).json({
+                data: null,
+                error: "Email not registered",
+            });
+            return;
+        }
         await classroomModel.findByIdAndUpdate(classID, {
             $addToSet: { studentIDs: student._id },
         });
@@ -299,6 +306,13 @@ exports.removeStudentFromClassroom = async (req, res) => {
                 new: true,
             }
         );
+        if (!student) {
+            res.status(400).json({
+                data: null,
+                error: "Email not registered",
+            });
+            return;
+        }
         await classroomModel.findByIdAndUpdate(classID, {
             $pull: { studentIDs: student._id },
         });
@@ -332,6 +346,13 @@ exports.unrollStudentFromClassroom = async (req, res) => {
                 new: true,
             }
         );
+        if (!student) {
+            res.status(400).json({
+                data: null,
+                error: "Email not registered",
+            });
+            return;
+        }
         await classroomModel.findByIdAndUpdate(classID, {
             $pull: { studentIDs: student._id },
         });

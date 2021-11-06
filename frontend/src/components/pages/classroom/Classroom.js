@@ -38,6 +38,7 @@ function Classroom() {
         return;
     }, [enrolledClassrooms, classroomID]);
     useEffect(() => {
+        if(showPeople)
         getPeopleInClassroom(classroomID)
             .then((res) => {
                 setPeople(res.data);
@@ -45,7 +46,7 @@ function Classroom() {
             .catch((e) => {
                 console.error(e);
             });
-    }, [classroomID]);
+    }, [classroomID,showPeople]);
     const descModifier = (showAll, description) => {
         if (description.length < 80) return <p>{description}</p>;
         return showAll ? (
