@@ -183,7 +183,6 @@ const ThreeDots = (props) => {
                         key={idx}
                         onClick={async () => {
                             await item.handler();
-                            setOpen(false);
                         }}
                     >
                         {item.title}
