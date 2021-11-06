@@ -1,6 +1,7 @@
 import "./FileAtt.scss";
 import React, { useEffect } from "react";
 import { FaPaperclip } from "react-icons/fa";
+const baseUrl = "http://localhost:8000/api";
 
 function FileAtt({ fileData }) {
     console.log(fileData);
@@ -13,7 +14,7 @@ function FileAtt({ fileData }) {
                 e.stopPropagation();
             }}
             className="file-att"
-            href={fileData._id ? `http://localhost:8000/api/files/download?id=${fileData._id}` : null}
+            href={fileData._id ? `${baseUrl}/files/download?id=${fileData._id}` : null}
             download
         >
             <div className="icon">

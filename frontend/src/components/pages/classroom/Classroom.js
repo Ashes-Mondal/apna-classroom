@@ -16,6 +16,7 @@ function Classroom() {
     const [feed, setFeed] = useState([]);
     const enrolledClassrooms = useSelector((state) => state.enrolledClassrooms);
     const [currentClassroom, setCurrentClassroom] = useState({});
+    const [showAllDesc, setShowAllDesc] = useState(false);
     const dispatch = useDispatch();
     const loading = useSelector((state) => state.loading);
     const user = useSelector((state) => state.user);
@@ -33,6 +34,21 @@ function Classroom() {
         return;
     }, [enrolledClassrooms, classroomID]);
 
+    const descModifier = (showAll, description) => {
+        if (description.length < 80) return <p>{description}</p>;
+        return showAll ? (
+            <>
+                <p>{description}</p>
+                <b onClick={() => setShowAllDesc(false)}>SHOW LESS</b>
+            </>
+        ) : (
+            <>
+                <p>{description.slice(0, 81)}...</p>
+                <b onClick={() => setShowAllDesc(true)}>SHOW MORE</b>
+            </>
+        );
+    };
+
     return (
         <div>
             <Banner currentClassroom={currentClassroom} />
@@ -49,7 +65,14 @@ function Classroom() {
                         </div>
                     )}
                 </div>
+
                 <div className="right-column">
+                    {currentClassroom.description ? (
+                        <div className="class-desc">
+                            <h5>About This Classroom</h5>
+                            {descModifier(showAllDesc, currentClassroom.description)}
+                        </div>
+                    ) : null}
                     <AddAnnModal classroomID={classroomID} theme={currentClassroom.theme} />
                     <AddAsgModal classroomID={classroomID} theme={currentClassroom.theme} />
                     {user.role === "student" ? <MiniToDo classroomID={classroomID} /> : null}
