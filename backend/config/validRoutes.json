@@ -9,19 +9,29 @@
     "studentRoutes": [
         "/logout",
         "/getUserInfo",
+        "/unrollStudentFromClassroom",
+
         "/postAnnouncement",
         "/getAssignmentDetails",
         "/getUpcomingAssignments",
         "/getUserClassAssignments",
         "/getClassroomDetails",
         "/getPostFeed",
+
         "/validMeetAccess",
+
         "/postComment",
         "/postSubmission",
         "/getSubmission",
         "/getSubmissions",
         "/getPeopleInClassroom"
     ],
-    "teacherRoutes": ["/postAssignment", "/createClassroom", "/saveMarks"],
+    "teacherRoutes": [
+        "/createClassroom",
+        "/postAssignment", 
+        "/removeStudentToClassroom",
+        "/addStudentToClassroom",
+        "/saveMarks"
+    ],
     "adminRoutes": ["/register"]
 }

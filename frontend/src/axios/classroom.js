@@ -76,3 +76,31 @@ export const getPeopleInClassroom = async (data) => {
         throw error.response ? error.response.data : { data: null, error: "Not Connected to server" };
     }
 };
+
+export const addStudentToClassroom = async (data) => {
+    const url = `/addStudentToClassroom`;
+    try {
+        const res = await axios.post(url, data);
+        return res.data;
+    } catch (error) {
+        throw error.response ? error.response.data : { data: null, error: "Not Connected to server" };
+    }
+};
+export const removeStudentFromClassroom = async (data) => {
+    const url = `/removeStudentFromClassroom`;
+    try {
+        const res = await axios.post(url, data);
+        return res.data;
+    } catch (error) {
+        throw error.response ? error.response.data : { data: null, error: "Not Connected to server" };
+    }
+};
+export const unrollStudentFromClassroom = async (data) => {
+    const url = `/unrollStudentFromClassroom`;
+    try {
+        const res = await axios.post(url, data);
+        return res.data;
+    } catch (error) {
+        throw error.response ? error.response.data : { data: null, error: "Not Connected to server" };
+    }
+};

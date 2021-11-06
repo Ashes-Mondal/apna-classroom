@@ -45,7 +45,7 @@ function Submission({ assignment, theme }) {
         if (assignment?._id) {
             getSubmission({ classroomID: assignment.classroomID, assignmentID: assignment._id })
                 .then((res) => {
-                    console.log("submission:", res.data);
+                    // console.log("submission:", res.data);
                     setSelectedFiles(res.data.fileIDs);
                     setSubmissionDate(res.data.submissionDate);
                 })

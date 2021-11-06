@@ -67,11 +67,6 @@ exports.loginController = async (req, res, next) => {
             );
         }
 
-        //Creating refresh token
-        const refreshToken = await jwt.createRefreshToken({
-            uuid: userInfo.uuid,
-        });
-
         //Creating unique id for JWT token
         const jwtUid = await jwt.createJWTUniqueID();
 
@@ -80,10 +75,15 @@ exports.loginController = async (req, res, next) => {
 
         //Creating JWT token
         const accessToken = await jwt.createAccessToken({
-            sessionID: sessionID,
+            sessionID:sessionID,
             uuid: userInfo.uuid,
             jwtUid: jwtUid,
             role: userInfo.role,
+        });
+
+        //Creating refresh token
+        const refreshToken = await jwt.createRefreshToken({
+            sessionID:sessionID,
         });
 
         await Session.insertMany([
@@ -99,7 +99,7 @@ exports.loginController = async (req, res, next) => {
         res.clearCookie("login");
         res.cookie(
             "login",
-            JSON.stringify({ accessToken: accessToken, sessionID: sessionID }),
+            JSON.stringify({ accessToken: accessToken}),
             { httpOnly: true, secure: process.env.NODE_ENV === "production" }
         );
         res.status(200).json({

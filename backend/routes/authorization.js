@@ -31,14 +31,12 @@ async function checkauthorization(req, res, next) {
             let jwtdata = await accessTokenVerification(accessToken);
             //==>if token was renewed
             if (jwtdata.newAccessToken) {
-                console.log("newAccessToken:", jwtdata.newAccessToken);
-                console.log("auth date now", Date.now());
+                // console.log("newAccessToken:", jwtdata.newAccessToken);
                 res.clearCookie("login");
                 res.cookie(
                     "login",
                     JSON.stringify({
                         accessToken: jwtdata.newAccessToken,
-                        sessionID: jwtdata.newAccessToken.sessionID,
                     }),
                     {
                         httpOnly: true,
@@ -51,7 +49,6 @@ async function checkauthorization(req, res, next) {
             if (isRequestValid(url, jwtdata.role)) {
                 //3.Adding uuid and sessionID to req.body
                 req.body.uuid = jwtdata.uuid;
-                req.uuid = jwtdata.uuid;
                 req.body.sessionID = jwtdata.sessionID;
                 next();
             } else {

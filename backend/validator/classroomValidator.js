@@ -9,7 +9,6 @@ const options = {
 module.exports.validateClassroom = (req, res, next) => {
     const validateClassroomBody = Joi.object({
         uuid: Joi.string().required(),
-        sessionID: Joi.string().required(),
     });
     const validateClassroomQuery = Joi.object({
         classID: Joi.string().required(),
@@ -36,7 +35,6 @@ module.exports.validateClassroom = (req, res, next) => {
 module.exports.getUserClassAssignments = (req, res, next) => {
     const validateBody = Joi.object({
         uuid: Joi.string().required(),
-        sessionID: Joi.string().required(),
     });
     const validateQuery = Joi.object({
         classID: Joi.string().required(),
@@ -79,6 +77,46 @@ module.exports.createClassroom = (req, res, next) => {
         return;
     } else {
         req.body = value;
+        next();
+    }
+};
+
+module.exports.addStudentToClassroom = (req, res, next) => {
+    const validateBody = Joi.object({
+        uuid: Joi.string().required(),
+        classID: Joi.string().required(),
+        email: Joi.string().email().required(),
+    });
+    const body = validateBody.validate(req.body, options);
+
+
+    if (body.error) {
+        res.status(400).json({
+            data: null,
+            error: "Invalid request parameters",
+        });
+        return;
+    } else {
+        req.body = body.value;
+        next();
+    }
+};
+module.exports.unrollStudentFromClassroom = (req, res, next) => {
+    const validateBody = Joi.object({
+        uuid: Joi.string().required(),
+        classID: Joi.string().required(),
+    });
+    const body = validateBody.validate(req.body, options);
+
+
+    if (body.error) {
+        res.status(400).json({
+            data: null,
+            error: "Invalid request parameters",
+        });
+        return;
+    } else {
+        req.body = body.value;
         next();
     }
 };

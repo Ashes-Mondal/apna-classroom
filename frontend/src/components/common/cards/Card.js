@@ -1,46 +1,15 @@
-import React, { useMemo, useState } from "react";
+import React from "react";
 import "./Card.scss";
-import { BiDotsVerticalRounded } from "react-icons/bi";
 import { SiGooglehangoutsmeet } from "react-icons/si";
 import { HiOutlineClipboardList } from "react-icons/hi";
 import { useHistory } from "react-router";
-
-const Dropdown = (props) => {
-    const [open, setOpen] = useState(false);
-    return (
-        <div className="dropdown">
-            <button className="dropbtn" onClick={() => setOpen(!open)}>
-                <BiDotsVerticalRounded size={30} />
-            </button>
-            <div className="dropdown-content" style={open ? { display: "block" } : {}}>
-                {props.list.map((item, idx) => (
-                    <span
-                        key={idx}
-                        onClick={async () => {
-                            await item.handler();
-                            setOpen(false);
-                        }}
-                    >
-                        {item.title}
-                    </span>
-                ))}
-            </div>
-        </div>
-    );
-};
+import ThreeDots from "./ThreeDots";
+import { useSelector } from "react-redux";
 
 const Card = (props) => {
     const history = useHistory();
+    const user = useSelector((state) => state.user);
     const { details } = props;
-    const list = useMemo(
-        () => [
-            {
-                title: "Unroll",
-                handler: () => alert("unroll handler called..."),
-            },
-        ],
-        []
-    );
 
     return (
         <div className={`card subject-card bg-${details.theme}`}>
@@ -51,13 +20,16 @@ const Card = (props) => {
                     <h6 id="subject-faculty">{details.facultyName}</h6>
                 </div>
                 <span className="three-dots">
-                    <Dropdown list={list} />
+                    <ThreeDots details={details} theme={details.theme}/>
                 </span>
             </div>
             <div className="card-bottom">
-                <span onClick={() => history.push(`/class/${details._id}/todos`)}>
-                    <HiOutlineClipboardList /> Todo
-                </span>
+                {user.role.toLowerCase() === "student" ? (
+                    <span onClick={() => history.push(`/class/${details._id}/todos`)}>
+                        <HiOutlineClipboardList /> Todo
+                    </span>
+                ) : null}
+
                 <span onClick={() => history.push(`/class/${details._id}/meet/${details.meetingID}`)}>
                     <SiGooglehangoutsmeet /> Meeting
                 </span>
