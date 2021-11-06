@@ -29,5 +29,11 @@ router.get(
     classroomValidator.validateClassroom,
     classController.getPostFeed
 );
+router.get(
+    "/getPeopleInClassroom",
+    classroomValidator.validateClassroom,
+    classController.getPeopleInClassroom
+);
+
 // Exporting routes
 module.exports.router = router;

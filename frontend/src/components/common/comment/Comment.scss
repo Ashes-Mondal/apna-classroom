@@ -3,20 +3,21 @@
     gap: 10px;
     margin: 20px;
     color: black;
-    .avatar {
-        height: 40px;
-        min-width: 40px;
-        color: white;
-        font-size: 16pt;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 50px;
-    }
     h6 {
         span {
             font-weight: bold;
         }
         margin: 0;
     }
+}
+
+.avatar {
+    height: 40px;
+    min-width: 40px;
+    color: white;
+    font-size: 16pt;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
 }
