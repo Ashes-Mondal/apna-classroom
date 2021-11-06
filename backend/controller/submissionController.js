@@ -98,3 +98,40 @@ exports.getSubmissions = async (req, res) => {
         res.status(500).json({ data: null, error: error.message });
     }
 };
+
+exports.saveMarks = async (req, res) => {
+    try {
+        const classroomID = req.body.classroomID;
+        const studentID = req.body.studentID;
+        const assignmentID = req.body.assignmentID;
+        if (
+            isUserInClass(req.body.uuid, classroomID) &&
+            isPostInClass(assignmentID, "asg", classroomID)
+        ) {
+            //Getting fileIDs
+
+            const submission = await submissionModel.findOne({
+                assignmentID,
+                studentID,
+            });
+
+            const submissionDetails = await submissionModel
+                .findByIdAndUpdate(
+                    { _id: submission._id },
+                    { marks: req.body.marks },
+                    { new: true }
+                )
+                .populate("fileIDs")
+                .populate({
+                    path: "studentID",
+                    select: "name email",
+                })
+                .populate("assignmentID");
+            res.status(200).json({ data: submissionDetails, error: null });
+        } else {
+            res.status(403).json({ data: null, error: "Access Denied" });
+        }
+    } catch (error) {
+        res.status(500).json({ data: null, error: error.message });
+    }
+};

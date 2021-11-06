@@ -22,5 +22,9 @@ router.get(
     submissionValidator.getSubmissionValidator,
     submissionController.getSubmissions
 );
-
+router.post(
+    "/saveMarks",
+    submissionValidator.saveMarksValidator,
+    submissionController.saveMarks
+);
 module.exports.router = router;

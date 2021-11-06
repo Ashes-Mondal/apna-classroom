@@ -21,6 +21,6 @@
         "/getSubmission",
         "/getSubmissions"
     ],
-    "teacherRoutes": ["/postAssignment", "/createClassroom"],
+    "teacherRoutes": ["/postAssignment", "/createClassroom", "/saveMarks"],
     "adminRoutes": ["/register"]
 }

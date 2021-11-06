@@ -3,11 +3,13 @@ import { useHistory } from "react-router";
 import "./SubmissionModal.scss";
 import { GrFormClose } from "react-icons/gr";
 import { BsFileEarmarkCheck } from "react-icons/bs";
+import { saveMarks } from "../../../axios/submission";
 const baseUrl = "http://localhost:8000/api";
 
-const SubmissionModal = ({ setShowForm, selectedSubmission, theme }) => {
+const SubmissionModal = ({ setShowForm, selectedSubmission, theme, setSelectedSubmission }) => {
     const history = useHistory();
     const [marks, setMarks] = useState(selectedSubmission.marks > 0 ? selectedSubmission.marks : 0);
+    const [showSave, setShowSave] = useState(false);
     const closeOnOverlayClick = (e) => {
         if (e.target.classList[0] === "overlay") {
             // console.log("overlay click");
@@ -23,6 +25,20 @@ const SubmissionModal = ({ setShowForm, selectedSubmission, theme }) => {
     const handleChangeMarks = (e) => {
         if (e.target.value <= selectedSubmission.assignmentID.maxMarks && e.target.value >= 0) {
             setMarks(e.target.value);
+            setShowSave(true);
+        }
+    };
+    const handleSaveMarks = () => {
+        if (marks) {
+            saveMarks({ assignmentID: selectedSubmission.assignmentID._id, classroomID: selectedSubmission.assignmentID.classroomID, marks: marks, studentID: selectedSubmission.studentID._id })
+                .then((res) => {
+                    setSelectedSubmission(res.data);
+                    setShowSave(false);
+                    setShowForm(false);
+                })
+                .catch((e) => {
+                    console.error(e);
+                });
         }
     };
     return (
@@ -42,8 +58,13 @@ const SubmissionModal = ({ setShowForm, selectedSubmission, theme }) => {
                     </h3>
                     <h3>
                         <span className={`font-${theme} bold`}>Marks : </span>
-                        <input className="submission-modal-input bold" type="number" value={marks} onChange={handleChangeMarks} />/
+                        <input className="submission-modal-input bold" type="number" min="0" max={selectedSubmission.assignmentID.maxMarks} value={marks} onChange={handleChangeMarks} />/
                         <span className="bold">{selectedSubmission.assignmentID.maxMarks} </span>
+                        {showSave ? (
+                            <span className={`submission-modal-save-marks bg-${theme} bold`} onClick={handleSaveMarks}>
+                                Save
+                            </span>
+                        ) : null}
                     </h3>
                     <h3>
                         <span className={`font-${theme} bold`}>Files : </span>
@@ -58,6 +79,7 @@ const SubmissionModal = ({ setShowForm, selectedSubmission, theme }) => {
                                           }}
                                           href={file._id ? `${baseUrl}/files/download?id=${file._id}` : null}
                                           download
+                                          key={key}
                                       >
                                           <h4 className={`submission-modal-file font-${theme} bold`}>
                                               <span className="submission-modal-file-icon">
