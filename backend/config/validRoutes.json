@@ -18,7 +18,8 @@
         "/validMeetAccess",
         "/postComment",
         "/postSubmission",
-        "/getSubmission"
+        "/getSubmission",
+        "/getPeopleInClassroom"
     ],
     "teacherRoutes": ["/postAssignment", "/createClassroom"],
     "adminRoutes": ["/register"]

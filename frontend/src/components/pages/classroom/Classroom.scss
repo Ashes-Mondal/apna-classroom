@@ -17,6 +17,15 @@
         flex-direction: column;
         gap: 20px;
         .class-desc {
+            .desc-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                .people-icon-btn {
+                    font-size: 16pt;
+                    cursor: pointer;
+                }
+            }
             background-color: white;
             padding: 20px;
             border-radius: 10px;

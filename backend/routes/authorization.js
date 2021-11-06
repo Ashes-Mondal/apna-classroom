@@ -32,6 +32,7 @@ async function checkauthorization(req, res, next) {
             //==>if token was renewed
             if (jwtdata.newAccessToken) {
                 console.log("newAccessToken:", jwtdata.newAccessToken);
+                console.log("auth date now", Date.now());
                 res.clearCookie("login");
                 res.cookie(
                     "login",

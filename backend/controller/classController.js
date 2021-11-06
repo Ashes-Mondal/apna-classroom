@@ -31,7 +31,11 @@ exports.getUpcomingAssignments = async (req, res) => {
                     match: { classroomID: ObjectID(classroomID) },
                 });
             res.status(200).json({
-                data: result.filter((item) => item.assignmentID && item.assignmentID.dueDate>Date.now()),
+                data: result.filter(
+                    (item) =>
+                        item.assignmentID &&
+                        item.assignmentID.dueDate > Date.now()
+                ),
                 error: null,
             });
         } else {
@@ -202,6 +206,30 @@ exports.createClassroom = async (req, res) => {
                 data: null,
                 error: "Internal Server Error!",
             });
+        }
+    } catch (error) {
+        res.status(500).json({ data: null, error: error.message });
+    }
+};
+
+exports.getPeopleInClassroom = async (req, res) => {
+    try {
+        const classroomID = req.query.classID;
+        const uuid = req.body.uuid;
+        if (isUserInClass(uuid, classroomID)) {
+            const people = await userModel
+                .find({
+                    classroomIDs: {
+                        $all: [classroomID],
+                    },
+                })
+                .select("name role email");
+            people.sort((a, b) => {
+                return a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1;
+            });
+            res.status(200).json({ data: people, error: null });
+        } else {
+            res.status(403).json({ data: result, error: "Access Denied" });
         }
     } catch (error) {
         res.status(500).json({ data: null, error: error.message });
