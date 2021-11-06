@@ -143,20 +143,6 @@
 .asg-secondrow1 {
     display: flex;
 }
-.asg-filter-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 25px;
-    color: white;
-    padding: 5px;
-    border-radius: 5px;
-    margin: auto 20px;
-    cursor: pointer;
-}
-.asg-filter-btn:hover {
-    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.05);
-}
 .asg-toprow h2 {
     font-weight: bold;
     color: black;
@@ -179,6 +165,7 @@
     width: 100%;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     border-radius: 5px;
     box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.05);
 }
@@ -188,6 +175,10 @@
 }
 .submission-item-name {
     margin: 10px 20px;
+    width: 120px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 .submission-item-pipeline {
     margin: auto 10px;
@@ -203,4 +194,13 @@
 .submission-item-attachments {
     margin: 10px 0px;
     margin-right: 10%;
+}
+.not-clickable:hover {
+    cursor: default;
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.05);
+}
+.filter-checkbox {
+    cursor: pointer;
+    margin: 0px 10px;
+    transform: scale(1.5);
 }

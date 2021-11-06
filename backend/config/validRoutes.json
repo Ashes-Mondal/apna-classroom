@@ -19,8 +19,9 @@
         "/postComment",
         "/postSubmission",
         "/getSubmission",
+        "/getSubmissions",
         "/getPeopleInClassroom"
     ],
-    "teacherRoutes": ["/postAssignment", "/createClassroom"],
+    "teacherRoutes": ["/postAssignment", "/createClassroom", "/saveMarks"],
     "adminRoutes": ["/register"]
 }

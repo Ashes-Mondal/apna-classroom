@@ -47,3 +47,23 @@ module.exports.getSubmissionValidator = (req, res, next) => {
         next();
     }
 };
+module.exports.saveMarksValidator = (req, res, next) => {
+    const validateBody = Joi.object({
+        uuid: Joi.string().required(),
+        classroomID: Joi.string().required(),
+        assignmentID: Joi.string().required(),
+        marks: Joi.number().required(),
+        studentID: Joi.string().required(),
+    });
+    const body = validateBody.validate(req.body, options);
+    if (body.error) {
+        res.status(400).json({
+            data: null,
+            error: "Invalid request parameters",
+        });
+        return;
+    } else {
+        req.body = body.value;
+        next();
+    }
+};
