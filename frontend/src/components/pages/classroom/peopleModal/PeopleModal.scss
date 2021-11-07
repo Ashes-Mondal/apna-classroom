@@ -12,6 +12,7 @@
     gap: 15px;
     max-height: 90vh;
     overflow: auto;
+
     .person {
         display: flex;
         align-items: center;
@@ -19,7 +20,25 @@
         color: black;
         margin: 10px 0;
     }
+
     h4 {
         margin: 10px 0;
     }
+}
+
+.class-teachers {
+    h4 {
+        margin: 10px 0;
+    }
+}
+
+.teachers-list {
+    .person {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: black;
+        margin: 10px 0;
+    }
+
 }

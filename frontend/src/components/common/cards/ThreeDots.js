@@ -27,10 +27,11 @@ const ThreeDots = (props) => {
                             .then((resp) => {
                                 dispatch(removeFromClassroom(classID));
                                 dispatch(removeClassroomTheme(classID));
-                                alert(resp);
+                                alert(resp.data);
                             })
                             .catch((e) => {
                                 console.error(e);
+                                alert(e.message)
                             });
                         
                     },
@@ -72,11 +73,12 @@ const ThreeDots = (props) => {
         console.log("Add Student handler");
         addStudentToClassroom({ classID: details._id, email: data["Email"] })
             .then((resp) => {
-                console.log(resp);
+                // console.log(resp);
                 alert(resp.data);
             })
             .catch((e) => {
                 console.error(e);
+                alert(e.message)
             });
         setOpenModal(false);
     };
@@ -88,11 +90,12 @@ const ThreeDots = (props) => {
         console.log("Remove Student handler");
         removeStudentFromClassroom({ classID: details._id, email: data["Email"] })
             .then((resp) => {
-                console.log(resp);
+                // console.log(resp);
                 alert(resp.data);
             })
             .catch((e) => {
                 console.error(e);
+                alert(e.message)
             });
         setOpenModal(false);
     };

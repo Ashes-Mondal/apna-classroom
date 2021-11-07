@@ -65,7 +65,7 @@ const FileInput = (props) => {
     };
     return (
         <>
-            <div className="selected-files">
+            <div style={file.length ? { minHeight: "93px" } : {}} className="selected-files">
                 {file.map((file, key) => {
                     return <FileAtt fileData={file.name} key={key} />;
                 })}
@@ -96,7 +96,7 @@ const FileInput = (props) => {
 
 //props = {form,buttonName,theme,handleSubmit,heading,setopen}
 const Modal = ({ options, setOpen, ...props }) => {
-    const [form, setForm] = useState(createFormState(options ? options.form : []));
+    const [form, setForm] = useState(createFormState(options?.form ? options.form : []));
     const closeOnOverlayClick = (e) => {
         if (e.target.classList[0] === "overlay") {
             setOpen(false);
@@ -110,25 +110,33 @@ const Modal = ({ options, setOpen, ...props }) => {
                 className="modal-form"
                 onSubmit={(e) => {
                     e.preventDefault();
-                    options.handleSubmit(form);
+                    try {
+                        options.handleSubmit(form);
+                    } catch (error) {
+                        console.warn(error);
+                    }
                 }}
             >
-                <h2>{options.heading}</h2>
-                {options.form.map((item, idx) => {
+                <h2>{options?.heading}</h2>
+                {options?.form?.map((item, idx) => {
                     if (item.type.toLowerCase() === "textarea") return <TextArea setForm={setForm} input={item} key={idx} />;
                     else if (item.type.toLowerCase() === "file") return <FileInput setForm={setForm} input={item} key={idx} />;
                     return <TextInput setForm={setForm} input={item} key={idx} />;
                 })}
                 {props.children}
-                {!options.buttonName ? null : (
+                {!options?.buttonName ? null : (
                     <button
-                        className={`bg-${options.theme || "purple"}`}
+                        className={`bg-${options?.theme}`}
                         onSubmit={(e) => {
                             e.preventDefault();
-                            options.handleSubmit(form);
+                            try {
+                                options.handleSubmit(form);
+                            } catch (error) {
+                                console.warn(error);
+                            }
                         }}
                     >
-                        {options.buttonName}
+                        {options?.buttonName}
                     </button>
                 )}
                 <div className="formclose-btn">
