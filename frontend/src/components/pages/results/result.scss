@@ -1,5 +1,6 @@
 .result-page {
     position: relative;
+    min-height: calc(100vh - var(--header-height));
 }
 
 .result-page-main {
@@ -103,6 +104,7 @@
 
 .drop-btn {
     background-color: white !important;
+    min-width: 10rem;
     max-width: 50vw;
     overflow: hidden;
     text-overflow: ellipsis;

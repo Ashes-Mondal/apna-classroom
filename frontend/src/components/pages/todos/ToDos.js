@@ -3,10 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import { getUpcomingAssignments } from "../../../axios/classroom";
 import { setLoading, unsetLoading } from "../../../redux/actions/loading";
-import NoData from "../../common/no-data/NoData";
 import Error from "../error/Error";
 import Head from "../results/Head";
 import Activity from "../results/Activity";
+import todoIMG from '../../../images/priorities/todo.png'
 
 const getSubjectName = (enrolledClassrooms, classroonID) => {
     for (let i = 0; i < enrolledClassrooms.length; i++) {
@@ -63,7 +63,9 @@ const ToDos = () => {
             <Head theme={theme[classroomID]} active={getSubjectName(enrolledClassrooms, classroomID)} list={dropdownList} />
             <div className="result-page-main">
                 {!loading && !upcommingAssignment.length ? (
-                    <NoData />
+                    <div className='no-data'>
+                        <img src={todoIMG} alt='no todos' />
+                    </div>
                 ) : (
                     <>
                         {upcommingAssignment.map((activity, idx) => (

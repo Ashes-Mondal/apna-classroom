@@ -27,12 +27,13 @@ const ThreeDots = (props) => {
                             .then((resp) => {
                                 dispatch(removeFromClassroom(classID));
                                 dispatch(removeClassroomTheme(classID));
-                                alert(resp);
+                                alert(resp.data);
                             })
                             .catch((e) => {
                                 console.error(e);
+                                alert(e.error)
                             });
-                        setOpen(false);
+                        
                     },
                 },
             ];
@@ -42,7 +43,6 @@ const ThreeDots = (props) => {
                 handler: () => {
                     setOpenModal(true);
                     setModalType(1);
-                    setOpen(false);
                 },
             },
             {
@@ -50,7 +50,6 @@ const ThreeDots = (props) => {
                 handler: () => {
                     setOpenModal(true);
                     setModalType(2);
-                    setOpen(false);
                 },
             },
             {
@@ -58,7 +57,6 @@ const ThreeDots = (props) => {
                 handler: () => {
                     setOpenModal(true);
                     setModalType(3);
-                    setOpen(false);
                 },
             },
             {
@@ -66,7 +64,6 @@ const ThreeDots = (props) => {
                 handler: () => {
                     setOpenModal(true);
                     setModalType(4);
-                    setOpen(false);
                 },
             },
         ];
@@ -76,11 +73,12 @@ const ThreeDots = (props) => {
         console.log("Add Student handler");
         addStudentToClassroom({ classID: details._id, email: data["Email"] })
             .then((resp) => {
-                console.log(resp);
+                // console.log(resp);
                 alert(resp.data);
             })
             .catch((e) => {
                 console.error(e);
+                alert(e.error)
             });
         setOpenModal(false);
     };
@@ -92,11 +90,12 @@ const ThreeDots = (props) => {
         console.log("Remove Student handler");
         removeStudentFromClassroom({ classID: details._id, email: data["Email"] })
             .then((resp) => {
-                console.log(resp);
+                // console.log(resp);
                 alert(resp.data);
             })
             .catch((e) => {
                 console.error(e);
+                alert(e.message)
             });
         setOpenModal(false);
     };
@@ -187,6 +186,7 @@ const ThreeDots = (props) => {
                         key={idx}
                         onClick={async () => {
                             await item.handler();
+                            setOpen(false)
                         }}
                     >
                         {item.title}

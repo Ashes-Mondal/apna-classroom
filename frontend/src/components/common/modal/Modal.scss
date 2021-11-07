@@ -67,6 +67,10 @@
         border: none;
         border-radius: 5px;
         font-weight: 600;
+        &:hover{
+            filter: brightness(90%);
+            letter-spacing: .5px;
+        }
     }
 
     input[type="file"] {

@@ -64,7 +64,7 @@ function Classroom() {
 
     return (
         <div>
-            {showPeople ? <PeopleModal people={people} setShowPeople={setShowPeople} theme={currentClassroom.theme} /> : null}
+            {showPeople ? <PeopleModal people={people} setShowPeople={setShowPeople} showPeople={showPeople} theme={currentClassroom.theme} /> : null}
             <Banner currentClassroom={currentClassroom} />
             <div className="feed">
                 <div className="left-column">
