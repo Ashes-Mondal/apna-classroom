@@ -31,7 +31,7 @@ const ThreeDots = (props) => {
                             })
                             .catch((e) => {
                                 console.error(e);
-                                alert(e.message)
+                                alert(e.error)
                             });
                         
                     },
@@ -78,7 +78,7 @@ const ThreeDots = (props) => {
             })
             .catch((e) => {
                 console.error(e);
-                alert(e.message)
+                alert(e.error)
             });
         setOpenModal(false);
     };
@@ -186,6 +186,7 @@ const ThreeDots = (props) => {
                         key={idx}
                         onClick={async () => {
                             await item.handler();
+                            setOpen(false)
                         }}
                     >
                         {item.title}
