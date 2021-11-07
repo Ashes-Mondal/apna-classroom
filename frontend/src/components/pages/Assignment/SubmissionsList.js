@@ -8,6 +8,7 @@ function SubmissionsList({ assignment, theme, setShowSubmissions }) {
     const [showForm, setShowForm] = useState(false);
     const [selectedSubmission, setSelectedSubmission] = useState({});
     const [uncheckedSubmissions, setUncheckedSubmissions] = useState(true);
+    const [notSubmitted, setNotSubmitted] = useState([]);
     const emailToRollNo = (email) => {
         return email.slice(4, 8) + email.slice(0, 3).toUpperCase() + "-" + email.slice(8, 11);
     };
@@ -28,8 +29,8 @@ function SubmissionsList({ assignment, theme, setShowSubmissions }) {
         if (assignment?._id) {
             getSubmissions({ classroomID: assignment.classroomID, assignmentID: assignment._id })
                 .then((res) => {
-                    console.log("submissions:", res.data);
                     setSubmissions(res.data);
+                    setNotSubmitted(res.data.filter((submission) => !submission.submissionDate));
                 })
                 .catch((e) => {
                     console.error(e);
@@ -92,21 +93,18 @@ function SubmissionsList({ assignment, theme, setShowSubmissions }) {
                             <span className={`submission-item-attachments font-${theme} bold`}>Attachments: {submission.fileIDs.length} </span>
                         </span>
                     ))}
-                <h4>Not Submitted:</h4>
-                {submissions
-                    .filter((submission) => {
-                        return submission.submissionDate === undefined;
-                    })
-                    .map((submission, key) => (
-                        <span key={key} className="submission-item not-clickable">
-                            <span>
-                                <span className="submission-item-name">{submission.studentID.name} </span>
-                                <span className="submission-item-pipeline">|</span>
-                                <span className={`submission-item-rollno font-${theme} bold `}>{emailToRollNo(submission.studentID.email)} </span>
-                            </span>
-                            <span className={`submission-item-attachments submission-item-right-align font-black bold`}>Not Submitted</span>
+                {notSubmitted.length ? <h4>Not Submitted:</h4> : null}
+
+                {notSubmitted.map((submission, key) => (
+                    <span key={key} className="submission-item not-clickable">
+                        <span>
+                            <span className="submission-item-name">{submission.studentID.name} </span>
+                            <span className="submission-item-pipeline">|</span>
+                            <span className={`submission-item-rollno font-${theme} bold `}>{emailToRollNo(submission.studentID.email)} </span>
                         </span>
-                    ))}
+                        <span className={`submission-item-attachments submission-item-right-align font-black bold`}>Not Submitted</span>
+                    </span>
+                ))}
             </div>
         </div>
     );

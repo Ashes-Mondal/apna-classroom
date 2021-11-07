@@ -55,7 +55,8 @@
         gap: 5px;
     }
 
-    h6,h2 {
+    h6,
+    h2 {
         color: var(--text-color);
     }
 
@@ -67,9 +68,9 @@
         border: none;
         border-radius: 5px;
         font-weight: 600;
-        &:hover{
+        &:hover {
             filter: brightness(90%);
-            letter-spacing: .5px;
+            letter-spacing: 0.5px;
         }
     }
 
@@ -84,13 +85,10 @@
         cursor: pointer;
         display: flex;
         justify-content: space-between;
-
     }
 
     .selected-files {
-        max-height: 200px;
         max-width: 1000px;
-        overflow: auto;
     }
 }
 

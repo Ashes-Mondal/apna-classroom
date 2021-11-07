@@ -28,8 +28,8 @@
     ],
     "teacherRoutes": [
         "/createClassroom",
-        "/postAssignment", 
-        "/removeStudentToClassroom",
+        "/postAssignment",
+        "/removeStudentFromClassroom",
         "/addStudentToClassroom",
         "/saveMarks"
     ],
