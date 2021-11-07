@@ -8,29 +8,29 @@ const PeopleModal = ({ people, showPeople, setShowPeople, theme }) => {
         return email.slice(4, 8) + email.slice(0, 3).toUpperCase() + "-" + email.slice(8, 11);
     };
     return (
-        <Modal setOpen={setShowPeople} open={showPeople} >
+        <Modal setOpen={setShowPeople} open={showPeople}>
             <div className="class-teachers">
                 <h4>Teachers</h4>
                 <div className="teachers-list">
                     {people
                         .filter((p) => p.role !== "student")
-                        .map((p) => {
+                        .map((p, key) => {
                             return (
-                                <div className="person">
+                                <div key={key} className="person">
                                     <div className={`avatar bg-${theme}`}>{p.name[0]}</div>
                                     <div className="name">{p.name}</div>
                                 </div>
                             );
                         })}
                 </div>
-                <br/>
+                <br />
                 <h4>Students</h4>
                 <div className="teachers-list">
                     {people
                         .filter((p) => p.role === "student")
-                        .map((p) => {
+                        .map((p, key) => {
                             return (
-                                <div className="person">
+                                <div key={key} className="person">
                                     <div className={`avatar bg-${theme}`}>{p.name[0]}</div>
                                     <div className="name">
                                         {p.name} &bull; {emailToRNo(p.email)}
