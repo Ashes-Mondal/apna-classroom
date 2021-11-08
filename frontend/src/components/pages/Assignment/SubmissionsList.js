@@ -47,14 +47,13 @@ function SubmissionsList({ assignment, theme, setShowSubmissions }) {
                     show assignment
                 </span>
             </div>
-            <br />
+            {/* <br /> */}
             <div className="asg-secondrow">
-                <span className="asg-secondrow1">
-                    <h4>Class Submissions</h4>
-                </span>
-                <h4>
-                    Total Submissions: {getTotalSubmissions(submissions)}/{submissions.length}
-                </h4>
+                {/* <span className="asg-secondrow1"></span> */}
+                <h4>Class Submissions</h4>
+                <h5 className={`total-submissions `}>
+                    Total: {getTotalSubmissions(submissions)}/{submissions.length}
+                </h5>
             </div>
             <div className={`asg-filter-btn font-${theme} bold`}>
                 <input
@@ -84,24 +83,26 @@ function SubmissionsList({ assignment, theme, setShowSubmissions }) {
                                 openSubmissionModal(submission);
                             }}
                         >
-                            <span className="submission-item-name">{submission.studentID.name} </span>
-                            <span className="submission-item-pipeline">|</span>
-                            <span className={`submission-item-rollno font-${theme} bold `}>{emailToRollNo(submission.studentID.email)} </span>
+                            <div className="submission-item-left">
+                                <div className="submission-item-name">{submission.studentID.name}</div>
+                                <div className="submission-item-pipeline">|</div>
+                                <div className={`submission-item-rollno font-${theme} bold `}>{emailToRollNo(submission.studentID.email)} </div>
+                            </div>
                             <span className="submission-item-marks">
                                 {submission.marks >= 0 ? submission.marks : "__"}/{submission.assignmentID.maxMarks}
                             </span>
                             <span className={`submission-item-attachments font-${theme} bold`}>Attachments: {submission.fileIDs.length} </span>
                         </span>
                     ))}
-                {notSubmitted.length ? <h4>Not Submitted:</h4> : null}
+                {notSubmitted.length ? <h4 className="not-submitted-header">Not Submitted</h4> : null}
 
                 {notSubmitted.map((submission, key) => (
                     <span key={key} className="submission-item not-clickable">
-                        <span>
-                            <span className="submission-item-name">{submission.studentID.name} </span>
-                            <span className="submission-item-pipeline">|</span>
-                            <span className={`submission-item-rollno font-${theme} bold `}>{emailToRollNo(submission.studentID.email)} </span>
-                        </span>
+                        <div className="submission-item-left">
+                            <div className="submission-item-name">{submission.studentID.name}</div>
+                            <div className="submission-item-pipeline">|</div>
+                            <div className={`submission-item-rollno font-${theme} bold `}>{emailToRollNo(submission.studentID.email)} </div>
+                        </div>
                         <span className={`submission-item-attachments submission-item-right-align font-black bold`}>Not Submitted</span>
                     </span>
                 ))}

@@ -52,7 +52,7 @@ function Assignment() {
             ) : (
                 <div className="asg-container">
                     {user.role === "student" ? <Submission assignment={assignment} theme={theme[classroomID]} /> : null}
-                    <div className="asg-container2">
+                    <div className={`asg-container2 ${user.role}-extra-margin`}>
                         <div className={`asg-detail border-${theme[classroomID]}`}>
                             <span className="asg-toprow">
                                 <span className="asg-heading">
