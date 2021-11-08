@@ -38,6 +38,7 @@ function Assignment() {
             .then((res) => {
                 const commentsList = res.data.commentIDs.reverse();
                 setAssignment({ ...res.data, commentIDs: commentsList });
+                // console.log("getasg", res.data, assignment);
             })
             .catch((e) => {
                 console.error(e);
@@ -52,7 +53,7 @@ function Assignment() {
             ) : (
                 <div className="asg-container">
                     {user.role === "student" ? <Submission assignment={assignment} theme={theme[classroomID]} /> : null}
-                    <div className="asg-container2">
+                    <div className={`asg-container2 ${user.role}-extra-margin`}>
                         <div className={`asg-detail border-${theme[classroomID]}`}>
                             <span className="asg-toprow">
                                 <span className="asg-heading">
@@ -65,6 +66,10 @@ function Assignment() {
                                     </span>
                                 ) : null}
                             </span>
+                            <div className="asg-posted-by">
+                                {assignment.classroomID ? <span className={`font-${theme}`}>{assignment.classroomID.facultyID.name}</span> : null} &bull;{" "}
+                                {assignment.classroomID ? <span className={`font-${theme}`}>{assignment.classroomID.subjectName}</span> : null}
+                            </div>
                             <div className="asg-text">{assignment.body}</div>
                             <div className="attachments">
                                 {assignment.fileIDs

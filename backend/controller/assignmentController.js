@@ -15,10 +15,18 @@ exports.getAssignmentDetails = async (req, res) => {
                 path: "commentIDs",
                 populate: { path: "userID", select: "name" },
             })
+            .populate({
+                path: "classroomID",
+                // select: "subjectName",
+                populate: {
+                    path: "facultyID",
+                    select: "name",
+                },
+            })
             .populate("fileIDs");
 
         if (
-            result.classroomID == classroomID &&
+            result.classroomID._id == classroomID &&
             isUserInClass(uuid, classroomID)
         ) {
             res.status(200).json({ data: result, error: null });

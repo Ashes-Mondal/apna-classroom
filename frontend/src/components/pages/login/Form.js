@@ -5,7 +5,6 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { setUserAuth } from "../../../redux/actions/userAuthentication";
 import { handleLogin, sendResetPasswordEmail } from "../../../axios/handleSession";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import ResetPassword from "../reset-password/ResetPassword";
 // import img from '../../../images/login/spotted4.jpg'
 
@@ -167,8 +166,7 @@ const buttonStyles = (theme) => ({
         },
         "&:focus": {
             boxShadow: (props) => {
-                if (props.color)
-                    return `0 0 0 3px ${theme.colors[props.color] + "42"}`;
+                if (props.color) return `0 0 0 3px ${theme.colors[props.color] + "42"}`;
                 return `0 0 0 3px ${theme.colors.primary + "42"}`;
             },
             outlineColor: "rgba(0,0,0,0)",
@@ -324,11 +322,7 @@ const CustomThemeProvider = (props) => {
     const themeData = { currentTheme, toggleTheme };
     return (
         <CustomThemeContext.Provider value={themeData}>
-            <ThemeProvider
-                theme={currentTheme === "light" ? lightTheme : darkTheme}
-            >
-                {props.children}
-            </ThemeProvider>
+            <ThemeProvider theme={currentTheme === "light" ? lightTheme : darkTheme}>{props.children}</ThemeProvider>
         </CustomThemeContext.Provider>
     );
 };
@@ -337,10 +331,7 @@ function LoginLayout(props) {
     const classes = props.classes;
 
     return (
-        <div
-            style={{ background: `white`, backgroundSize: "cover" }}
-            className={classes.loginLayout}
-        >
+        <div style={{ background: `white`, backgroundSize: "cover" }} className={classes.loginLayout}>
             {props.children}
         </div>
     );
@@ -350,15 +341,9 @@ LoginLayout = withStyles(loginLayoutStyles)(LoginLayout);
 function Divider(props) {
     return (
         <div style={{ display: "flex", alignItems: "center" }}>
-            <div
-                style={{ height: "1px", width: "100%", background: "#d1d5db" }}
-            ></div>
-            <p style={{ margin: "10px", fontWeight: 100, color: "#94979c" }}>
-                OR
-            </p>
-            <div
-                style={{ height: "1px", width: "100%", background: "#d1d5db" }}
-            ></div>
+            <div style={{ height: "1px", width: "100%", background: "#d1d5db" }}></div>
+            <p style={{ margin: "10px", fontWeight: 100, color: "#94979c" }}>OR</p>
+            <div style={{ height: "1px", width: "100%", background: "#d1d5db" }}></div>
         </div>
     );
 }
@@ -385,16 +370,8 @@ Label = withStyles(labelStyles)(Label);
 function Button(props) {
     const classes = props.classes;
     return (
-        <button
-            className={classes.buttonMain}
-            onClick={props.onClick}
-            type={props.type}
-        >
-            {props.iconLeft ? (
-                <span className={classes.iconLeft}>{props.iconLeft}</span>
-            ) : (
-                ""
-            )}
+        <button className={classes.buttonMain} onClick={props.onClick} type={props.type}>
+            {props.iconLeft ? <span className={classes.iconLeft}>{props.iconLeft}</span> : ""}
             {props.children}
         </button>
     );
@@ -404,17 +381,9 @@ Button = withStyles(buttonStyles)(Button);
 function Input(props) {
     const classes = props.classes;
     return (
-        <div
-            className={
-                classes.inputWrapper +
-                (props.type === "checkbox" ? " " + classes.inlineWrapper : "")
-            }
-        >
+        <div className={classes.inputWrapper + (props.type === "checkbox" ? " " + classes.inlineWrapper : "")}>
             <input
-                className={
-                    classes.inputMain +
-                    (props.type === "checkbox" ? " " + classes.checkbox : "")
-                }
+                className={classes.inputMain + (props.type === "checkbox" ? " " + classes.checkbox : "")}
                 placeholder={props.placeholder}
                 onChange={props.onChange}
                 value={props.value}
@@ -469,11 +438,7 @@ function LoginPage(props) {
                 setSuccess(["Logged in"]);
                 dispatch(setUserAuth());
             } catch (e) {
-                setFormErrors(
-                    e.error === "Invalid request parameters"
-                        ? ["Please correct the email..."]
-                        : [e.error]
-                );
+                setFormErrors(e.error === "Invalid request parameters" ? ["Please correct the email..."] : [e.error]);
             }
         }
     };
@@ -482,24 +447,17 @@ function LoginPage(props) {
         e.preventDefault();
         let errors = [];
         let emailCheck = emailValidate(email);
-        if (emailCheck)
-            errors.push(
-                "Provide institute email to continue with reset password process."
-            );
+        if (emailCheck) errors.push("Provide institute email to continue with reset password process.");
         setFormErrors(errors);
         if (!errors.length) {
             try {
                 //handle sever logic
-                const {data} =  await sendResetPasswordEmail({email});
+                const { data } = await sendResetPasswordEmail({ email });
                 // window.location.replace(data);
                 setSuccess(["Check your email to continue with reset password process."]);
             } catch (e) {
                 console.error(e);
-                setFormErrors(
-                    e.error === "Invalid request parameters"
-                        ? ["Please correct the email..."]
-                        : [e.error]
-                );
+                setFormErrors(e.error === "Invalid request parameters" ? ["Please correct the email..."] : [e.error]);
             }
         }
     };
@@ -533,29 +491,18 @@ function LoginPage(props) {
                     <div name="email" validate={emailValidate}>
                         <Label>
                             <span>Institute Email</span>
-                            <Input
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
+                            <Input value={email} onChange={(e) => setEmail(e.target.value)} />
                         </Label>
                     </div>
 
                     <div name="password">
                         <Label>
                             <span>Password</span>
-                            <Input
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
+                            <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                         </Label>
                     </div>
                     <div style={{ marginTop: "10px" }}>
-                        <Button
-                            type="submit"
-                            onClick={loginSubmitHandler}
-                            fullWidth
-                        >
+                        <Button type="submit" onClick={loginSubmitHandler} fullWidth>
                             Log in
                         </Button>
                     </div>
@@ -563,12 +510,7 @@ function LoginPage(props) {
             </div>
 
             <Divider />
-            <Button
-                onClick={handleForgotPassword}
-                fullWidth
-                color="green"
-                iconLeft={<RiLockPasswordFill size={20} />}
-            >
+            <Button onClick={handleForgotPassword} fullWidth color="green" iconLeft={<RiLockPasswordFill size={20} />}>
                 Forgot Password
             </Button>
         </div>
