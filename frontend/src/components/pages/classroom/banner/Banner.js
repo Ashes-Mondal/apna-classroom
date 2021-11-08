@@ -4,15 +4,13 @@ import { useHistory } from "react-router";
 import ThreeDots from "../../../common/cards/ThreeDots";
 import "./Banner.scss";
 
-function launchMeeting() {}
-
 function Banner({ currentClassroom }) {
     const history = useHistory();
     return (
         <>
             <div className={`banner bg-${currentClassroom.theme}`}>
                 <span className="three-dots">
-                    <ThreeDots details={currentClassroom} theme={currentClassroom.theme}/>
+                    <ThreeDots details={currentClassroom} theme={currentClassroom.theme} />
                 </span>
                 <div className="info">
                     <h1>{currentClassroom.subjectName}</h1>

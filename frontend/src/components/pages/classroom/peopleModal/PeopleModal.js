@@ -1,6 +1,5 @@
 import "./PeopleModal.scss";
 import React from "react";
-import { GrFormClose } from "react-icons/gr";
 import Modal from "../../../common/modal/Modal";
 
 const PeopleModal = ({ people, showPeople, setShowPeople, theme }) => {

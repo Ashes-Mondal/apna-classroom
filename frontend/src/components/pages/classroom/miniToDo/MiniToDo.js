@@ -14,7 +14,7 @@ function MiniToDo({ classroomID }) {
             .catch((e) => {
                 console.error(e);
             });
-    }, []);
+    }, [classroomID]);
     const history = useHistory();
     const openAssignment = (assignmentID) => {
         history.push(`/class/${classroomID}/asg/${assignmentID}`);

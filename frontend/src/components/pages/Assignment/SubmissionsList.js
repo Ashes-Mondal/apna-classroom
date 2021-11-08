@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { MdKeyboardArrowDown } from "react-icons/md";
 import { getSubmissions } from "../../../axios/submission";
 import SubmissionModal from "./SubmissionModal";
 
