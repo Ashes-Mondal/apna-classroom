@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router";
 import "./SubmissionModal.scss";
 import { GrFormClose } from "react-icons/gr";
 import { BsFileEarmarkCheck } from "react-icons/bs";
@@ -7,7 +6,6 @@ import { saveMarks } from "../../../axios/submission";
 const baseUrl = "http://localhost:8000/api";
 
 const SubmissionModal = ({ setShowForm, selectedSubmission, theme, setSelectedSubmission }) => {
-    const history = useHistory();
     const [marks, setMarks] = useState(selectedSubmission.marks > 0 ? selectedSubmission.marks : 0);
     const [showSave, setShowSave] = useState(false);
     const closeOnOverlayClick = (e) => {

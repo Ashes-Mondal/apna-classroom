@@ -33,7 +33,7 @@ function PostCard({ postType, theme, content, classroomID }) {
     const [body, setBody] = useState("");
     const [comments, setComments] = useState(content.commentIDs);
     useEffect(() => {
-        setComments(comments.reverse());
+        setComments((comments) => comments.reverse());
     }, []);
     const handleCommentSubmit = (e) => {
         e.preventDefault();

@@ -1,21 +1,22 @@
 .file-att {
     background-color: lightgray;
     display: inline-flex;
-    padding: 15px 20px;
-    margin: 10px;
+    padding: 10px 10px;
+    margin: 5px;
     border-radius: 5px;
     cursor: pointer;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
 
     .icon {
         color: black;
-        font-size: 24px;
+        font-size: 20px;
     }
 
     h5,
     h6 {
-        width: 180px;
+        font-size: 14px;
+        width: 140px;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
