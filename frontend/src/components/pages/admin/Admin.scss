@@ -56,3 +56,16 @@
     border-radius: 5px;
     margin-top: 10px;
 }
+
+.hidden-comment {
+    display: none;
+    position: absolute;
+    background-color: rgb(255, 247, 173);
+    transform: translate(0px, -220px);
+    border-radius: 10px;
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+}
+.upload-user-btn:hover + .hidden-comment {
+    display: block;
+}
