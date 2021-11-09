@@ -86,6 +86,7 @@ export const addStudentToClassroom = async (data) => {
         throw error.response ? error.response.data : { data: null, error: "Not Connected to server" };
     }
 };
+
 export const removeStudentFromClassroom = async (data) => {
     const url = `/removeStudentFromClassroom`;
     try {
@@ -95,6 +96,7 @@ export const removeStudentFromClassroom = async (data) => {
         throw error.response ? error.response.data : { data: null, error: "Not Connected to server" };
     }
 };
+
 export const unrollStudentFromClassroom = async (data) => {
     const url = `/unrollStudentFromClassroom`;
     try {

@@ -45,9 +45,23 @@ exports.disableUserController = async (req, res, next) => {
 exports.getUserListController = async (req, res, next) => {
     try {
         const { role, batchCode } = req.query;
-        const userList = batchCode
-            ? await userModel.find({ batchCode })
-            : await userModel.find({ role });
+        if (role !== "student" || role !== "teacher" || role !== "admin") {
+            res.status(400).json({
+                data: null,
+                error: "Invalid role specified!",
+            });
+            return;
+        }
+        const userList =
+            role === "student" && batchCode
+                ? await userModel.find(
+                      { batchCode },
+                      { name: 1, email: 1, role: 1, batchCode: 1, status: 1 }
+                  )
+                : await userModel.find(
+                      { role },
+                      { name: 1, email: 1, role: 1, status: 1 }
+                  );
 
         res.status(200).json({
             data: userList,
