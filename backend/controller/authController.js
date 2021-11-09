@@ -75,7 +75,7 @@ exports.loginController = async (req, res, next) => {
 
         //Creating JWT token
         const accessToken = await jwt.createAccessToken({
-            sessionID:sessionID,
+            sessionID: sessionID,
             uuid: userInfo.uuid,
             jwtUid: jwtUid,
             role: userInfo.role,
@@ -83,7 +83,7 @@ exports.loginController = async (req, res, next) => {
 
         //Creating refresh token
         const refreshToken = await jwt.createRefreshToken({
-            sessionID:sessionID,
+            sessionID: sessionID,
         });
 
         await Session.insertMany([
@@ -97,49 +97,14 @@ exports.loginController = async (req, res, next) => {
         ]);
 
         res.clearCookie("login");
-        res.cookie(
-            "login",
-            JSON.stringify({ accessToken: accessToken}),
-            { httpOnly: true, secure: process.env.NODE_ENV === "production" }
-        );
+        res.cookie("login", JSON.stringify({ accessToken: accessToken }), {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+        });
         res.status(200).json({
             data: { accessToken: accessToken },
             error: null,
         });
-    } catch (e) {
-        res.status(400).json({ data: null, error: e.message });
-    }
-};
-
-exports.registerController = async (req, res, next) => {
-    try {
-        //0.Checking if user exists
-        let userInfo = await userModel.findOne({ email: req.body.email });
-        //==>User does exists
-        if (userInfo) {
-            res.status(400).json({
-                data: null,
-                error: "User already registered",
-            });
-            return;
-        }
-
-        //1.Creating hashed password
-        let hashPassword = await brcypt.createPasswordHash(req.body.password);
-
-        //2.unique user ID
-        let uuid = await UID.createUniqueID();
-
-        //3.Inserting user data in User's table
-        await userModel.insertMany([
-            {
-                name: req.body.name,
-                uuid: uuid,
-                email: req.body.email,
-                password: hashPassword,
-            },
-        ]);
-        res.status(200).json({ data: "Success", error: null });
     } catch (e) {
         res.status(400).json({ data: null, error: e.message });
     }

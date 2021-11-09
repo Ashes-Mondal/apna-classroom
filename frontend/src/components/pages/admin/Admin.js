@@ -1,12 +1,13 @@
-import React from 'react'
-import './Admin.scss'
+import React from "react";
+import "./Admin.scss";
+import AdminForms from "./AdminForms";
 
 const Admin = () => {
     return (
         <div>
-            Admin page
+            <AdminForms />
         </div>
-    )
-}
+    );
+};
 
-export default Admin
+export default Admin;
