@@ -29,17 +29,16 @@ const PostForm = ({ setShowForm, formType, classroomID, theme }) => {
         document.querySelector("#files").click();
     };
 
-    useEffect(() => {
-        for (let i = 0; i < selectedFiles.length; i++) {
-            // const csvData = await
-            selectedFiles[i].text().then((csvData) => {
-                console.log("csvData", csvData);
-                const jsonData = CSV2JSON(csvData);
-                console.log("jsonData", jsonData);
-                console.log("isValidJSON", isValidUserJSON(jsonData));
-            });
-        }
-    }, [selectedFiles]);
+    // useEffect(() => {
+    //     for (let i = 0; i < selectedFiles.length; i++) {
+    //         selectedFiles[i].text().then((csvData) => {
+    //             console.log("csvData", csvData);
+    //             const jsonData = CSV2JSON(csvData);
+    //             console.log("jsonData", jsonData);
+    //             console.log("isValidJSON", isValidUserJSON(jsonData));
+    //         });
+    //     }
+    // }, [selectedFiles]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
