@@ -6,11 +6,6 @@ const authValidator = require("../validator/authValidations");
 const userController = require("../controller/userController");
 
 router.post(
-    "/register",
-    authValidator.registerValidator,
-    authController.registerController
-);
-router.post(
     "/login",
     authValidator.loginValidator,
     authController.loginController

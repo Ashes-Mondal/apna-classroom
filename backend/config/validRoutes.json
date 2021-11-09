@@ -33,5 +33,10 @@
         "/addStudentToClassroom",
         "/saveMarks"
     ],
-    "adminRoutes": ["/register"]
+    "adminRoutes": [
+        "/register",
+        "/disable",
+        "/getUserList",
+        "/updateUser"
+    ]
 }
