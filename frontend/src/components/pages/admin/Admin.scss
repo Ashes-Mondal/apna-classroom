@@ -1,19 +1,21 @@
+.admin-container {
+    display: flex;
+}
+
 .admin-form {
-    width: 400px;
+    min-width: 280px;
     background-color: white;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
     border-radius: 10px;
     padding: 10px 20px;
-    margin: 1%;
-
+    margin: 10px;
     button {
         height: 1.8rem;
     }
 }
 
 .admin-forms {
-    flex: 0 0 500px;
-
+    flex: 1;
     h4 {
         color: black;
         font-weight: 600;
@@ -24,6 +26,8 @@
     height: 30px;
     display: flex;
     align-items: center;
+    color: black;
+    background-color: white;
 }
 
 .admin-form-label {
@@ -124,4 +128,71 @@
 }
 .upload-user-btn2:hover + .hidden-comment2 {
     display: block;
+}
+.user-cards-container {
+    flex: 3;
+    padding: 3%;
+}
+.admin-toprow {
+    display: flex;
+    justify-content: space-between;
+}
+.role-dropdown {
+    margin-left: 20px;
+}
+.admin-select-batch {
+    margin: 0px 40px;
+}
+.admin-batch-input {
+    width: 80px;
+    border-radius: 5px;
+    border: 1px solid #0a58ca;
+    outline: none;
+    margin-left: 20px;
+}
+.batch-search {
+    background-color: blue;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    margin: 0px 5px;
+}
+.admin-container h4 {
+    color: black;
+}
+.user-cards {
+    margin: 20px 0px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    column-gap: 50px;
+    height: 70%;
+    overflow: auto;
+    padding: 20px;
+}
+.user-card {
+    background-color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0px;
+}
+.user-edit-icon {
+    color: rgb(255, 153, 0);
+    font-size: 25px;
+    cursor: pointer;
+    margin: 5px;
+}
+.user-card-toggle-icon-on {
+    font-size: 25px;
+    cursor: pointer;
+    margin: 5px;
+    color: rgb(6, 185, 0);
+}
+.user-data-row {
+    margin: 0px 20px;
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
 }
