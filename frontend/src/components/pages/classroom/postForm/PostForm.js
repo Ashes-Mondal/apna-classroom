@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { GrFormClose } from "react-icons/gr";
 import { useSelector } from "react-redux";
@@ -6,6 +6,7 @@ import { postAnnouncement, postAssignment } from "../../../../axios/classroom";
 import "./PostForm.scss";
 import FileAtt from "../../../common/fileAtt/FileAtt";
 import { AiOutlineCloudUpload } from "react-icons/ai";
+import { CSV2JSON, isValidUserJSON } from "../../../../helper";
 
 const PostForm = ({ setShowForm, formType, classroomID, theme }) => {
     const history = useHistory();
@@ -27,6 +28,18 @@ const PostForm = ({ setShowForm, formType, classroomID, theme }) => {
     const fileUploadHandler = () => {
         document.querySelector("#files").click();
     };
+
+    useEffect(() => {
+        for (let i = 0; i < selectedFiles.length; i++) {
+            // const csvData = await
+            selectedFiles[i].text().then((csvData) => {
+                console.log("csvData", csvData);
+                const jsonData = CSV2JSON(csvData);
+                console.log("jsonData", jsonData);
+                console.log("isValidJSON", isValidUserJSON(jsonData));
+            });
+        }
+    }, [selectedFiles]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
