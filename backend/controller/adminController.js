@@ -1,25 +1,42 @@
 const userModel = require("../model/user/userSchema");
+const classroomModel = require("../model/classroom/classroom");
+const UID = require("../utils/uid");
+const bcrypt = require("../utils/userPassword");
 
 exports.registerUserController = async (req, res, next) => {
     try {
-        let userList = [];
-        for (let i = 0; i < req.body.list.length; i++) {
-            let userDetail = userList[i];
+        let classrooms = await classroomModel.find();
+        let lookup = {};
+        classrooms.forEach(
+            (classroom) =>
+                (lookup[classroom.batchCode] = [
+                    ...lookup[classroom.batchCode],
+                    classroom._id,
+                ])
+        );
 
+        let userList = [];
+        for (let i = 0; i < req.body.length; i++) {
+            let userDetail = req.body[i];
+            console.log("req body", req.body);
+            console.log("userdetail", userDetail);
             //check if user exists
             if (await userModel.findOne({ email: userDetail.email })) continue;
 
             //new user
             const uuid = await UID.createUniqueID();
-            let hashPassword = await brcypt.createPasswordHash(uuid);
+            let hashPassword = await bcrypt.createPasswordHash(uuid);
             userDetail.password = hashPassword;
             userDetail.uuid = uuid;
+
+            userDetail.classroomIDs = lookup[userDetail.batchCode] || [];
             userList.push(userDetail);
         }
 
         await userModel.insertMany(userList);
+
         res.status(200).json({
-            data: `${userList.length}/${req.body.list.length} users successfully added`,
+            data: `${userList.length}/${req.body.length} users successfully added`,
             error: null,
         });
     } catch (e) {

@@ -19,6 +19,7 @@ export const CSV2JSON = (csv) => {
         for (var j = 0; j < headers.length; j++) {
             obj[headers[j]] = currentline[j];
         }
+        if (obj.batchCode === "") delete obj.batchCode;
         result.push(obj);
     }
 
@@ -32,7 +33,7 @@ export const isValidUserJSON = (json) => {
     const batchCodeRE = /([A-Z]{3})([0-9]{4})/;
 
     let flag = true;
-    console.log("json[0] is", json[0]["batchCode"]);
+    // console.log("json[0] is", json[0]["batchCode"]);
     json.forEach((user) => {
         if (!user.name || !user.email || !user.role) {
             throw Error(`valid fail because incomplete fields for user: ${user.name}`);
