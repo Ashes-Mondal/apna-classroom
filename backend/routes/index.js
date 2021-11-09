@@ -5,6 +5,7 @@ const assignment = require("./assignment").router;
 const annoucement = require("./annoucement").router;
 const comment = require("./comments").router;
 const submission = require("./submission").router;
+const admin = require("./admin").router;
 module.exports = (app) => {
     app.use(
         "/api",
@@ -14,6 +15,7 @@ module.exports = (app) => {
         assignment,
         annoucement,
         comment,
-        submission
+        submission,
+        admin
     );
 };

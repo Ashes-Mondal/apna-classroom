@@ -6,31 +6,6 @@ const options = {
     convert: true,
 };
 
-module.exports.registerValidator = (req, res, next) => {
-    const registerRequestValidate = Joi.object({
-        password: Joi.string().required(),
-        email: Joi.string().email().required(),
-        name: Joi.string().required(),
-    });
-    //
-    const { error, value } = registerRequestValidate.validate(
-        req.body,
-        options
-    );
-    //
-    if (error) {
-        res.status(400).json({
-            data: null,
-            error: "Invalid request parameters",
-        });
-        return;
-    } else {
-        value.email = value.email.toLowerCase();
-        req.body = value;
-        next();
-    }
-};
-
 module.exports.loginValidator = (req, res, next) => {
     const loginRequestValidate = Joi.object({
         password: Joi.string().required(),
@@ -119,14 +94,8 @@ module.exports.meetAccessValidator = (req, res, next) => {
         meetID: Joi.string().required(),
     });
     //
-    const body = validateBody.validate(
-        req.body,
-        options
-    );
-    const query = validateQuery.validate(
-        req.query,
-        options
-    );
+    const body = validateBody.validate(req.body, options);
+    const query = validateQuery.validate(req.query, options);
     //
     if (body.error || query.error) {
         res.status(400).json({
