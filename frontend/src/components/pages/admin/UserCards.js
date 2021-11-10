@@ -149,7 +149,7 @@ function UserCards() {
         <div className="user-cards-container">
             <div className="admin-toprow">
                 <div>
-                    <span>
+                    <span className="admin-select-role">
                         Role:
                         <Dropdown>
                             <Dropdown.Toggle variant="primary" id="dropdown-basic" className="admin-form-drop-btn role-dropdown">

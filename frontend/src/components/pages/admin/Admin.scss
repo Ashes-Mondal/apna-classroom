@@ -18,10 +18,12 @@
 
 .admin-forms {
     margin: 1%;
+    padding: 0 10px;
     z-index: 100;
     position: fixed;
     flex: 0 0 500px;
-
+    height: 90vh;
+    overflow-y:auto ;
     h4 {
         color: black;
         font-weight: 600;
@@ -144,7 +146,8 @@
 }
 
 .user-cards-container {
-    margin-left: 450px;
+    margin-left: 500px;
+    height:100%;
     flex: 3;
     padding: 3%;
 
@@ -171,8 +174,12 @@
     margin-left: 20px;
 }
 
+.admin-select-role {
+    display: inline-block;
+    margin:0 40px 10px 0;
+}
 .admin-select-batch {
-    margin: 0px 40px;
+    display: inline-block;
 }
 
 .admin-batch-input {
@@ -196,6 +203,7 @@
 }
 
 .user-cards {
+    max-width: 90%;
     margin: 20px 0px;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
@@ -205,6 +213,7 @@
 }
 
 .user-card {
+    min-width:fit-content;
     background-color: white;
     padding: 10px 20px;
     border-radius: 10px;
@@ -234,6 +243,7 @@
 }
 
 .user-data-row {
+    width: max-content;
     margin: 0px 20px;
     color: black;
     font-size: 20px;
@@ -242,7 +252,9 @@
 
 .user-card-rightcolumn {
     display: flex;
-    gap: 5px;
+    flex-direction: column-reverse;
+    justify-content: space-around;
+    gap: 15px;
 }
 .user-edit-input{
     font-size: 20px;
