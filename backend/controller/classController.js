@@ -218,13 +218,36 @@ exports.getPeopleInClassroom = async (req, res) => {
         const classroomID = req.query.classID;
         const uuid = req.body.uuid;
         if (isUserInClass(uuid, classroomID)) {
-            const people = await userModel
-                .find({
-                    classroomIDs: {
-                        $all: [classroomID],
-                    },
+            // const people = await userModel
+            //     .find({
+            //         classroomIDs: {
+            //             $all: [classroomID],
+            //         },
+            //     })
+            //     .select("name role email");
+            const allPeople = await classroomModel
+                .findById(ObjectID(classroomID))
+                .populate({
+                    path: "facultyID",
+                    select: "name role email",
                 })
-                .select("name role email");
+                .populate({
+                    path: "studentIDs",
+                    select: "name role email",
+                })
+                .populate({
+                    path: "assistantIDs",
+                    select: "name role email",
+                });
+            const faculty = allPeople.facultyID,
+                students = allPeople.studentIDs,
+                assistant = allPeople.assistantIDs.map((item) => {
+                    let data = item;
+                    data.role = "assistant";
+                    return data;
+                });
+            const people = [faculty,...students,...assistant];
+            // console.log(people)
             people.sort((a, b) => {
                 return a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1;
             });
@@ -374,7 +397,7 @@ exports.unrollStudentFromClassroom = async (req, res) => {
             return;
         }
         await classroomModel.findByIdAndUpdate(classID, {
-            $pull: { studentIDs: student._id },
+            $pull: { studentIDs: student._id, assistantIDs: student._id },
         });
         res.status(200).json({ data: "Success", error: null });
     } catch (error) {
@@ -382,6 +405,87 @@ exports.unrollStudentFromClassroom = async (req, res) => {
         res.status(500).json({
             data: null,
             error: "Failed to unroll student from class!",
+        });
+    }
+};
+
+exports.addAssistantToClassroom = async (req, res) => {
+    try {
+        const { classID, email, uuid } = req.body;
+        if (!isUserInClass(uuid, classID)) {
+            res.status(403).json({
+                data: null,
+                error: "User not faculty!",
+            });
+            return;
+        }
+        const assistant = await userModel.findOneAndUpdate(
+            {
+                email,
+            },
+            { $addToSet: { classroomIDs: classID } },
+            {
+                fields: { _id: 1 },
+                new: true,
+            }
+        );
+        if (!assistant) {
+            res.status(400).json({
+                data: null,
+                error: "Email not registered",
+            });
+            return;
+        }
+        await classroomModel.findByIdAndUpdate(classID, {
+            $pull: { studentIDs: assistant._id },
+            $addToSet: { assistantIDs: assistant._id },
+        });
+        res.status(200).json({ data: "Success", error: null });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            data: null,
+            error: "Failed to remove student to class!",
+        });
+    }
+};
+
+exports.removeAssistantFromClassroom = async (req, res) => {
+    try {
+        const { classID, email, uuid } = req.body;
+        if (!isUserInClass(uuid, classID)) {
+            res.status(403).json({
+                data: null,
+                error: "User not faculty!",
+            });
+            return;
+        }
+        const assistant = await userModel.findOneAndUpdate(
+            {
+                email,
+            },
+            { $pull: { classroomIDs: classID } },
+            {
+                fields: { _id: 1 },
+                new: true,
+            }
+        );
+        if (!assistant) {
+            res.status(400).json({
+                data: null,
+                error: "Email not registered",
+            });
+            return;
+        }
+        await classroomModel.findByIdAndUpdate(classID, {
+            $pull: { assistantIDs: assistant._id },
+        });
+        res.status(200).json({ data: "Success", error: null });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            data: null,
+            error: "Failed to remove student to class!",
         });
     }
 };

@@ -97,6 +97,27 @@ export const removeStudentFromClassroom = async (data) => {
     }
 };
 
+
+export const addAssistantToClassroom = async (data) => {
+    const url = `/addAssistantToClassroom`;
+    try {
+        const res = await axios.post(url, data);
+        return res.data;
+    } catch (error) {
+        throw error.response ? error.response.data : { data: null, error: "Not Connected to server" };
+    }
+};
+
+export const removeAssistantFromClassroom = async (data) => {
+    const url = `/removeAssistantFromClassroom`;
+    try {
+        const res = await axios.post(url, data);
+        return res.data;
+    } catch (error) {
+        throw error.response ? error.response.data : { data: null, error: "Not Connected to server" };
+    }
+};
+
 export const unrollStudentFromClassroom = async (data) => {
     const url = `/unrollStudentFromClassroom`;
     try {

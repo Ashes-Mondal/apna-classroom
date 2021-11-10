@@ -16,8 +16,10 @@ function Assignment() {
     const { classroomID, assignmentID } = useParams();
     const [assignment, setAssignment] = useState({});
     const user = useSelector((state) => state.user);
+    const enrolledClassrooms = useSelector((state) => state.enrolledClassrooms);
     const theme = useSelector((state) => state.theme);
     const [showSubmissions, setShowSubmissions] = useState(false);
+    const [userClassRole, setUserClassRole] = useState(user.role || "student");
     const handleCommentSubmit = (e) => {
         e.preventDefault();
         const data = { body, postID: assignmentID, postType: "asg", classroomID };
@@ -31,7 +33,13 @@ function Assignment() {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, [assignment]);
+    }, [assignmentID]);
+
+    useEffect(() => {
+        const currClass = enrolledClassrooms.find((item) => item._id === classroomID) || {};
+        if (currClass._id && currClass.assistantIDs.includes(user._id)) setUserClassRole("assistant");
+        else if (currClass._id && currClass.facultyID === user._id) setUserClassRole("teacher");
+    }, [classroomID, user, enrolledClassrooms]);
 
     useEffect(() => {
         getAssignmentDetails({ classroomID, assignmentID })
@@ -52,7 +60,7 @@ function Assignment() {
                 </>
             ) : (
                 <div className="asg-container">
-                    {user.role === "student" ? <Submission assignment={assignment} theme={theme[classroomID]} /> : null}
+                    {userClassRole === "student" ? <Submission assignment={assignment} theme={theme[classroomID]} /> : null}
                     <div className={`asg-container2 ${user.role}-extra-margin`}>
                         <div className={`asg-detail border-${theme[classroomID]}`}>
                             <span className="asg-toprow">
@@ -60,7 +68,7 @@ function Assignment() {
                                     <h3>{assignment.title}</h3>
                                     <h3 className={`asg-points font-${theme[classroomID]}`}>{assignment.maxMarks} points</h3>
                                 </span>
-                                {user.role === "teacher" ? (
+                                {userClassRole=== "teacher" || userClassRole=== "assistant" ? (
                                     <span className={`showsubmissions-btn bg-${theme[classroomID]}`} onClick={() => setShowSubmissions(true)}>
                                         show submissions
                                     </span>

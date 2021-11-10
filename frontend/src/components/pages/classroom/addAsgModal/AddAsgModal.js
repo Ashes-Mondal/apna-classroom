@@ -1,15 +1,13 @@
 import React from "react";
 import PostForm from "../postForm/PostForm";
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import "./AddAsgModal.scss";
 
-function AddAsgModal({ classroomID, theme }) {
+function AddAsgModal({ classroomID, theme ,userClassRole}) {
     const [showForm, setShowForm] = useState(false);
-    const user = useSelector((state) => state.user);
     return (
         <>
-            {user.role !== "student" ? (
+            {userClassRole === "teacher" || userClassRole === "assistant" ? (
                 <div>
                     {showForm ? <PostForm classroomID={classroomID} setShowForm={setShowForm} formType="asg" theme={theme} /> : null}
                     <div onClick={() => setShowForm(true)} className="add-asg-cta">

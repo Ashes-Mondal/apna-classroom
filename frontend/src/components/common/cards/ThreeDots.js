@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { unrollStudentFromClassroom, addStudentToClassroom, removeStudentFromClassroom } from "../../../axios/classroom";
+import { unrollStudentFromClassroom, addStudentToClassroom, removeStudentFromClassroom, addAssistantToClassroom, removeAssistantFromClassroom } from "../../../axios/classroom";
 import { removeFromClassroom } from "../../../redux/actions/enrolledClassrooms";
 import { removeClassroomTheme } from "../../../redux/actions/theme";
 import "./Card.scss";
@@ -28,13 +28,12 @@ const ThreeDots = (props) => {
                                 dispatch(removeFromClassroom(classID));
                                 dispatch(removeClassroomTheme(classID));
                                 alert(resp.data);
-                                window.location.replace('/');
+                                window.location.replace("/");
                             })
                             .catch((e) => {
                                 console.error(e);
-                                alert(e.error)
+                                alert(e.error);
                             });
-                        
                     },
                 },
             ];
@@ -79,12 +78,21 @@ const ThreeDots = (props) => {
             })
             .catch((e) => {
                 console.error(e);
-                alert(e.error)
+                alert(e.error);
             });
         setOpenModal(false);
     };
     const addAssistantHandler = (data) => {
-        console.log("Add Assistant handler", data);
+        console.log("Add Assistant handler");
+        addAssistantToClassroom({ classID: details._id, email: data["Email"] })
+            .then((resp) => {
+                // console.log(resp);
+                alert(resp.data);
+            })
+            .catch((e) => {
+                console.error(e);
+                alert(e.error);
+            });
         setOpenModal(false);
     };
     const removeStudentHandler = (data) => {
@@ -96,12 +104,21 @@ const ThreeDots = (props) => {
             })
             .catch((e) => {
                 console.error(e);
-                alert(e.message)
+                alert(e.message);
             });
         setOpenModal(false);
     };
     const removeAssistantHandler = (data) => {
-        console.log("Remove Assistant handler", data);
+        console.log("Remove Assistant handler");
+        removeAssistantFromClassroom({ classID: details._id, email: data["Email"] })
+            .then((resp) => {
+                // console.log(resp);
+                alert(resp.data);
+            })
+            .catch((e) => {
+                console.error(e);
+                alert(e.message);
+            });
         setOpenModal(false);
     };
 
@@ -187,7 +204,7 @@ const ThreeDots = (props) => {
                         key={idx}
                         onClick={async () => {
                             await item.handler();
-                            setOpen(false)
+                            setOpen(false);
                         }}
                     >
                         {item.title}

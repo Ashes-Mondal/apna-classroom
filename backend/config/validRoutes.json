@@ -31,6 +31,8 @@
         "/postAssignment",
         "/removeStudentFromClassroom",
         "/addStudentToClassroom",
+        "/removeAssistantFromClassroom",
+        "/addAssistantToClassroom",
         "/saveMarks"
     ],
     "adminRoutes": [
