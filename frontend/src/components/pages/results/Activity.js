@@ -33,7 +33,7 @@ const Activity = ({ activity, ...props }) => {
                         </strong>
                     </span>
                 </div>
-                <div>{getDate(activity.assignmentID.dueDate)}</div>
+                <div>{getDate(activity.submissionDate ? activity.submissionDate : activity.assignmentID.dueDate)}</div>
             </div>
             <div className="activity-marks">
                 <strong>Marks:</strong>
