@@ -20,13 +20,14 @@ module.exports.registerUserValidator = (req, res, next) => {
     const { error, value } = userListValidate.validate(req.body, options);
     //
     if (error) {
+        console.error(error);
         res.status(400).json({
             data: null,
             error: "Invalid request parameters",
         });
         return;
     } else {
-        value.email = value.email.toLowerCase();
+        // value.email = value.email.toLowerCase();
         req.body = value;
         next();
     }
@@ -79,7 +80,6 @@ module.exports.updateUserDetailsValidator = (req, res, next) => {
         role: Joi.string(),
         status: Joi.string().required(),
     });
-
     const { error, value } = userDetailsValidate.validate(req.body, options);
     //
     if (error) {

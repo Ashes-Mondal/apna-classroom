@@ -24,5 +24,9 @@ router.post(
     adminValidator.updateUserDetailsValidator,
     adminController.updateUserDetailsController
 );
+router.get(
+    "/getAllBatchCodes",
+    adminController.getAllBatchCodesController
+);
 // Exporting routes
 module.exports.router = router;

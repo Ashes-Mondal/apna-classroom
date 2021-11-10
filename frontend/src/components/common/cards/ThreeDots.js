@@ -28,6 +28,7 @@ const ThreeDots = (props) => {
                                 dispatch(removeFromClassroom(classID));
                                 dispatch(removeClassroomTheme(classID));
                                 alert(resp.data);
+                                window.location.replace('/');
                             })
                             .catch((e) => {
                                 console.error(e);

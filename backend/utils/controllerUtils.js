@@ -4,6 +4,7 @@ const userModel = require("../model/user/userSchema");
 const classroomModel = require("../model/classroom/classroom");
 const assignmentModel = require("../model/post/assignmentSchema");
 const announcementModel = require("../model/post/announcementSchema");
+const submissionModel = require("../model/post/submissionSchema");
 
 exports.isUserInClass = async (uuid, classroomID) => {
     try {
@@ -64,5 +65,50 @@ exports.getAllClassroomAssignments = async (
         return allAssignments;
     } catch (e) {
         throw e;
+    }
+};
+
+exports.enrollStudentToTheClassroom = async (classID, email) => {
+    try {
+        const student = await userModel.findOneAndUpdate(
+            {
+                email,
+            },
+            { $addToSet: { classroomIDs: classID } },
+            {
+                fields: { _id: 1 },
+                new: true,
+            }
+        );
+        if (!student) {
+            console.error("Failed email not registered")
+            throw "Failed email not registered";
+        }
+        await classroomModel.findByIdAndUpdate(classID, {
+            $addToSet: { studentIDs: student._id },
+        });
+        //check if there exist any assignments before enroll
+        const allAssignments = await exports.getAllClassroomAssignments(
+            classID,
+            student._id
+        );
+        let bulkOps = [];
+        for (let i = 0; i < allAssignments.length; i++) {
+            let upsertDoc = {
+                updateOne: {
+                    filter: {
+                        studentID: allAssignments[i].studentID,
+                        assignmentID: allAssignments[i].assignmentID,
+                    },
+                    update: { $set: allAssignments[i] },
+                    upsert: true,
+                    setDefaultsOnInsert: true,
+                },
+            };
+            bulkOps.push(upsertDoc);
+        }
+        const bulkWriteOpResult = await submissionModel.bulkWrite(bulkOps);
+    } catch (error) {
+        throw error;
     }
 };
