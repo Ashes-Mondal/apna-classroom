@@ -7,9 +7,9 @@ const { accessTokenVerification } = require("../utils/jwt");
 
 const isRequestValid = (url, role) => {
     return (
-        (role === "student" && studentRoutes.includes(url)) ||
-        (role === "teacher" && teacherRoutes.includes(url)) ||
-        (role === "admin" && adminRoutes.includes(url))
+        (role.toLowerCase() === "student" && studentRoutes.includes(url)) ||
+        (role.toLowerCase()  === "teacher" && teacherRoutes.includes(url)) ||
+        (role.toLowerCase()  === "admin" && adminRoutes.includes(url))
     );
 };
 

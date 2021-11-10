@@ -24,29 +24,8 @@ function Classroom() {
     const dispatch = useDispatch();
     const loading = useSelector((state) => state.loading);
     const user = useSelector((state) => state.user);
+    const [userClassRole, setUserClassRole] = useState(user.role || "student");
 
-    useEffect(() => {
-        dispatch(setLoading());
-        getPostFeed(classroomID).then((res) => {
-            setFeed(res.data);
-            dispatch(unsetLoading());
-        });
-        return;
-    }, [classroomID, dispatch]);
-    useEffect(() => {
-        setCurrentClassroom(enrolledClassrooms.find((item) => item._id === classroomID) || {});
-        return;
-    }, [enrolledClassrooms, classroomID]);
-    useEffect(() => {
-        if(showPeople)
-        getPeopleInClassroom(classroomID)
-            .then((res) => {
-                setPeople(res.data);
-            })
-            .catch((e) => {
-                console.error(e);
-            });
-    }, [classroomID,showPeople]);
     const descModifier = (showAll, description) => {
         if (description.length < 80) return <p>{description}</p>;
         return showAll ? (
@@ -61,6 +40,34 @@ function Classroom() {
             </>
         );
     };
+
+    useEffect(() => {
+        dispatch(setLoading());
+        getPostFeed(classroomID).then((res) => {
+            setFeed(res.data);
+            dispatch(unsetLoading());
+        });
+        return;
+    }, [classroomID, dispatch]);
+
+    useEffect(() => {
+        const currClass = enrolledClassrooms.find((item) => item._id === classroomID) || {};
+        setCurrentClassroom(currClass);
+        if (currClass._id && currClass.assistantIDs.includes(user._id)) setUserClassRole("assistant");
+        else if (currClass._id && currClass.facultyID === user._id) setUserClassRole("teacher");
+        return;
+    }, [enrolledClassrooms, classroomID, user]);
+
+    useEffect(() => {
+        if (showPeople)
+            getPeopleInClassroom(classroomID)
+                .then((res) => {
+                    setPeople(res.data);
+                })
+                .catch((e) => {
+                    console.error(e);
+                });
+    }, [classroomID, showPeople]);
 
     return (
         <div>
@@ -93,7 +100,7 @@ function Classroom() {
                         </div>
                     ) : null}
                     <AddAnnModal classroomID={classroomID} theme={currentClassroom.theme} />
-                    <AddAsgModal classroomID={classroomID} theme={currentClassroom.theme} />
+                    <AddAsgModal classroomID={classroomID} theme={currentClassroom.theme} userClassRole={userClassRole} />
                     {user.role === "student" ? <MiniToDo classroomID={classroomID} /> : null}
                 </div>
             </div>

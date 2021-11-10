@@ -46,6 +46,16 @@ router.post(
     classController.removeStudentFromClassroom
 );
 router.post(
+    "/addAssistantToClassroom",
+    classroomValidator.addStudentToClassroom,
+    classController.addAssistantToClassroom
+);
+router.post(
+    "/removeAssistantFromClassroom",
+    classroomValidator.addStudentToClassroom,
+    classController.removeAssistantFromClassroom
+);
+router.post(
     "/unrollStudentFromClassroom",
     classroomValidator.unrollStudentFromClassroom,
     classController.unrollStudentFromClassroom
