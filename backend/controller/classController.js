@@ -9,6 +9,7 @@ const {
     isUserInClass,
     uuidToUserDetails,
     getAllClassroomAssignments,
+    getClassAvg,
 } = require("../utils/controllerUtils");
 const userModel = require("../model/user/userSchema");
 const submissionModel = require("../model/post/submissionSchema");
@@ -76,13 +77,12 @@ exports.getUserClassAssignments = async (req, res) => {
                 classroomID,
                 studentID: userID,
             });
+            const classAverage = await getClassAvg(classroomID);
             if (assignments.length && studentAvg.length) {
                 res.status(200).json({
                     data: {
                         assignments,
-                        classAverage:
-                            studentAvg[0].totalMarks /
-                            studentAvg[0].correctedSubmissions,
+                        classAverage,
                     },
                     error: null,
                 });
@@ -246,7 +246,7 @@ exports.getPeopleInClassroom = async (req, res) => {
                     data.role = "assistant";
                     return data;
                 });
-            const people = [faculty,...students,...assistant];
+            const people = [faculty, ...students, ...assistant];
             // console.log(people)
             people.sort((a, b) => {
                 return a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1;

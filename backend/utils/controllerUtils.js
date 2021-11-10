@@ -5,6 +5,7 @@ const classroomModel = require("../model/classroom/classroom");
 const assignmentModel = require("../model/post/assignmentSchema");
 const announcementModel = require("../model/post/announcementSchema");
 const submissionModel = require("../model/post/submissionSchema");
+const StudentClassAvgModel = require("../model/results/StudentClassAvgSchema");
 
 exports.isUserInClass = async (uuid, classroomID) => {
     try {
@@ -81,7 +82,7 @@ exports.enrollStudentToTheClassroom = async (classID, email) => {
             }
         );
         if (!student) {
-            console.error("Failed email not registered")
+            console.error("Failed email not registered");
             throw "Failed email not registered";
         }
         await classroomModel.findByIdAndUpdate(classID, {
@@ -110,5 +111,33 @@ exports.enrollStudentToTheClassroom = async (classID, email) => {
         const bulkWriteOpResult = await submissionModel.bulkWrite(bulkOps);
     } catch (error) {
         throw error;
+    }
+};
+
+exports.getClassAvg = async (classroomID) => {
+    try {
+        const avgs = await StudentClassAvgModel.aggregate([
+            { $match: { classroomID: ObjectID(classroomID) } },
+            {
+                $group: {
+                    _id: "$classroomID",
+                    totalMarks: {
+                        $sum: "$totalMarks",
+                    },
+                    correctedSubmissions: {
+                        $sum: "$correctedSubmissions",
+                    },
+                },
+            },
+        ]);
+        const classAvg = Math.round(
+            avgs && avgs.length
+                ? avgs[0].totalMarks / avgs[0].correctedSubmissions
+                : 0
+        );
+        return classAvg;
+        // return 0;
+    } catch (e) {
+        throw e;
     }
 };

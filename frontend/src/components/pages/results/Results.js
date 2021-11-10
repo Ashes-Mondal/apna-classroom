@@ -10,7 +10,7 @@ import NoData from "../../common/no-data/NoData";
 import { getUserClassAssignments } from "../../../axios/classroom";
 import { setLoading, unsetLoading } from "../../../redux/actions/loading";
 
-const calcMarks = (activities,classAverage) => {
+const calcMarks = (activities, classAverage) => {
     let maxMarks = 0,
         yourMarks = 0;
     for (let i = 0; i < activities.length; i++) {
@@ -21,7 +21,7 @@ const calcMarks = (activities,classAverage) => {
         yourMarks,
         maxMarks,
         yourAverage: Math.ceil((yourMarks / (maxMarks || 1)) * 100),
-        classAverage
+        classAverage,
     };
     return marks;
 };
@@ -31,8 +31,8 @@ const getSubjectName = (enrolledClassrooms, classroonID) => {
         if (enrolledClassrooms[i]._id === classroonID) return enrolledClassrooms[i].subjectName;
     }
 };
-let classAverage = 0;
 const Results = () => {
+    const [classAverage, setClassAverage] = useState(0);
     const { classroomID } = useParams();
     const theme = useSelector((state) => state.theme);
     const enrolledClassrooms = useSelector((state) => state.enrolledClassrooms);
@@ -64,8 +64,8 @@ const Results = () => {
         getUserClassAssignments({ classroomID, id: user._id })
             .then((resp) => {
                 // console.log("getUserClassAssignments_res", resp);
-                setActivities(resp.data.assignments.sort((a,b)=>b.assignmentID.dueDate - a.assignmentID.dueDate ));
-                classAverage = resp.data.classAverage;
+                setActivities(resp.data.assignments.sort((a, b) => b.assignmentID.dueDate - a.assignmentID.dueDate));
+                setClassAverage(resp.data.classAverage);
                 dispatch(unsetLoading());
             })
             .catch((err) => {
@@ -86,7 +86,7 @@ const Results = () => {
                     <NoData />
                 ) : (
                     <>
-                        <AverageSection marks={calcMarks(activities,classAverage)} theme={theme[classroomID]} />
+                        <AverageSection marks={calcMarks(activities, classAverage)} theme={theme[classroomID]} />
                         {activities.map((activity, idx) => (
                             <Activity key={idx} activity={activity} theme={theme[classroomID]} link={`/class/${classroomID}/asg/${activity.assignmentID._id}`} />
                         ))}
