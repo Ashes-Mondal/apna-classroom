@@ -275,7 +275,27 @@ exports.addStudentToClassroom = async (req, res) => {
             classID,
             student._id
         );
-        await submissionModel.insertMany(allAssignments);
+
+        //upsert submissions
+        // await submissionModel.insertMany(allAssignments);
+        let bulkOps = [];
+        for (let i = 0; i < allAssignments.length; i++) {
+            let upsertDoc = {
+                updateOne: {
+                    filter: {
+                        studentID: allAssignments[i].studentID,
+                        assignmentID: allAssignments[i].assignmentID,
+                    },
+                    update: { $set: allAssignments[i] },
+                    upsert: true,
+                },
+            };
+            bulkOps.push(upsertDoc);
+        }
+        const bulkWriteOpResult = await submissionModel.collection.bulkWrite(
+            bulkOps
+        );
+
         res.status(200).json({ data: "Success", error: null });
     } catch (error) {
         console.error(error.message);

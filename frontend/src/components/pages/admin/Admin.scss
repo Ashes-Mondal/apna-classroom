@@ -1,5 +1,6 @@
 .admin-container {
     display: flex;
+    min-height: calc(100vh - var(--header-height));
 }
 
 .admin-form {
@@ -8,14 +9,19 @@
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
     border-radius: 10px;
     padding: 10px 20px;
-    margin: 10px;
+    margin: 5% 0;
+
     button {
         height: 1.8rem;
     }
 }
 
 .admin-forms {
-    flex: 1;
+    margin: 1%;
+    z-index: 100;
+    position: fixed;
+    flex: 0 0 500px;
+
     h4 {
         color: black;
         font-weight: 600;
@@ -38,12 +44,15 @@
     display: inline-block;
     min-width: 90px;
 }
+
 .admin-form input {
-    width: 60%;
+    width: 100%;
+    margin-bottom: 1rem;
     border: none;
     border-bottom: 1px solid black;
     outline: none;
 }
+
 .add-user-btn {
     color: white;
     background-color: rgb(0, 207, 0);
@@ -95,6 +104,7 @@
     text-overflow: ellipsis;
     display: flex;
     align-items: center;
+
     .file-icon {
         flex: 0 0 40px;
     }
@@ -109,13 +119,15 @@
     box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.05);
     padding: 20px;
 }
-.upload-user-btn:hover + .hidden-comment1 {
+
+.upload-user-btn:hover+.hidden-comment1 {
     display: block;
 }
 
 .csv-cancel {
     flex: 0 0 20px;
 }
+
 .hidden-comment2 {
     display: none;
     position: absolute;
@@ -126,23 +138,43 @@
     padding: 20px;
     margin: auto;
 }
-.upload-user-btn2:hover + .hidden-comment2 {
+
+.upload-user-btn2:hover+.hidden-comment2 {
     display: block;
 }
+
 .user-cards-container {
+    margin-left: 450px;
     flex: 3;
     padding: 3%;
+
+    img {
+        margin: auto;
+        width: Max(40vw, 40vh);
+    }
 }
+
+.no-results-found {
+    text-align: center;
+    margin: auto;
+    font-weight: 700;
+    font-size: 32px;
+    color: red
+}
+
 .admin-toprow {
     display: flex;
     justify-content: space-between;
 }
+
 .role-dropdown {
     margin-left: 20px;
 }
+
 .admin-select-batch {
     margin: 0px 40px;
 }
+
 .admin-batch-input {
     width: 80px;
     border-radius: 5px;
@@ -150,6 +182,7 @@
     outline: none;
     margin-left: 20px;
 }
+
 .batch-search {
     background-color: blue;
     color: white;
@@ -157,18 +190,20 @@
     border: none;
     margin: 0px 5px;
 }
+
 .admin-container h4 {
     color: black;
 }
+
 .user-cards {
     margin: 20px 0px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
     column-gap: 50px;
-    height: 70%;
     overflow: auto;
     padding: 20px;
 }
+
 .user-card {
     background-color: white;
     padding: 10px 20px;
@@ -178,21 +213,49 @@
     justify-content: space-between;
     margin: 10px 0px;
 }
+
 .user-edit-icon {
     color: rgb(255, 153, 0);
-    font-size: 25px;
+    font-size: 30px;
     cursor: pointer;
     margin: 5px;
+
+    &:hover {
+        font-size: 32px;
+
+    }
 }
+
 .user-card-toggle-icon-on {
-    font-size: 25px;
+    font-size: 32px;
     cursor: pointer;
     margin: 5px;
     color: rgb(6, 185, 0);
 }
+
 .user-data-row {
     margin: 0px 20px;
     color: black;
     font-size: 20px;
     font-weight: bold;
+}
+
+.user-card-rightcolumn {
+    display: flex;
+    gap: 5px;
+}
+.user-edit-input{
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 5px;
+    border:none;
+    border-bottom: 1px solid black;
+    &:focus{
+        outline: none;
+    }
+    &:disabled{
+        background-color: transparent;
+        color: #000;
+        border: none;
+    }
 }

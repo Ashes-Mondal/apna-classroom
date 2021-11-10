@@ -80,7 +80,6 @@ module.exports.updateUserDetailsValidator = (req, res, next) => {
         role: Joi.string(),
         status: Joi.string().required(),
     });
-
     const { error, value } = userDetailsValidate.validate(req.body, options);
     //
     if (error) {

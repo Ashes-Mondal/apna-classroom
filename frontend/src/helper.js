@@ -6,6 +6,14 @@ export const getDate = (givenDate) => {
     return finalDate;
 };
 
+export const validateEmail = (email) => {
+    if (email.length === 0) {
+        return false;
+    }
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+};
+
 export const CSV2JSON = (csv) => {
     var lines = csv.match(/\r/) ? csv.split("\r\n") : csv.split("\n");
     var result = [];

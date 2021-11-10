@@ -37,6 +37,7 @@
         "/register",
         "/disable",
         "/getUserList",
-        "/updateUser"
+        "/updateUser",
+        "/getAllBatchCodes"
     ]
 }

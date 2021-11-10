@@ -17,7 +17,7 @@ function AddUser() {
         e.preventDefault();
         register([{ name: userName, email: userEmail, batchCode: userBatchCode, role: active }])
             .then((resp) => {
-                console.log(resp);
+                alert(resp.data);
             })
             .catch((e) => {
                 console.error(e);
@@ -91,13 +91,13 @@ function BulkAddUsers() {
         document.querySelector("#files1").click();
     };
     useEffect(() => {
-        console.log(file);
+        // console.log(file);
         file?.text()
             .then((csvData) => {
-                console.log("csvData", csvData);
+                // console.log("csvData", csvData);
                 const jsonData = CSV2JSON(csvData);
-                console.log("jsonData", jsonData);
-                console.log("isValidJSON", isValidUserJSON(jsonData));
+                // console.log("jsonData", jsonData);
+                // console.log("isValidJSON", isValidUserJSON(jsonData));
                 if (isValidUserJSON(jsonData)) {
                     setUserJSONData(jsonData);
                 }
@@ -113,7 +113,7 @@ function BulkAddUsers() {
         }
         register(userJSONData)
             .then((resp) => {
-                console.log(resp);
+                alert(resp.data);
             })
             .catch((e) => {
                 console.error(e);
@@ -133,19 +133,6 @@ function BulkAddUsers() {
                     </span>
                 </h5>
             ) : null}
-            {/* {file.map((item, idx) => {
-                return (
-                    <h5 key={idx} style={{ cursor: "default" }} className={`font-orange bold d-flex align-items-center justify-content-between`}>
-                        <span className="csv-file">
-                            <BsFileEarmarkCheck size={32} className="file-icon" />
-                            {item.name}
-                        </span>
-                        <span className="csv-cancel">
-                            <MdCancel style={{ cursor: "pointer" }} color="red" size={30} onClick={() => setFile([])} />
-                        </span>
-                    </h5>
-                );
-            })} */}
             {file ? null : (
                 <button className="upload-user-btn bold" onClick={fileUploadHandler}>
                     <input
@@ -177,84 +164,89 @@ function RemoveUser() {
     const handleSubmit = (e) => {
         e.preventDefault();
         disable([userEmail])
-            .then((resp) => console.log(resp))
-            .catch((e) => console.error(e));
+            .then((resp) => {
+                alert(resp.data);
+            })
+            .catch((e) => {
+                console.error(e);
+            });
     };
     return (
-        <form className="admin-form" onSubmit={handleSubmit}>
-            <h4>Disable A User</h4>
-            <div>
-                <span className="admin-form-label">User Email:</span>
-                <input
-                    type="email"
-                    value={userEmail}
-                    onChange={(e) => {
-                        setUserEmail(e.target.value);
-                    }}
-                />
-            </div>
-            <button onSubmit={handleSubmit} className="remove-user-btn bold">
-                REMOVE
-            </button>
-        </form>
-    );
-}
-
-function RemoveMultipleUser() {
-    const [file, setFile] = useState([]);
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-    };
-    const fileUploadHandler = () => {
-        document.querySelector("#files2").click();
-    };
-    return (
-        <form className="admin-form" onSubmit={handleSubmit}>
-            <h4>Bulk Disable User</h4>
-
-            {file.map((item, idx) => {
-                return (
-                    <h5 key={idx} style={{ cursor: "default" }} className={`font-orange bold d-flex align-items-center justify-content-between`}>
-                        <span className="csv-file">
-                            <BsFileEarmarkCheck size={32} className="file-icon" />
-                            {item.name}
-                        </span>
-                        <span className="csv-cancel">
-                            <MdCancel style={{ cursor: "pointer" }} color="red" size={30} onClick={() => setFile([])} />
-                        </span>
-                    </h5>
-                );
-            })}
-            {file.length ? null : (
-                <button className="upload-user-btn upload-user-btn2 bold" onClick={fileUploadHandler}>
+        <div className="admin-form">
+            <form  onSubmit={handleSubmit}>
+                <h4>Disable A User</h4>
+                <div>
+                    <span className="admin-form-label">User Email:</span>
                     <input
-                        id="files2"
-                        type="file"
+                        type="email"
+                        value={userEmail}
                         onChange={(e) => {
-                            setFile(Array.from(e.target.files || []));
+                            setUserEmail(e.target.value);
                         }}
                     />
-                    + UPLOAD .CSV
+                </div>
+                <button onSubmit={handleSubmit} className="remove-user-btn bold">
+                    REMOVE
                 </button>
-            )}
-            <div className="hidden-comment2">
-                <div>The .CSV File should be structured as follows:</div>
-                <div> Column 0: Email </div>
-            </div>
-            <button onSubmit={handleSubmit} className="remove-user-btn bold">
-                REMOVE
-            </button>
-        </form>
+            </form>
+        </div>
     );
 }
+
+// function RemoveMultipleUser() {
+//     const [file, setFile] = useState([]);
+
+//     const handleSubmit = (e) => {
+//         e.preventDefault();
+//     };
+//     const fileUploadHandler = () => {
+//         document.querySelector("#files2").click();
+//     };
+//     return (
+//         <form className="admin-form" onSubmit={handleSubmit}>
+//             <h4>Bulk Disable User</h4>
+
+//             {file.map((item, idx) => {
+//                 return (
+//                     <h5 key={idx} style={{ cursor: "default" }} className={`font-orange bold d-flex align-items-center justify-content-between`}>
+//                         <span className="csv-file">
+//                             <BsFileEarmarkCheck size={32} className="file-icon" />
+//                             {item.name}
+//                         </span>
+//                         <span className="csv-cancel">
+//                             <MdCancel style={{ cursor: "pointer" }} color="red" size={30} onClick={() => setFile([])} />
+//                         </span>
+//                     </h5>
+//                 );
+//             })}
+//             {file.length ? null : (
+//                 <button className="upload-user-btn upload-user-btn2 bold" onClick={fileUploadHandler}>
+//                     <input
+//                         id="files2"
+//                         type="file"
+//                         onChange={(e) => {
+//                             setFile(Array.from(e.target.files || []));
+//                         }}
+//                     />
+//                     + UPLOAD .CSV
+//                 </button>
+//             )}
+//             <div className="hidden-comment2">
+//                 <div>The .CSV File should be structured as follows:</div>
+//                 <div> Column 0: Email </div>
+//             </div>
+//             <button onSubmit={handleSubmit} className="remove-user-btn bold">
+//                 REMOVE
+//             </button>
+//         </form>
+//     );
+// }
 function AdminForms() {
     return (
         <div className="admin-forms">
             <AddUser />
             <BulkAddUsers />
             <RemoveUser />
-            <RemoveMultipleUser />
         </div>
     );
 }
