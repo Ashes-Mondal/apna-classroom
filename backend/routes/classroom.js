@@ -60,5 +60,15 @@ router.post(
     classroomValidator.unrollStudentFromClassroom,
     classController.unrollStudentFromClassroom
 );
+router.get(
+    "/getStudentAverageGraphData",
+    classroomValidator.getUserClassAssignments,
+    classController.getStudentAverageGraphData
+);
+router.get(
+    "/getStudentAssignmentsGraphData",
+    classroomValidator.getUserClassAssignments,
+    classController.getStudentAssignmentsGraphData
+);
 // Exporting routes
 module.exports.router = router;

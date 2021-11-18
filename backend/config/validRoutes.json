@@ -24,7 +24,9 @@
         "/postSubmission",
         "/getSubmission",
         "/getSubmissions",
-        "/getPeopleInClassroom"
+        "/getPeopleInClassroom",
+        "/getStudentAverageGraphData",
+        "/getStudentAssignmentsGraphData"
     ],
     "teacherRoutes": [
         "/createClassroom",

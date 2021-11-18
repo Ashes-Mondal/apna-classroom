@@ -13,7 +13,7 @@ const Head = (props) => {
                     <ResultDropdown theme={props.theme} active={props.active} list={props.list} />
                 </strong>
             </span>
-            <strong><GoGraph onClick={()=>history.push(`/graph/${props.active}`)} className={`graph font-${props.theme}`} size={32}/></strong>
+            <strong><GoGraph onClick={()=>history.push(props.graphLink)} className={`graph font-${props.theme}`} size={32}/></strong>
         </div>
     )
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import "./Card.scss";
-import { SiGooglehangoutsmeet } from "react-icons/si";
+import { SiGooglemeet } from "react-icons/si";
 import { HiOutlineClipboardList } from "react-icons/hi";
 import { useHistory } from "react-router";
 import ThreeDots from "./ThreeDots";
@@ -31,7 +31,7 @@ const Card = (props) => {
                 ) : null}
 
                 <span onClick={() => history.push(`/class/${details._id}/meet/${details.meetingID}`)}>
-                    <SiGooglehangoutsmeet /> Meeting
+                    <SiGooglemeet /> Meeting
                 </span>
             </div>
         </div>

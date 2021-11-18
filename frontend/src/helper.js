@@ -45,29 +45,26 @@ export const isValidUserJSON = (json) => {
     json.forEach((user) => {
         if (!user.name || !user.email || !user.role) {
             throw Error(`valid fail because incomplete fields for user: ${user.name}`);
-            flag = false;
         }
         if (!validRoles.find((role) => role === user.role)) {
             throw Error(`valid fail because incorrect role for user: ${user.name}`);
-            flag = false;
         }
-
         if (user.role === "student" && !batchCodeRE.test(String(user.batchCode).toUpperCase())) {
             throw Error(`valid fail because wrong batchCode for user: ${user.name}`);
-            flag = false;
         }
         if (user.role === "student" && !studentEmailRE.test(String(user.email).toLowerCase())) {
             throw Error(`valid fail because wrong email for student user: ${user.name}`);
-            flag = false;
         }
         if (user.role === "teacher" && !emailRE.test(String(user.email).toLowerCase())) {
             throw Error(`valid fail because wrong emai for teacher for user: ${user.name}`);
-            flag = false;
         }
         if (user.role === "student" && !user.batchCode) {
             throw Error(`valid fail because no batch code for student user: ${user.name}`);
-            flag = false;
         }
     });
     return flag;
+};
+
+export const emailToRNo = (email) => {
+    return email.slice(4, 8) + email.slice(0, 3).toUpperCase() + "-" + email.slice(8, 11);
 };

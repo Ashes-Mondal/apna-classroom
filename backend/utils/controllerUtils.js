@@ -136,7 +136,52 @@ exports.getClassAvg = async (classroomID) => {
                 : 0
         );
         return classAvg;
-        // return 0;
+    } catch (e) {
+        throw e;
+    }
+};
+
+exports.getStudentsClassAvg = async (classroomID, studentID) => {
+    try {
+        let result = await submissionModel
+            .find({
+                studentID: studentID,
+            })
+            .populate({
+                path: "assignmentID",
+                match: { classroomID: ObjectID(classroomID) },
+            });
+
+        result = result.filter((item) => item.assignmentID);
+        const DR = result.length;
+        let NR = 0;
+        result.forEach(
+            (item) =>
+                (NR +=
+                    item.marks > -1
+                        ? (item.marks * 100) / item.assignmentID.maxMarks
+                        : 0)
+        );
+        const avg = Math.round(NR / DR);
+        return avg;
+    } catch (e) {
+        throw e;
+    }
+};
+
+exports.getAssignmentAvg = async (assignmentID) => {
+    try {
+        let allAssignmentSubmissionsModel = await submissionModel.aggregate([
+            { $match: { assignmentID } },
+        ]);
+        const DR = allAssignmentSubmissionsModel.length;
+        allAssignmentSubmissionsModel = await submissionModel.aggregate([
+            { $match: { assignmentID,marks:{$gt:-1} } },
+            { $group: { "_id":assignmentID ,'total':{$sum:"$marks"}} },
+        ])
+        const NR = allAssignmentSubmissionsModel.length?allAssignmentSubmissionsModel[0].total || 0 : 0;
+        const avg = Math.round(NR / DR);
+        return avg;
     } catch (e) {
         throw e;
     }
