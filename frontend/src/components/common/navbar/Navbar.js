@@ -7,8 +7,16 @@ import { handleLogout } from "../../../axios/handleSession";
 import { useDispatch, useSelector } from "react-redux";
 import { unsetUserAuth } from "../../../redux/actions/userAuthentication";
 
-const getLinks = (enrolledClassrooms) => {
+const getLinks = (enrolledClassrooms, role) => {
     if (enrolledClassrooms.length === 0) return [];
+    else if (role.toLowerCase() === "teacher") {
+        return [
+            {
+                title: "Results",
+                link: `/class/${enrolledClassrooms[0]._id}/graphs`,
+            },
+        ];
+    }
     return [
         {
             title: "Results",
@@ -62,7 +70,7 @@ const Navbar = () => {
                 </span>
             </a>
             <div className="navbar-links">
-                {getLinks(enrolledClassrooms).map((navLink, key) => {
+                {getLinks(enrolledClassrooms, user.role).map((navLink, key) => {
                     if (navLink.title === "Results") {
                         return (
                             <NavLink key={key} className="navlink" activeClassName="active-navlink" isActive={checkResultActive} to={navLink.link} onClick={() => history.push(navLink.link)}>

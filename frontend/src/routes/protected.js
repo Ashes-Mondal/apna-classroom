@@ -6,6 +6,7 @@ import Home from "../components/pages/home/Home";
 import ToDos from "../components/pages/todos/ToDos";
 import VideoConference from "../components/pages/video-conference/VideoConference";
 import Admin from "../components/pages/admin/Admin";
+import Graph from "../components/pages/result-graph/Graph";
 
 export const protectedRoutes = [
     {
@@ -19,6 +20,10 @@ export const protectedRoutes = [
     {
         component: Results,
         path: "/class/:classroomID/results",
+    },
+    {
+        component: Graph,
+        path: "/class/:classroomID/graphs",
     },
     {
         component: ToDos,

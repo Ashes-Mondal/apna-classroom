@@ -1,11 +1,9 @@
 import "./PeopleModal.scss";
 import React from "react";
 import Modal from "../../../common/modal/Modal";
+import { emailToRNo } from "../../../../helper";
 
 const PeopleModal = ({ people, showPeople, setShowPeople, theme }) => {
-    const emailToRNo = (email) => {
-        return email.slice(4, 8) + email.slice(0, 3).toUpperCase() + "-" + email.slice(8, 11);
-    };
     const teacher = people.filter((p) => p.role.toLowerCase() === "teacher");
     const assistants = people.filter((p) => p.role.toLowerCase() === "assistant");
     const students = people.filter((p) => p.role.toLowerCase() === "student");

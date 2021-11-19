@@ -10,6 +10,8 @@ const {
     uuidToUserDetails,
     getAllClassroomAssignments,
     getClassAvg,
+    getStudentsClassAvg,
+    getAssignmentAvg,
 } = require("../utils/controllerUtils");
 const userModel = require("../model/user/userSchema");
 const submissionModel = require("../model/post/submissionSchema");
@@ -486,6 +488,124 @@ exports.removeAssistantFromClassroom = async (req, res) => {
         res.status(500).json({
             data: null,
             error: "Failed to remove student to class!",
+        });
+    }
+};
+
+exports.getStudentAverageGraphData = async (req, res) => {
+    try {
+        const { classID } = req.query;
+        const { uuid } = req.body;
+        if (!isUserInClass(uuid, classID)) {
+            res.status(403).json({
+                data: null,
+                error: "User not in the class",
+            });
+            return;
+        }
+        const { userID } = await uuidToUserDetails(uuid);
+        const allClassStudents = (
+            await classroomModel.findById(ObjectID(classID), { studentIDs: 1 })
+        )?.studentIDs;
+        if (!allClassStudents) {
+            res.status(400).json({
+                data: null,
+                error: "Invalid ClassID given.",
+            });
+            return;
+        }
+        let data = [];
+        for (let ID of allClassStudents) {
+            const studentClassAvg = await getStudentsClassAvg(classID, ID);
+            const user = await userModel.findById(ID);
+            let obj = {
+                y: studentClassAvg,
+                name: user.name,
+                email: user.email,
+            };
+            if (JSON.stringify(ID) === JSON.stringify(userID)) {
+                obj.highlight = true;
+            }
+            data.push(obj);
+        }
+
+        data.sort((a, b) => {
+            if (a.y == 0 && b.y == 0) {
+                return a.name.localeCompare(b.name);
+            } else {
+                return b.y - a.y;
+            }
+        });
+        for (let i = 0; i < data.length; i++) {
+            data[i].x = i + 1;
+        }
+        res.status(200).json({ data: data, error: null });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            data: null,
+            error: error,
+        });
+    }
+};
+
+exports.getStudentAssignmentsGraphData = async (req, res) => {
+    try {
+        const { classID } = req.query;
+        const { uuid } = req.body;
+        if (!isUserInClass(uuid, classID)) {
+            res.status(403).json({
+                data: null,
+                error: "User not in the class",
+            });
+            return;
+        }
+        const { userID } = await uuidToUserDetails(uuid);
+        const allClassAssignments = await assignmentModel
+            .find({ classroomID: ObjectID(classID) })
+            .sort({ createdAt: 1 });
+
+        let data1 = [],
+            data2 = [];
+        for (let i = 0; i < allClassAssignments.length; i++) {
+            const assignmentAvg = await getAssignmentAvg(
+                allClassAssignments[i]._id
+            );
+            const studentAssignmentMarks = await submissionModel.findOne({
+                assignmentID: allClassAssignments[i]._id,
+                studentID: userID,
+            });
+            data1.push({
+                x: `Assignment ${i + 1}`,
+                y: assignmentAvg,
+            });
+            if (studentAssignmentMarks) {
+                const nMarks =
+                    ((studentAssignmentMarks.marks > -1
+                        ? studentAssignmentMarks.marks
+                        : 0) *
+                        100) /
+                    allClassAssignments[i].maxMarks;
+                data2.push({
+                    x: `Assignment ${i + 1}`,
+                    y: nMarks,
+                });
+            }
+        }
+        let final = data2.length
+            ? [
+                  { id: "Class Average", data: data1 },
+                  { id: "Your score", data: data2 },
+              ]
+            : [{ id: "Class Average", data: data1 }];
+        if (data2.length === 0 && data1.length === 0) final = [];
+        // console.log(data1, data2);
+        res.status(200).json({ data: final, error: null });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            data: null,
+            error: error.message,
         });
     }
 };

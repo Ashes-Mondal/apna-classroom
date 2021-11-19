@@ -9,18 +9,21 @@ import { useDispatch, useSelector } from "react-redux";
 import NoData from "../../common/no-data/NoData";
 import { getUserClassAssignments } from "../../../axios/classroom";
 import { setLoading, unsetLoading } from "../../../redux/actions/loading";
+import Graph from "../result-graph/Graph";
 
 const calcMarks = (activities, classAverage) => {
     let maxMarks = 0,
-        yourMarks = 0;
+        yourMarks = 0,
+        yourPercentage = 0;
     for (let i = 0; i < activities.length; i++) {
         yourMarks += activities[i].marks > -1 ? activities[i].marks : 0;
         maxMarks += activities[i].assignmentID.maxMarks;
+        yourPercentage += activities[i].marks > -1 ? (activities[i].marks * 100) / (activities[i].assignmentID.maxMarks || 1) : 0;
     }
     const marks = {
         yourMarks,
         maxMarks,
-        yourAverage: Math.ceil((yourMarks / (maxMarks || 1)) * 100),
+        yourAverage: Math.round(yourPercentage / (activities.length || 1)),
         classAverage,
     };
     return marks;
@@ -80,7 +83,7 @@ const Results = () => {
     }
     return (
         <div className="result-page">
-            <Head theme={theme[classroomID]} active={getSubjectName(enrolledClassrooms, classroomID)} list={dropdownList} />
+            <Head theme={theme[classroomID]} active={getSubjectName(enrolledClassrooms, classroomID)} list={dropdownList} graphLink={`/class/${classroomID}/graphs`} />
             <div className="result-page-main">
                 {!loading && !activities.length ? (
                     <NoData />

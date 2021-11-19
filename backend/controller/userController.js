@@ -20,6 +20,6 @@ exports.getUserInfo = async (req, res) => {
                   .status(400)
                   .json({ data: null, error: "No such user exists!" });
     } catch (error) {
-        res.status(500).json({ data: null, error: e.message });
+        res.status(500).json({ data: null, error: error });
     }
 };
