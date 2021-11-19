@@ -72,7 +72,7 @@ function Classroom() {
     return (
         <div>
             {showPeople ? <PeopleModal people={people} setShowPeople={setShowPeople} showPeople={showPeople} theme={currentClassroom.theme} /> : null}
-            <Banner currentClassroom={currentClassroom} />
+            <Banner currentClassroom={currentClassroom} userClassRole={userClassRole}/>
             <div className="feed">
                 <div className="left-column">
                     {feed.length ? (

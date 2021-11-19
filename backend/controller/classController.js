@@ -594,10 +594,10 @@ exports.getStudentAssignmentsGraphData = async (req, res) => {
         }
         let final = data2.length
             ? [
-                  { id: "Marks", data: data2 },
-                  { id: "Average", data: data1 },
+                  { id: "Class Average", data: data1 },
+                  { id: "Your score", data: data2 },
               ]
-            : [{ id: "Average", data: data1 }];
+            : [{ id: "Class Average", data: data1 }];
         if (data2.length === 0 && data1.length === 0) final = [];
         // console.log(data1, data2);
         res.status(200).json({ data: final, error: null });

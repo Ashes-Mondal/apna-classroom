@@ -4,7 +4,7 @@ import { useHistory } from "react-router";
 import ThreeDots from "../../../common/cards/ThreeDots";
 import "./Banner.scss";
 
-function Banner({ currentClassroom }) {
+function Banner({ currentClassroom, ...props }) {
     const history = useHistory();
     return (
         <>
@@ -22,7 +22,11 @@ function Banner({ currentClassroom }) {
                     <button onClick={() => history.push(`/class/${currentClassroom._id}/meet/${currentClassroom.meetingID}`)}>
                         <FaVideo /> Meeting
                     </button>
-                    <button onClick={() => history.push(`/class/${currentClassroom._id}/results`)}>
+                    <button
+                        onClick={() =>
+                            props.userClassRole.toLowerCase() === "student" ? history.push(`/class/${currentClassroom._id}/results`) : history.push(`/class/${currentClassroom._id}/graphs`)
+                        }
+                    >
                         <FaClipboard /> Results
                     </button>
                 </div>

@@ -10,7 +10,7 @@ const LineGraph2 = (props) => {
                 data={props.data}
                 margin={{ top: 50, right: 40, bottom: 100, left: 60 }}
                 xScale={{ type: "point" }}
-                yScale={{ type: "linear", min: "0", stacked: true, reverse: false }}
+                yScale={{ type: "linear", min: "0", max:'100', reverse: false }}
                 yFormat=" >-.2f"
                 curve="monotoneX"
                 axisTop={null}
@@ -33,7 +33,7 @@ const LineGraph2 = (props) => {
                     legendOffset: -40,
                     legendPosition: "middle",
                 }}
-                colors={{ scheme: "nivo" }}
+                colors={[`darkgray`,props.theme]}
                 pointSize={10}
                 pointColor={{ from: "color", modifiers: [] }}
                 pointBorderWidth={2}
@@ -46,6 +46,7 @@ const LineGraph2 = (props) => {
                 useMesh={true}
                 motionConfig="default"
                 enableSlices='x'
+                enableArea={true}
             />
         </div>
     );

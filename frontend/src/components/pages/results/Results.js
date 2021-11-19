@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import NoData from "../../common/no-data/NoData";
 import { getUserClassAssignments } from "../../../axios/classroom";
 import { setLoading, unsetLoading } from "../../../redux/actions/loading";
+import Graph from "../result-graph/Graph";
 
 const calcMarks = (activities, classAverage) => {
     let maxMarks = 0,
