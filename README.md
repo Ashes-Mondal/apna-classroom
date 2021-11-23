@@ -125,7 +125,6 @@ npm run dev
 ![](./docs/images/auth.png)
 ![](./docs/images/admin.png)
 ![](./docs/images/adminupload.png)
-![](./docs/images/adminupload.png)
 ![](./docs/images/admin2.png)
 ![](./docs/images/newclass.png)
 ![](./docs/images/classroompage.png)
