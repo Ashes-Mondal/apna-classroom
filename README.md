@@ -120,6 +120,13 @@ npm run dev
 - `/updateUser` : update details for a user
 - `/getAllBatchCodes` : Get a list of batch codes available for students
 
+## Reports
+- [Software Engineering Proposal](./docs/Group%22%20Software%20Engineering%20Proposal.pdf)
+- [SRS Document](./docs/Group%202%20SRS%20Document.pdf)
+- [Software Project Management Document](./docs/Group%202%20Software%20Project%20Management%20Document.pdf)
+- [Software Design Document](./docs/Group%202%20Software%20Design%20Document.pdf)
+- [Software Testing Report](./docs/Group%202%20Software%20Testing%20Report.pdf)
+
 ## Screenshots
 
 ![](./docs/images/auth.png)
