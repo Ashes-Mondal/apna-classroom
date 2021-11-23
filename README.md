@@ -2,6 +2,10 @@
 
 Welcome to Apna Classroom, a specialized online classroom system for ABV-IIITM.
 
+![](./docs/images/classroompage.png)
+
+> More screenshots at the end
+
 ## Features
 
 ### General
@@ -115,3 +119,22 @@ npm run dev
 - `/getUserList` : Get a list of all users in the system
 - `/updateUser` : update details for a user
 - `/getAllBatchCodes` : Get a list of batch codes available for students
+
+## Screenshots
+
+![](./docs/images/auth.png)
+![](./docs/images/admin.png)
+![](./docs/images/adminupload.png)
+![](./docs/images/adminupload.png)
+![](./docs/images/admin2.png)
+![](./docs/images/newclass.png)
+![](./docs/images/classroompage.png)
+![](./docs/images/classroompeople.png)
+![](./docs/images/newann.png)
+![](./docs/images/newasg.png)
+![](./docs/images/assignmentpage.png)
+![](./docs/images/attachment.png)
+![](./docs/images/submissions.png)
+![](./docs/images/marking.png)
+![](./docs/images/classperformance.png)
+![](./docs/images/meeting.png)
